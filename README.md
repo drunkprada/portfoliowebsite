@@ -1,25 +1,23 @@
 # Sahana Nagannadh — Portfolio
 
-A compact React portfolio with research, experience, projects and education.
+A personal portfolio built with React and Vite.
+
+- Home: introduction, selected work and hackathon highlights.
+- Work: projects and research with accessible detail dialogs.
+- Experience: internships, frontend development, student communities and education.
+- Responsive layout, hash navigation, light/dark themes and reduced-motion support.
 
 ## Development
 
 ```sh
-npm ci
+npm install
 npm run dev
 ```
 
-## Production
+## Production build
 
 ```sh
 npm run build
-npm run preview
 ```
 
-Output: `dist/`. The site uses relative asset URLs, responsive layouts, expandable research and project details, and a persistent light/dark theme.
-
-Edit content in `src/main.jsx` and layout in `src/styles.css`.
-
-Canonical repository: https://github.com/drunkprada/portfoliowebsite
-
-Build and check each completed update, commit using the configured user identity, and verify the remote commit. Preserve existing history.
+Build output is in `dist`. Site configuration is in `.openai/hosting.json`.
