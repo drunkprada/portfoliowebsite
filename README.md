@@ -1,4 +1,4 @@
-# Sahana Nagannadh — Portfolio
+# Sahana Naganandh — Portfolio
 
 A personal portfolio built with React and Vite.
 
