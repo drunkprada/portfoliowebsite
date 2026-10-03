@@ -1,23 +1,20 @@
 # Sahana Naganandh — Portfolio
 
-A personal portfolio built with React and Vite.
-
-- Home: introduction, selected work and hackathon highlights.
-- Work: projects and research with accessible detail dialogs.
-- Experience: internships, frontend development, student communities and education.
-- Responsive layout, hash navigation, light/dark themes and reduced-motion support.
+Personal portfolio built with React, Vite and Motion. Deployed through Vercel from `main`.
 
 ## Development
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
-## Production build
+`npm run build` produces `dist/`.
 
-```sh
-npm run build
-```
+## Content
 
-Build output is in `dist`. Site configuration is in `.openai/hosting.json`.
+Research, projects, work experience and achievements are in `src/data.js`. The five hash-based pages live in `src/main.jsx`; visual styling lives in `src/styles.css`.
+
+The site includes animated navigation, expandable project and research details, a saved light/dark preference, and an opt-in playable piano. Reduced-motion preferences are respected. Google Fonts provides Literata and Public Sans with local fallback fonts.
+
+The OS research summary is based on the supplied manuscript and avoids numerical headline claims because its baseline figures differ between tables. Publication status follows the author's supplied résumé. The manuscript itself is not distributed with this site.
