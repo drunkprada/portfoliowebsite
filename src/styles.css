@@ -35,3 +35,19 @@ a.highlight:hover{background:color-mix(in srgb,var(--mark) 12%,transparent)}
 .reading-caption{font-size:.75rem}.currently-strip{justify-content:space-between}.paper-topic,.visual-label{display:none}.paper-sheet h3{margin-top:25px}.paper-topline{font-size:.61rem;letter-spacing:.04em}.paper-sheet>p{font-size:.7rem}.paper-abstract p{font-size:.74rem}
 .toolkit-grid .tags{margin-top:0}.toolkit-grid{grid-template-columns:.9fr 1.2fr 1fr;gap:22px}
 @media(max-width:720px){.location-label{display:none}.toolkit-grid{grid-template-columns:1fr}.currently-strip{justify-content:flex-start}.award-result{font-size:.98rem;gap:6px}.award-result svg{width:15px}.section-head h2{gap:8px}.section-head h2>svg{width:19px}.inline-icon{width:21px;height:21px}}
+
+/* A compact introduction, with colour reserved for links. */
+.home-intro{display:block;max-width:710px;padding:76px 0 130px;margin:0 auto}
+.intro-copy h1{font-size:2.15rem;letter-spacing:-.04em;margin:0 0 30px}
+.intro-copy>p:not(.eyebrow){max-width:none;font-size:1.04rem;line-height:1.85;margin-bottom:21px;color:var(--muted)}
+.intro-copy p a{color:var(--text);text-decoration-color:var(--blue);text-decoration-thickness:1px;text-underline-offset:4px}
+.intro-links{margin-top:30px;gap:28px}.intro-links .inline-link,.intro-links .external{font-size:.88rem}
+.site-header{border-bottom:0;padding:26px 0}.wordmark{font-size:.85rem;font-weight:500}.header-right{gap:8px}
+.highlight{text-decoration:none;font-weight:inherit}.inline-icon{background:none;color:var(--muted)}
+.tags .tech-chip>svg,.tone-blue,.tone-green,.tone-purple,.tone-orange,.tone-gold,.tone-cyan,.tone-pink{color:var(--muted)}
+.external,.external[href*="github"],.external[href*="cureus"],.inline-link{border-bottom:1px solid var(--line)}
+.external:hover,.inline-link:hover{border-color:var(--blue)}
+.page-heading h1{font-size:2.3rem}.section-head h2{font-size:1.55rem}.section-head h2>svg{width:18px;height:18px}
+.community-grid article{background:none;padding:20px 0;border-top:1px solid var(--line);border-radius:0}.community-grid{gap:35px}
+.reading-note{background:none;padding:25px 0;border-top:1px solid var(--line);border-radius:0}
+@media(max-width:720px){.home-intro{padding:45px 0 110px}.intro-copy h1{font-size:1.9rem;margin-bottom:25px}.intro-copy>p:not(.eyebrow){font-size:1rem}.site-header{padding:21px 0}.community-grid{gap:15px}}
