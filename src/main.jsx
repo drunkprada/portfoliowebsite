@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {AnimatePresence, MotionConfig, motion, useReducedMotion} from 'motion/react';
-import {ArrowUpRight, ArrowRight, ArrowUp, Home as HomeIcon, BookOpen, Code2, BriefcaseBusiness, UserRound, Github, Plus, Minus, Moon, Sun, Music2, MapPin, GraduationCap, Cpu, Database, Terminal, Braces, Workflow, Mic2, Trophy, FlaskConical, ShieldCheck, Layers, ChartNoAxesCombined, FileText, Palette, GitBranch, Coffee} from 'lucide-react';
+import {ArrowUpRight, ArrowRight, ArrowUp, Home as HomeIcon, BookOpen, Code2, BriefcaseBusiness, UserRound, Github, Plus, Minus, Moon, Sun, MapPin, GraduationCap, Cpu, Database, Terminal, Braces, Workflow, Mic2, Trophy, FlaskConical, ShieldCheck, Layers, ChartNoAxesCombined, Palette, GitBranch, Coffee} from 'lucide-react';
 import {github, papers, projects, achievements, roles} from './data';
 import './styles.css';
 
@@ -11,7 +11,6 @@ function External({href,children,className=''}){const internal=href.startsWith('
 const techIcons = {Python:[Terminal,'blue'],Java:[Coffee,'orange'],'C/C++':[Code2,'blue'],JavaScript:[Braces,'gold'],SQL:[Database,'blue'],PostgreSQL:[Database,'blue'],SQLite:[Database,'blue'],React:[Code2,'cyan'],FastAPI:[Workflow,'green'],Linux:[Terminal,'gold'],Git:[GitBranch,'orange'],CUDA:[Cpu,'green'],PyTorch:[FlaskConical,'orange'],TensorFlow:[Layers,'orange'],NumPy:[Layers,'blue'],n8n:[Workflow,'pink'],ElevenLabs:[Mic2,'purple'],'OpenAI API':[Cpu,'green'],NLP:[Braces,'purple'],Privacy:[ShieldCheck,'green'],Benchmarking:[ChartNoAxesCombined,'blue'],'Data preprocessing':[Database,'blue'],'Portfolio modelling':[ChartNoAxesCombined,'green'],'Bellman–Ford':[GitBranch,'purple'],'Frontend development':[Code2,'cyan'],Figma:[Palette,'purple'],Webflow:[Layers,'blue'],'Power BI':[ChartNoAxesCombined,'gold'],'Verilog coursework':[Cpu,'purple'],'Altium Designer':[Cpu,'green']};
 function Tech({name}){const [Icon,tone]=techIcons[name]||[Code2,'blue'];return <span className="tech-chip"><Icon size={15} className={'tone-'+tone} aria-hidden="true"/>{name}</span>}
 function Tags({items}){return <div className="tags">{items.map(x=><Tech name={x} key={x}/>)}</div>}
-function Highlight({children,icon:Icon,tone='blue',href}){const Tag=href?'a':'span';return <Tag className={'highlight accent-'+tone} {...(href?{href}: {})}>{children}{Icon&&<span className={'inline-icon tone-'+tone}><Icon size={14} aria-hidden="true"/></span>}</Tag>}
 const sectionIcon = label => /RESEARCH|CONNECTING/.test(label)?FlaskConical:/PROJECT|WORKED/.test(label)?Code2:/EXPERIENCE|INTERNSHIP/.test(label)?BriefcaseBusiness:/TEAM|ALONG/.test(label)?Trophy:/PRACTICAL/.test(label)?Terminal:BookOpen;
 function Reveal({children,className='',delay=0}){const reduce=useReducedMotion();return <motion.div className={className} initial={reduce?false:{opacity:0,y:22}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.08}} transition={{duration:.65,delay,ease}}>{children}</motion.div>}
 function Heading({label,title,children}){return <div className="page-heading"><h1>{title}</h1>{children&&<p className="page-description">{children}</p>}</div>}

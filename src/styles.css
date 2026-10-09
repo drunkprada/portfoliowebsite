@@ -22,9 +22,6 @@
 h1,h2{letter-spacing:-.045em;font-weight:500}h3{font-weight:500}
 .tone-blue{color:var(--blue)}.tone-green{color:var(--green)}.tone-purple{color:var(--purple)}.tone-orange{color:var(--orange)}.tone-gold{color:var(--gold)}.tone-cyan{color:var(--cyan)}.tone-pink{color:var(--pink)}
 .accent-blue{--mark:var(--blue)}.accent-green{--mark:var(--green)}.accent-purple{--mark:var(--purple)}.accent-orange{--mark:var(--orange)}
-.highlight{color:var(--text);font-weight:500;text-decoration-line:underline;text-decoration-color:var(--mark);text-decoration-thickness:2px;text-underline-offset:5px;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:2px;transition:background .2s}
-a.highlight:hover{background:color-mix(in srgb,var(--mark) 12%,transparent)}
-.inline-icon{display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;margin-left:5px;width:23px;height:23px;border-radius:7px;background:color-mix(in srgb,currentColor 10%,transparent)}
 .section-head h2,.toolkit-grid h3{display:flex;align-items:center;gap:11px}.section-head h2>svg{color:var(--muted)}
 .page-symbol{display:inline-flex;color:var(--muted);margin-bottom:2px}.page-heading h1{margin-top:12px}
 .eyebrow{letter-spacing:.035em;text-transform:none;font-weight:500}.intro-copy .eyebrow{font-size:.75rem}
@@ -34,7 +31,7 @@ a.highlight:hover{background:color-mix(in srgb,var(--mark) 12%,transparent)}
 .award-result{display:flex;align-items:center;gap:8px;font-size:1.1rem}.handwritten{display:flex;gap:10px;align-items:center;font-style:normal;font-size:.98rem}.location-label{display:flex;align-items:center;gap:6px}
 .reading-caption{font-size:.75rem}.currently-strip{justify-content:space-between}.paper-topic,.visual-label{display:none}.paper-sheet h3{margin-top:25px}.paper-topline{font-size:.61rem;letter-spacing:.04em}.paper-sheet>p{font-size:.7rem}.paper-abstract p{font-size:.74rem}
 .toolkit-grid .tags{margin-top:0}.toolkit-grid{grid-template-columns:.9fr 1.2fr 1fr;gap:22px}
-@media(max-width:720px){.location-label{display:none}.toolkit-grid{grid-template-columns:1fr}.currently-strip{justify-content:flex-start}.award-result{font-size:.98rem;gap:6px}.award-result svg{width:15px}.section-head h2{gap:8px}.section-head h2>svg{width:19px}.inline-icon{width:21px;height:21px}}
+@media(max-width:720px){.location-label{display:none}.toolkit-grid{grid-template-columns:1fr}.currently-strip{justify-content:flex-start}.award-result{font-size:.98rem;gap:6px}.award-result svg{width:15px}.section-head h2{gap:8px}.section-head h2>svg{width:19px}}
 
 /* A compact introduction, with colour reserved for links. */
 .home-intro{display:block;max-width:710px;padding:76px 0 130px;margin:0 auto}
@@ -43,7 +40,6 @@ a.highlight:hover{background:color-mix(in srgb,var(--mark) 12%,transparent)}
 .intro-copy p a{color:var(--text);text-decoration-color:var(--blue);text-decoration-thickness:1px;text-underline-offset:4px}
 .intro-links{margin-top:30px;gap:28px}.intro-links .inline-link,.intro-links .external{font-size:.88rem}
 .site-header{border-bottom:0;padding:26px 0}.wordmark{font-size:.85rem;font-weight:500}.header-right{gap:8px}
-.highlight{text-decoration:none;font-weight:inherit}.inline-icon{background:none;color:var(--muted)}
 .tags .tech-chip>svg,.tone-blue,.tone-green,.tone-purple,.tone-orange,.tone-gold,.tone-cyan,.tone-pink{color:var(--muted)}
 .external,.external[href*="github"],.external[href*="cureus"],.inline-link{border-bottom:1px solid var(--line)}
 .external:hover,.inline-link:hover{border-color:var(--blue)}
