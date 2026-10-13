@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">Resume screening pipeline</title>
+  <desc id="desc">PDF and DOCX resumes are parsed, deduplicated by content hash and extracted into structured fields through OpenAI. Candidate records are stored in SQLite and exported to Excel for staff review.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0l10 5-10 5" fill="#376657"/></marker></defs>
+  <rect width="640" height="400" fill="#f3f2ed"/>
+  <g font-family="monospace" fill="#626262" font-size="14"><text x="32" y="40">03 / RESUME INGESTION</text><text x="32" y="374">PYTHON · STRUCTURED EXTRACTION · HR REVIEW</text></g>
+  <g fill="none" stroke="#376657" stroke-width="2" marker-end="url(#arrow)"><path d="M202 123h28"/><path d="M410 123h26"/><path d="M520 167v56H338v27"/><path d="M248 294h-40"/></g>
+  <g fill="#fff" stroke="#bcbfb8"><rect x="32" y="79" width="170" height="88" rx="6"/><rect x="232" y="79" width="178" height="88" rx="6"/><rect x="440" y="79" width="168" height="88" rx="6"/><rect x="248" y="250" width="180" height="88" rx="6"/><rect x="32" y="250" width="176" height="88" rx="6"/></g>
+  <g fill="#202020" font-family="Arial, sans-serif" font-size="22"><text x="52" y="114">PDF / DOCX</text><text x="252" y="114">Parse + hash</text><text x="460" y="114">Extract fields</text><text x="269" y="283">SQLite</text><text x="52" y="283">Excel export</text></g>
+  <g fill="#626262" font-family="Arial, sans-serif" font-size="16"><text x="52" y="143">incoming resumes</text><text x="252" y="143">skip duplicates</text><text x="460" y="143">OpenAI → JSON</text><text x="269" y="313">candidate records</text><text x="52" y="313">staff review</text></g>
+</svg>

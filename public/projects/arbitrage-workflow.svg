@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">Crypto arbitrage as a graph problem</title>
+  <desc id="desc">Simulated exchange rates form a currency graph with negative logarithmic weights. Bellman-Ford detects negative cycles and sends opportunities to the dashboard.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0l10 5-10 5" fill="#376657"/></marker></defs>
+  <rect width="640" height="400" fill="#f3f2ed"/>
+  <g font-family="monospace" fill="#626262" font-size="14"><text x="32" y="40">02 / ARBITRAGE DETECTION</text><text x="32" y="374">SIMULATED RATES · NO LIVE TRADING</text></g>
+  <g fill="none" stroke="#376657" stroke-width="2" marker-end="url(#arrow)"><path d="M168 111l70 125"/><path d="M202 263H86"/><path d="M65 235l64-121"/><path d="M285 188h61"/><path d="M470 211v40"/></g>
+  <g fill="#fff" stroke="#bcbfb8"><circle cx="148" cy="91" r="33"/><circle cx="247" cy="268" r="33"/><circle cx="53" cy="268" r="33"/><rect x="348" y="143" width="248" height="68" rx="6"/><rect x="348" y="253" width="248" height="68" rx="6"/></g>
+  <g fill="#202020" font-family="Arial, sans-serif" font-size="22" text-anchor="middle"><text x="148" y="99">USD</text><text x="247" y="276">BTC</text><text x="53" y="276">ETH</text><text x="472" y="173">Bellman–Ford</text><text x="472" y="283">React dashboard</text></g>
+  <g fill="#626262" font-family="Arial, sans-serif" font-size="17" text-anchor="middle"><text x="155" y="195">−ln(rate)</text><text x="472" y="197">find negative cycles</text><text x="472" y="307">opportunities + steps</text></g>
+</svg>

@@ -7,7 +7,7 @@ import './styles.css';
 
 const sections = [{id:'home',label:'Home'},{id:'research',label:'Research'},{id:'projects',label:'Projects'},{id:'experience',label:'Experience'},{id:'about',label:'About'}];
 const ease = [0.22,1,0.36,1];
-function External({href,children,className=''}){const internal=href.startsWith('/');return <a className={`external ${className}`} href={href} {...(internal?{download:true}:{target:'_blank',rel:'noreferrer'})}>{children}</a>}
+function External({href,children,className=''}){return <a className={`external ${className}`} href={href} target="_blank" rel="noreferrer">{children}</a>}
 function Tags({items}){return <p className="tags">{items.join(', ')}</p>}
 function Reveal({children,className=''}){return <div className={className}>{children}</div>}
 function Heading({label,title,children}){return <div className="page-heading"><h1>{title}</h1>{children&&<p className="page-description">{children}</p>}</div>}
@@ -24,15 +24,112 @@ function Expand({label='A closer look',children}){
   </div>
 }
 function Achievements(){return <div className="achievements-list">{achievements.map((a,i)=><Reveal key={a.title} delay={i*.06}><article><span className="award-result">{a.result}</span><div><h3>{a.title}</h3><p>{a.description}</p></div><span className="row-number">0{i+1}</span></article></Reveal>)}</div>}
-function Home(){return <section className="home-intro"><div className="intro-copy"><h1>Hi, I’m Sahana.</h1><p className="intro-lead">I build backend systems and work on AI research.<br/>Now I’m getting into electronics, too.</p><p>Previously at <a href="#experience">Dell in Dubai</a>, building backend services and AI tools. My <a href="#research">research</a> looks at data privacy and how Linux settings affect AI inference.</p><p className="intro-education">Electronics &amp; Computer Science · University of Edinburgh<br/>Year 3 · Previously Computer Science at VIT</p><div className="intro-links"><a className="intro-action" href="#research">View research</a><External className="intro-action" href={github}>GitHub</External></div><p className="intro-personal">I also sing, play piano, and read about Greek mythology. <a href="#about">More about me</a></p></div></section>}
-function Research(){return <><Heading label="RESEARCH" title="Research">I study data privacy in AI and how system settings affect inference.</Heading><div className="papers-list">{papers.map((paper,i)=><Reveal key={paper.id}><article className="research-entry"><aside className="research-side"><span className="large-index">0{i+1}</span><span>{paper.category}</span><span>{paper.year}</span><span className="status">{paper.contribution}</span></aside><div className="research-main"><p className="eyebrow">{paper.status}</p><h2>{paper.title}</h2><p className="authors">{paper.authors}</p><p className="research-summary">{paper.summary}</p><Tags items={paper.tags}/><div className="paper-links">{paper.links.map(([label,href])=><External key={label} href={href}>{label}</External>)}</div><Expand label="The question, method & findings"><div className="research-details"><section><h3>The question</h3><p>{paper.question}</p></section><section><h3>The approach</h3><p>{paper.approach}</p></section><section><h3>What we found</h3><p>{paper.finding}</p></section></div></Expand></div></article></Reveal>)}</div></>}
-function Projects(){return <><Heading label="PROJECTS" title="Projects">My projects in finance, algorithms and AI, with links to the code.</Heading><div className="projects-list">{projects.map(project=><Reveal key={project.id}><article className="project-entry"><div className="project-copy"><p className="eyebrow">{project.number} / {project.category}</p><h2>{project.title}</h2><p>{project.summary}</p><Tags items={project.tags}/><div className="paper-links">{project.links.map(([label,href])=><External key={label} href={href}>{label}</External>)}</div><Expand label="Inside the project"><p>{project.detail}</p><p>{project.note}</p></Expand></div></article></Reveal>)}</div><a className="github-end" href={github} target="_blank" rel="noreferrer"><span>More code and experiments<span>github.com/drunkprada</span></span></a></>}
-function Experience(){return <><Heading label="EXPERIENCE" title="Experience">Internships, research work and student societies.</Heading><div className="experience-list">{roles.map((role,i)=><Reveal key={role.name}><article className="role-entry"><aside><span className="role-year">{role.date}</span><span>{role.location}</span><span className="row-number">0{i+1}</span></aside><div><p className="eyebrow">{role.role}</p><h2>{role.name}</h2><p className="role-intro">{role.intro}</p><ul>{role.body.map(line=><li key={line}>{line}</li>)}</ul><Tags items={role.tags}/></div></article></Reveal>)}</div><section className="community-section"><SectionHead label="BEYOND INTERNSHIPS" title="Student communities"/><div className="community-grid"><Reveal><article><span className="eyebrow">Senior Core Member</span><h3>IEEE Computer Society, VIT</h3><p>At IEEE Computer Society, I helped develop ideas for technical events. I worked with the team to turn proposals into plans and organise the events.</p></article></Reveal><Reveal delay={.08}><article><span className="eyebrow">Senior Core Member</span><h3>CodeChef, VIT</h3><p>At CodeChef, I worked on web development projects and helped coordinate competitive programming events. I contributed to both the code and the event planning.</p></article></Reveal></div></section><section className="awards-section"><SectionHead label="TEAM EFFORTS" title="Hackathons & achievements"/><Achievements/></section></>}
+function Home(){return <section className="home-intro"><div className="intro-copy"><h1>Hi, I’m Sahana.</h1><p className="intro-lead">I build backend systems and work on AI research.</p><p>Previously at <a href="#experience">Dell in Dubai</a>, building backend services and AI tools. My <a href="#research">research</a> looks at data privacy and how Linux settings affect AI inference.</p><p className="intro-education">Electronics &amp; Computer Science · University of Edinburgh<br/>Year 3 · Previously Computer Science at VIT</p><div className="intro-links"><a className="intro-action" href="#research">View research</a><External className="intro-action" href={github}>GitHub</External></div></div></section>}
+function Research(){
+  return <>
+    <Heading title="Research">I study data privacy in AI and how system settings affect inference.</Heading>
+    <div className="papers-list">{papers.map((paper,i)=>
+      <article className="research-entry" key={paper.id}>
+        <aside className="research-side">
+          <span className="large-index">0{i+1}</span><span>{paper.category}</span><span>{paper.year}</span><span className="status">{paper.contribution}</span>
+        </aside>
+        <div className="research-main">
+          <p className="eyebrow">{paper.status}</p><h2>{paper.title}</h2>
+          <p className="authors">{paper.authors}</p>
+          <p className="research-summary">{paper.summary}</p>
+          <p className="research-context">{paper.context}</p>
+          <Tags items={paper.tags}/>
+          <div className="paper-links">{paper.links.map(([label,href])=><External key={label} href={href}>{label}</External>)}</div>
+          <Expand label="The question, method & findings">
+            <div className="research-details">
+              <section><h3>The question</h3><p>{paper.question}</p></section>
+              <section><h3>The approach</h3><p>{paper.approach}</p></section>
+              <section><h3>What we found</h3><p>{paper.finding}</p></section>
+            </div>
+          </Expand>
+        </div>
+      </article>
+    )}</div>
+  </>
+}
+const projectVisuals = {
+  trade: {src:'/projects/trade-workflow.svg', alt:'Buy and sell orders pass validation, execute, and update cash, holdings and profit and loss.', caption:'The Java domain flow. API and risk services are the next stage.'},
+  arbitrage: {src:'/projects/arbitrage-workflow.svg', alt:'Currency exchange rates become graph edges; Bellman–Ford finds negative cycles for the React dashboard.', caption:'Exchange rates become a graph problem. All trading is simulated.'},
+  screening: {src:'/projects/screening-workflow.svg', alt:'PDF and DOCX resumes are parsed, deduplicated, extracted into structured data, stored in SQLite and exported to Excel.', caption:'The implemented resume pipeline, from document to candidate record.'}
+};
+function Projects(){
+  return <>
+    <Heading title="Projects">My projects in finance, algorithms and AI, with links to the code.</Heading>
+    <div className="projects-list">{projects.map(project=>{
+      const visual=projectVisuals[project.graphic];
+      return <article className="project-entry" key={project.id}>
+        <div className="project-copy">
+          <p className="eyebrow">{project.number} / {project.category}</p><h2>{project.title}</h2><p>{project.summary}</p>
+          <Tags items={project.tags}/>
+          <div className="paper-links">{project.links.map(([label,href])=><External key={label} href={href}>{label}</External>)}</div>
+          <Expand label="Inside the project"><p>{project.detail}</p><p>{project.note}</p></Expand>
+        </div>
+        <figure className="project-visual">
+          <a href={visual.src} target="_blank" rel="noreferrer" aria-label={'Open workflow diagram for '+project.title}>
+            <img src={visual.src} alt={visual.alt} width="640" height="400" loading="lazy"/>
+          </a>
+          <figcaption>{visual.caption}</figcaption>
+        </figure>
+      </article>
+    })}</div>
+    <a className="github-end" href={github} target="_blank" rel="noreferrer"><span>More code and experiments<span>github.com/drunkprada</span></span></a>
+  </>
+}
+const communities = [
+  {
+    name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
+    context:'A student chapter for computing projects, workshops and technical competitions.',
+    points:[
+      'Helped develop a C++ game portal with the technical team.',
+      'Contributed technical ideas for student events and worked with the team to turn them into plans.',
+      'Supported event organisation alongside the chapter’s development work.'
+    ]
+  },
+  {
+    name:'CodeChef, VIT', href:'https://www.codechefvit.com/',
+    context:'A student-run coding community behind development workshops and the DevSOC hackathon.',
+    points:[
+      'Contributed to MERN-stack portals and webpages for the chapter.',
+      'Worked with the team on platform features and coordinated competitive programming events.',
+      'Working towards hackathon judging across development and AI domains.'
+    ]
+  }
+];
+function Experience(){
+  return <>
+    <Heading title="Experience">Internships, research work and student societies.</Heading>
+    <div className="experience-list">{roles.map((role,i)=>
+      <article className="role-entry" key={role.name}>
+        <aside><span className="role-year">{role.date}</span><span>{role.location}</span><span className="row-number">0{i+1}</span></aside>
+        <div><p className="eyebrow">{role.role}</p><h2>{role.name}</h2><p className="role-intro">{role.intro}</p>
+          <ul>{role.body.map(line=><li key={line}>{line}</li>)}</ul><Tags items={role.tags}/>
+        </div>
+      </article>
+    )}</div>
+    <section className="community-section">
+      <SectionHead title="Student communities"/>
+      <div className="community-grid">{communities.map(community=>
+        <article key={community.name}>
+          <span className="eyebrow">Senior Core Member</span>
+          <h3><a href={community.href} target="_blank" rel="noreferrer">{community.name}</a></h3>
+          <p className="community-context">{community.context}</p>
+          <ul>{community.points.map(point=><li key={point}>{point}</li>)}</ul>
+        </article>
+      )}</div>
+    </section>
+    <section className="awards-section"><SectionHead title="Hackathons & achievements"/><Achievements/></section>
+  </>
+}
 const noteNames=['C','D','E','F','G','A','B','C'];
 function Piano(){const audio=useRef(null);const [active,setActive]=useState(null);const timer=useRef(null);useEffect(()=>()=>{clearTimeout(timer.current);audio.current?.close()},[]);async function play(index){try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;const ctx=audio.current||(audio.current=new Audio());await ctx.resume();const osc=ctx.createOscillator(),gain=ctx.createGain();const offsets=[0,2,4,5,7,9,11,12];osc.type='triangle';osc.frequency.value=261.63*2**(offsets[index]/12);gain.gain.setValueAtTime(0,ctx.currentTime);gain.gain.linearRampToValueAtTime(.13,ctx.currentTime+.012);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1);osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+1);setActive(index);clearTimeout(timer.current);timer.current=setTimeout(()=>setActive(null),220)}catch{setActive(null)}}return <div className="piano-wrap"><div className="piano" aria-label="Small playable piano">{noteNames.map((note,i)=><button key={i} className={active===i?'playing':''} aria-label={`Play ${note}${i===7?'5':'4'}`} onClick={()=>play(i)}><span>{note}</span>{![2,6,7].includes(i)&&<i aria-hidden="true"/>}</button>)}</div><p>Go on, play a few notes.</p></div>}
 function About(){return <><Heading label="ABOUT" title="About me">I’m studying in Edinburgh now, after two years at VIT. Here’s a bit about what I do outside my projects and research.</Heading><section className="about-story"><Reveal><h2>Education</h2><p>I spent two years studying Computer Science and Engineering, specialising in AI & ML, at VIT. I’m now in my third year of Electronics & Computer Science at the University of Edinburgh.</p><p>Most of my experience has been in software and research. I’m now learning about circuits and PCB design alongside my degree.</p></Reveal><Reveal className="education-panel" delay={.1}><article><span>2026 – 2028 · Expected</span><h3>University of Edinburgh</h3><p>BEng Electronics & Computer Science<br/>Year 3 transfer</p></article><article><span>Transferred in 2026</span><h3>Vellore Institute of Technology</h3><p>Computer Science & Engineering (AI & ML)<br/>Completed Year 2 · CGPA 8.75/10</p></article></Reveal></section><section className="music-section"><Reveal><h2>Music</h2><p>I’ve been singing all my life. I’ve performed at shows across different genres, and I also play piano.</p></Reveal><Reveal delay={.12}><Piano/></Reveal></section><Reveal className="reading-note"><div><p className="reading-caption">Currently reading about</p><h2>Greek mythology</h2><p>I’ve been reading about Greek mythology lately. I like having something new to learn outside my course.</p></div></Reveal><section className="toolkit"><SectionHead label="PRACTICAL SIDE" title="Skills"/><div className="toolkit-grid"><div><h3>Languages</h3><Tags items={["Python","Java","C/C++","JavaScript","SQL"]}/></div><div><h3>Software & data</h3><Tags items={["FastAPI","React","PostgreSQL","NumPy","TensorFlow","n8n"]}/></div><div><h3>Systems & hardware</h3><Tags items={["Linux","Git","Verilog coursework","Altium Designer"]}/></div></div></section></>}
 function currentPage(){const raw=location.hash.slice(1).split('/')[0];if(raw==='work')return 'projects';return sections.some(s=>s.id===raw)?raw:'home'}
 const pageComponents={home:Home,research:Research,projects:Projects,experience:Experience,about:About};
-function Navigation({page}){return <nav className="site-nav" aria-label="Main navigation">{sections.map(({id,label})=><a className={id==='home'?'mobile-home':undefined} key={id} href={'#'+id} aria-current={page===id?'page':undefined}>{label}</a>)}</nav>}
-function App(){const [page,setPage]=useState(currentPage);const [dark,setDark]=useState(()=>{try{return localStorage.getItem('portfolio-theme-v2')!=='light'}catch{return true}});const main=useRef(null);const first=useRef(true);const reduce=useReducedMotion();useEffect(()=>{const handler=()=>setPage(currentPage());window.addEventListener('hashchange',handler);return()=>window.removeEventListener('hashchange',handler)},[]);useEffect(()=>{document.title=page==='home'?'Sahana Naganandh':`${sections.find(s=>s.id===page).label} · Sahana Naganandh`;if(first.current){first.current=false;return}window.scrollTo({top:0,behavior:'instant'});main.current?.focus({preventScroll:true})},[page]);useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a0a0a':'#ffffff');try{localStorage.setItem('portfolio-theme-v2',dark?'dark':'light')}catch{}},[dark]);const Page=pageComponents[page];return <><a className="skip" href="#main" onClick={event=>{event.preventDefault();main.current?.focus()}}>Skip to content</a><header className="site-header"><a className="wordmark" href="#home"><span>Sahana Naganandh</span></a><Navigation page={page}/><div className="header-right"><span className="location-label">Edinburgh, UK</span><a href={github} className="header-github" aria-label="GitHub profile" target="_blank" rel="noreferrer">GitHub</a><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} onClick={()=>setDark(!dark)}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button></div></header><main id="main" tabIndex={-1} ref={main}><div key={page}><Page/></div></main>{page!=='home'&&<footer><div><a href="#home">Sahana Naganandh</a></div><External href={github}>Find me on GitHub</External><button className="icon-button" aria-label="Back to top" onClick={()=>window.scrollTo({top:0,behavior:reduce?'instant':'smooth'})}><ArrowUp size={18}/></button></footer>}</>}
+function Navigation({page}){return <nav className="site-nav" aria-label="Main navigation">{sections.map(({id,label})=><a key={id} href={'#'+id} aria-current={page===id?'page':undefined}>{label}</a>)}</nav>}
+function App(){const [page,setPage]=useState(currentPage);const [dark,setDark]=useState(()=>{try{return localStorage.getItem('portfolio-theme-v2')!=='light'}catch{return true}});const main=useRef(null);const first=useRef(true);const reduce=useReducedMotion();useEffect(()=>{const handler=()=>setPage(currentPage());window.addEventListener('hashchange',handler);return()=>window.removeEventListener('hashchange',handler)},[]);useEffect(()=>{document.title=page==='home'?'Sahana Naganandh':`${sections.find(s=>s.id===page).label} · Sahana Naganandh`;if(first.current){first.current=false;return}window.scrollTo({top:0,behavior:'instant'});main.current?.focus({preventScroll:true})},[page]);useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a0a0a':'#ffffff');try{localStorage.setItem('portfolio-theme-v2',dark?'dark':'light')}catch{}},[dark]);const Page=pageComponents[page];return <><a className="skip" href="#main" onClick={event=>{event.preventDefault();main.current?.focus()}}>Skip to content</a><header className="site-header"><a className="wordmark" href="#home"><img src="/mark.svg" width="32" height="32" alt=""/><span>Sahana Naganandh</span></a><div className="header-right"><span className="location-label">Edinburgh, UK</span><a href={github} className="header-github" aria-label="GitHub profile" target="_blank" rel="noreferrer">GitHub</a><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} onClick={()=>setDark(!dark)}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button></div></header><main className={page==='home'?'home-page':undefined} id="main" tabIndex={-1} ref={main}>{page!=='home'&&<Navigation page={page}/>}<div key={page}><Page/></div>{page==='home'&&<Navigation page={page}/>}</main>{page!=='home'&&<footer><div><a href="#home">Sahana Naganandh</a></div><External href={github}>Find me on GitHub</External><button className="icon-button" aria-label="Back to top" onClick={()=>window.scrollTo({top:0,behavior:reduce?'instant':'smooth'})}><ArrowUp size={18}/></button></footer>}</>}
 createRoot(document.getElementById('root')).render(<MotionConfig reducedMotion="user"><App/></MotionConfig>);

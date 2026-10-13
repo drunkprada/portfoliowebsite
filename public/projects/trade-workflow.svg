@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-labelledby="title desc">
+  <title id="title">Portfolio order workflow</title>
+  <desc id="desc">A buy or sell order is validated, executed through the portfolio domain model, and updates cash, holdings and realised profit and loss.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5" fill="#376657"/></marker></defs>
+  <rect width="640" height="400" fill="#f3f2ed"/>
+  <g font-family="monospace" fill="#626262" font-size="14"><text x="32" y="40">01 / PORTFOLIO DOMAIN</text><text x="32" y="374">JAVA · ORDERS · HOLDINGS</text></g>
+  <g fill="none" stroke="#376657" stroke-width="2" marker-end="url(#arrow)"><path d="M210 118h46"/><path d="M456 118h44v142h-44"/><path d="M256 294h-46"/></g>
+  <g stroke="#bcbfb8" fill="#fff"><rect x="32" y="78" width="178" height="80" rx="6"/><rect x="256" y="78" width="200" height="80" rx="6"/><rect x="256" y="250" width="200" height="90" rx="6"/><rect x="32" y="250" width="178" height="90" rx="6"/></g>
+  <g font-family="Arial, sans-serif" fill="#202020" font-size="20"><text x="54" y="113">Buy / sell order</text><text x="278" y="113">Validate order</text><text x="278" y="282">Execute trade</text><text x="54" y="282">Portfolio state</text></g>
+  <g font-family="Arial, sans-serif" fill="#626262" font-size="15"><text x="54" y="140">ticker · quantity · side</text><text x="278" y="140">price · cash · holdings</text><text x="278" y="309">buy() or sell()</text><text x="54" y="309">cash · shares · P&amp;L</text><text x="260" y="206">One order, one state change.</text></g>
+</svg>
