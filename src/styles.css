@@ -29,7 +29,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body { margin: 0; }
+body { margin: 0; padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.25; letter-spacing: normal; }
 h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
@@ -47,14 +47,14 @@ main, footer, .site-header { width: min(1020px, calc(100% - 96px)); margin-inlin
 main { min-height: 65vh; }
 main:focus { outline: none; }
 
-/* A quiet utility header, with a prominent navigation row below. */
+/* A quiet utility header and a persistent bottom navigation dock. */
 .site-header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
 .wordmark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 1.25rem; text-decoration: none; white-space: nowrap; }
 .wordmark img { flex-shrink: 0; transform: rotate(-6deg); }
-.site-nav { display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: center; margin-top: 24px; border-bottom: 1px solid var(--line); }
-.site-nav a { color: var(--muted); font-size: 1.125rem; font-weight: 550; text-decoration: none; padding: 14px 0; border-bottom: 3px solid transparent; margin-bottom: -1px; }
-.site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--accent); border-bottom-color: var(--accent); }
-.home-page .site-nav { max-width: 760px; margin: 0 auto 72px; }
+.site-nav { position: fixed; z-index: 20; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 4px; width: min(640px,calc(100% - 24px)); padding: 6px; border: 1px solid var(--line); border-radius: 22px; background: var(--bg); box-shadow: 0 8px 28px #00000020; }
+.site-nav a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; min-height: 64px; padding: 8px 4px; color: var(--muted); font-size: .875rem; font-weight: 550; text-decoration: none; border-radius: 16px; }
+.site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--accent); background: color-mix(in srgb,var(--accent) 12%,var(--bg)); }
+.site-nav a:focus-visible { outline-offset: -3px; }
 .header-right { margin-left: auto; display: flex; align-items: center; gap: 18px; }
 .location-label { font-family: var(--mono); font-size: .7rem; color: var(--muted); }
 .header-github { font-size: .8rem; }
@@ -167,9 +167,8 @@ footer>div>a { font-family: var(--serif); font-size: 1.1rem; }
   main, footer, .site-header { width: calc(100% - 40px); }
   .site-header { padding: 18px 0; gap: 10px; }
   .wordmark { font-size: 1.1rem; }
-  .site-nav { gap: 4px 20px; margin-top: 18px; }
-  .site-nav a { font-size: 1rem; padding: 12px 0; }
-  .home-page .site-nav { margin-bottom: 44px; }
+  .site-nav { grid-template-columns: .85fr 1fr 1fr 1.25fr .9fr; gap: 2px; padding: 4px; border-radius: 20px; }
+  .site-nav a { min-height: 60px; padding: 8px 2px; font-size: clamp(.625rem,2.9vw,.75rem); border-radius: 14px; }
   .header-github { font-size: .75rem; }
   .home-intro { padding: 32px 0 22px; }
   .page-heading { padding: 28px 0 24px; }
