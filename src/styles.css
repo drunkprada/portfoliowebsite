@@ -29,6 +29,8 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+/* Keep keyboard focus outlines clear of the top edge and fixed bottom dock. */
+html { scroll-padding-block: 8px calc(112px + env(safe-area-inset-bottom)); }
 body { margin: 0; padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.25; letter-spacing: normal; }

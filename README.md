@@ -11,6 +11,19 @@ npm run dev
 
 `npm run build` produces `dist/`.
 
+## Browser tests
+
+```sh
+npx playwright install chromium
+npm run test:e2e
+```
+
+The tests build and serve the production site locally. They check forward and
+backward keyboard navigation on all five pages at phone, landscape, tablet and
+desktop sizes, including expanded details. Focus must remain visible above the
+bottom dock, with room for its outline at the top edge. They also check keyboard
+route changes and detail toggles. External requests are blocked during tests.
+
 ## Content
 
 Research, projects, work experience and achievements are in `src/data.js`. The five hash-based pages live in `src/main.jsx`; visual styling lives in `src/styles.css`.
