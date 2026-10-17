@@ -137,5 +137,50 @@ function Navigation({page}){
     return <a key={id} href={'#'+id} aria-current={page===id?'page':undefined}><Icon size={22} aria-hidden="true"/><span>{label}</span></a>
   })}</nav>
 }
-function App(){const [page,setPage]=useState(currentPage);const [dark,setDark]=useState(()=>{try{return localStorage.getItem('portfolio-theme-v2')!=='light'}catch{return true}});const main=useRef(null);const first=useRef(true);const reduce=useReducedMotion();useEffect(()=>{const handler=()=>setPage(currentPage());window.addEventListener('hashchange',handler);return()=>window.removeEventListener('hashchange',handler)},[]);useEffect(()=>{document.title=page==='home'?'Sahana Naganandh':`${sections.find(s=>s.id===page).label} · Sahana Naganandh`;if(first.current){first.current=false;return}window.scrollTo({top:0,behavior:'instant'});main.current?.focus({preventScroll:true})},[page]);useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a0a0a':'#ffffff');try{localStorage.setItem('portfolio-theme-v2',dark?'dark':'light')}catch{}},[dark]);const Page=pageComponents[page];return <><a className="skip" href="#main" onClick={event=>{event.preventDefault();main.current?.focus()}}>Skip to content</a><header className="site-header"><a className="wordmark" href="#home"><img src="/mark.svg" width="32" height="32" alt=""/><span>Sahana Naganandh</span></a><div className="header-right"><span className="location-label">Edinburgh, UK</span><a href={github} className="header-github" aria-label="GitHub profile" target="_blank" rel="noreferrer">GitHub</a><button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} onClick={()=>setDark(!dark)}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button></div></header><main className={page==='home'?'home-page':undefined} id="main" tabIndex={-1} ref={main}><div key={page}><Page/></div></main><Navigation page={page}/>{page!=='home'&&<footer><div><a href="#home">Sahana Naganandh</a></div><External href={github}>Find me on GitHub</External><button className="icon-button" aria-label="Back to top" onClick={()=>window.scrollTo({top:0,behavior:reduce?'instant':'smooth'})}><ArrowUp size={18}/></button></footer>}</>}
+function returnToTop(content,behavior='instant'){
+  // Move the keyboard starting point too, without an extra focus-induced jump.
+  content?.focus({preventScroll:true});
+  window.scrollTo({top:0,behavior});
+}
+function App(){
+  const [page,setPage]=useState(currentPage);
+  const [dark,setDark]=useState(()=>{try{return localStorage.getItem('portfolio-theme-v2')!=='light'}catch{return true}});
+  const main=useRef(null);
+  const first=useRef(true);
+  const reduce=useReducedMotion();
+  useEffect(()=>{
+    const handler=()=>setPage(currentPage());
+    window.addEventListener('hashchange',handler);
+    return()=>window.removeEventListener('hashchange',handler);
+  },[]);
+  useEffect(()=>{
+    document.title=page==='home'?'Sahana Naganandh':`${sections.find(s=>s.id===page).label} · Sahana Naganandh`;
+    if(first.current){first.current=false;return}
+    returnToTop(main.current);
+  },[page]);
+  useEffect(()=>{
+    document.documentElement.dataset.theme=dark?'dark':'light';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a0a0a':'#ffffff');
+    try{localStorage.setItem('portfolio-theme-v2',dark?'dark':'light')}catch{}
+  },[dark]);
+  const Page=pageComponents[page];
+  return <>
+    <a className="skip" href="#main" onClick={event=>{event.preventDefault();main.current?.focus()}}>Skip to content</a>
+    <header className="site-header">
+      <a className="wordmark" href="#home"><img src="/mark.svg" width="32" height="32" alt=""/><span>Sahana Naganandh</span></a>
+      <div className="header-right">
+        <span className="location-label">Edinburgh, UK</span>
+        <a href={github} className="header-github" aria-label="GitHub profile" target="_blank" rel="noreferrer">GitHub</a>
+        <button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} onClick={()=>setDark(!dark)}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button>
+      </div>
+    </header>
+    <main className={page==='home'?'home-page':undefined} id="main" tabIndex={-1} ref={main}><div key={page}><Page/></div></main>
+    <Navigation page={page}/>
+    {page!=='home'&&<footer>
+      <div><a href="#home">Sahana Naganandh</a></div>
+      <External href={github}>Find me on GitHub</External>
+      <button className="icon-button" aria-label="Back to top" onClick={()=>returnToTop(main.current,reduce?'instant':'smooth')}><ArrowUp size={18}/></button>
+    </footer>}
+  </>;
+}
 createRoot(document.getElementById('root')).render(<MotionConfig reducedMotion="user"><App/></MotionConfig>);

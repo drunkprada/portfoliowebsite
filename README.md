@@ -23,6 +23,10 @@ backward keyboard navigation on all five pages at phone, landscape, tablet and
 desktop sizes, including expanded details. Focus must remain visible above the
 bottom dock, with room for its outline at the top edge. They also check keyboard
 route changes and detail toggles. External requests are blocked during tests.
+Back-to-top checks cover keyboard and pointer activation, phone and desktop
+layouts, and normal/reduced motion. Returning to the top also restores focus
+to the content, so the next Tab continues there without resetting the current
+page, expanded details or theme.
 
 ## Content
 
