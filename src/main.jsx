@@ -1,13 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {github, papers, projects, achievements, roles, communities} from './data';
+import {github, papers, projects, achievements, roles, communities, education, skillGroups, resume} from './data';
 import './styles.css';
 
-// Add your email / LinkedIn here and they'll appear in the nav and footer.
-const email = '';
-const linkedin = '';
+const email = 'sahananaganandh@gmail.com';
+const linkedin = 'https://www.linkedin.com/in/sahana-naganandh';
 
 const tabs = [
+  {id: 'home', label: 'Home'},
   {id: 'research', label: 'Research'},
   {id: 'projects', label: 'Projects'},
   {id: 'experience', label: 'Experience'},
@@ -27,10 +27,6 @@ function Nav({page, dark, setDark}) {
   const contact = email ? 'mailto:' + email : github;
   return <div className={'navwrap' + (scrolled ? ' is-floating' : '')}>
     <header className="nav">
-      <a className="brand" href="#home" aria-label="Sahana Naganandh, home">
-        <span className="brand__mark" aria-hidden="true">SN</span>
-        <span className="brand__name">Sahana Naganandh</span>
-      </a>
       <nav className="nav__links" aria-label="Main">
         {tabs.map(t => <a key={t.id} href={'#' + t.id} className={page === t.id ? 'is-active' : undefined}
           aria-current={page === t.id ? 'page' : undefined}>{t.label}</a>)}
@@ -52,6 +48,7 @@ function Footer() {
     <div className="footer__links">
       {email && <a href={'mailto:' + email}>Email</a>}
       {linkedin && <External href={linkedin}>LinkedIn</External>}
+      <External href={resume}>Resume</External>
       <External href={github}>GitHub</External>
     </div>
   </footer>;
@@ -65,25 +62,102 @@ function useClock() {
   return t;
 }
 
+function Reveal({as: Tag = 'div', className = '', children, ...rest}) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || matchMedia('(prefers-reduced-motion: reduce)').matches || typeof IntersectionObserver !== 'function') return;
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        node.classList.add('is-revealed');
+        observer.disconnect();
+      }
+    }, {threshold: .08});
+    node.classList.add('will-reveal');
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  return <Tag ref={ref} className={'reveal ' + className} {...rest}>{children}</Tag>;
+}
+
+function Skills() {
+  // Interleave categories so the colours form a mixed, readable bubble cloud.
+  const skills = Array.from({length: Math.max(...skillGroups.map(group => group.items.length))}, (_, index) =>
+    skillGroups.flatMap(group => group.items[index] ? [{name: group.items[index], tone: group.tone, group: group.label}] : [])
+  ).flat();
+  return <Reveal as="section" className="card skills-panel" aria-labelledby="skills-heading">
+    <div className="skills-panel__head"><span className="label">My toolbox</span><h2 id="skills-heading">Skills</h2></div>
+    <ul className="skill-cloud" aria-label="Skills and current learning">
+      {skills.map((skill, index) => <li key={skill.name} className={'skill-bubble tone-' + skill.tone}
+        style={{'--tilt': (index % 3 - 1) * 2 + 'deg'}} aria-label={skill.name + ' · ' + skill.group}>{skill.name}</li>)}
+    </ul>
+    <p className="skills-note">Currently learning Verilog, embedded C and PCB design alongside my degree.</p>
+  </Reveal>;
+}
+
+function Hackathons() {
+  const heading = React.useId();
+  return <section className="hackathons" aria-labelledby={heading}>
+    <Reveal className="home-sectionhead"><span className="label">Building with a team</span><h2 id={heading}>Hackathons</h2></Reveal>
+    <div className="hackathon-grid">
+      {achievements.map((achievement, index) => <Reveal as="article" className="card hackathon" key={achievement.title}>
+        <span className={'award-result tone-' + ['lemon', 'rose', 'lilac'][index]}>{achievement.result}</span>
+        <h3>{achievement.title}</h3>
+        <p>{achievement.description}</p>
+      </Reveal>)}
+    </div>
+  </section>;
+}
+
 function Home() {
   const time = useClock();
-  return <section className="intro">
-    <p className="intro__eyebrow"><span className="live" aria-hidden="true"/>Edinburgh · {time}</p>
-    <h1 className="intro__name">Sahana<br/>Naganandh</h1>
-    <div className="intro__row">
-      <p className="intro__lede">I build backend systems and work on AI research. Electronics &amp; Computer Science at the University of Edinburgh, previously an AI Intern at Dell in Dubai.</p>
-      <div className="intro__cta">
-        <a className="btn" href="#research">Read my research</a>
-        <a className="btn btn--ghost" href="#projects">See projects</a>
+  return <div className="home">
+    <section className="intro">
+      <Reveal className="intro__copy">
+        <p className="intro__eyebrow"><span className="live" aria-hidden="true"/>Edinburgh · {time}</p>
+        <h1 className="intro__name">Hi, I’m Sahana.</h1>
+        <p className="intro__lede">I’m a third-year Electronics &amp; Computer Science student at the University of Edinburgh, with a background in backend development and AI research.</p>
+        <p className="intro__bio">Previously at Dell in Dubai, building backend services and AI recruitment tools. Before Edinburgh, I studied Computer Science at VIT.</p>
+        <div className="intro__cta">
+          <External className="btn" href={resume}>View my resume <span aria-hidden="true">↗</span></External>
+          <a className="btn btn--ghost" href={'mailto:' + email}>Contact me</a>
+        </div>
+        <div className="intro__links"><a href="#research">Read my research ↗</a><a href="#projects">See projects ↗</a></div>
+      </Reveal>
+      <Skills/>
+    </section>
+
+    <section className="home-resume" aria-labelledby="overview-heading">
+      <Reveal className="home-sectionhead"><span className="label">A little about me</span><h2 id="overview-heading">At a glance</h2></Reveal>
+      <div className="resume-grid">
+        <Reveal as="article" className="card resume-panel">
+          <h3>Education</h3>
+          {education.map(item => <div className="resume-entry" key={item.name}>
+            <h4>{item.name}</h4><p>{item.qualification}</p><p className="muted">{item.detail}</p><span className="resume-date">{item.date}</span>
+          </div>)}
+        </Reveal>
+        <Reveal as="article" className="card resume-panel">
+          <h3>Experience</h3>
+          {roles.map(role => <div className="resume-entry" key={role.name}>
+            <h4>{role.role}</h4><p>{role.name}</p><span className="resume-date">{role.date}</span>
+          </div>)}
+          <a className="text-link" href="#experience">More about my experience ↗</a>
+        </Reveal>
+        <Reveal as="article" className="card resume-panel">
+          <h3>Societies</h3>
+          {communities.map(community => <div className="resume-entry" key={community.name}>
+            <h4>{community.name}</h4><p>Senior Core Member · {community.duration}</p><p className="muted">Frontend development, organising events{community.name.startsWith('CodeChef') ? ' and hackathon judging.' : ' and sponsorship support.'}</p>
+          </div>)}
+        </Reveal>
       </div>
-    </div>
-    <dl className="intro__facts">
-      <div><dt>Now</dt><dd>Year 3, Electronics &amp; CS</dd></div>
-      <div><dt>Before</dt><dd>AI Intern, Dell Technologies</dd></div>
-      <div><dt>Research</dt><dd>AI inference &amp; data privacy</dd></div>
-      <div><dt>Lately</dt><dd>Learning PCB design</dd></div>
-    </dl>
-  </section>;
+    </section>
+
+    <Hackathons/>
+    <Reveal as="section" className="contact-strip" aria-labelledby="contact-heading">
+      <div><h2 id="contact-heading">Get in touch</h2><p>For opportunities, collaborations or a conversation.</p></div>
+      <a className="text-link" href={'mailto:' + email}>{email} ↗</a>
+    </Reveal>
+  </div>;
 }
 
 /* ---------------- Shared bits ---------------- */
@@ -168,19 +242,17 @@ function Projects() {
   return <section className="page">
     <PageHead eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows, with links to the code."/>
     <div className="project-list">
-      {projects.map(p => <article className="card proj" key={p.id}>
+      {projects.map(p => <Reveal as="article" className="card proj" key={p.id}>
         <div className="proj__body">
           <div className="proj__top"><h2>{p.title}</h2><span className="muted">{p.tags.slice(0, 2).join(' · ')}</span></div>
           <p>{p.summary}</p>
+          <p className="proj__context">{p.context}</p>
           <div className="proj__links">{p.links.map(([l, h]) => <External key={l} href={h}>{l} ↗</External>)}</div>
           <Details label="How it works"><p>{p.detail}</p><p>{p.note}</p></Details>
         </div>
-      </article>)}
+      </Reveal>)}
     </div>
-    <aside className="card awards">
-      <span className="label label--light">Hackathons</span>
-      <ul>{achievements.map(a => <li key={a.title}><b>{a.result}</b><span>{a.title}</span></li>)}</ul>
-    </aside>
+    <Hackathons/>
     <External className="card more" href={github}>
       <span className="label">More on GitHub</span>
       <b>github.com/drunkprada ↗</b>
@@ -194,7 +266,7 @@ function Experience() {
   return <section className="page">
     <PageHead eyebrow="Experience" title="Where I’ve worked" lede="Internships, research work and student societies."/>
     <div className="experience-list">
-      {roles.map(role => <article className="experience-entry" key={role.name}>
+      {roles.map(role => <Reveal as="article" className="experience-entry" key={role.name}>
         <div className="experience-entry__meta"><span>{role.date}</span><span>{role.location}</span></div>
         <div className="experience-entry__body">
           <p className="label">{role.role}</p>
@@ -203,17 +275,17 @@ function Experience() {
           <ul>{role.body.map(line => <li key={line}>{line}</li>)}</ul>
           <p className="muted">{role.tags.join(' · ')}</p>
         </div>
-      </article>)}
+      </Reveal>)}
     </div>
     <section className="communities" aria-labelledby="communities-title">
       <h2 id="communities-title">Student societies</h2>
       <div className="community-list">
-        {communities.map(community => <article className="card community" key={community.name}>
+        {communities.map(community => <Reveal as="article" className="card community" key={community.name}>
           <div className="community__meta"><span className="label">{community.role}</span><span className="muted">{community.duration}</span></div>
           <h3><External href={community.href}>{community.name} ↗</External></h3>
           <p>{community.context}</p>
           <ul>{community.points.map(point => <li key={point}>{point}</li>)}</ul>
-        </article>)}
+        </Reveal>)}
       </div>
     </section>
   </section>;

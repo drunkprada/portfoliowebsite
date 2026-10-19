@@ -99,7 +99,7 @@ for (const reducedMotion of ['reduce', 'no-preference']) {
   });
 }
 
-test('brand, browser history and unknown hashes resolve safely', async ({page}) => {
+test('Home, browser history and unknown hashes resolve safely', async ({page}) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/#home');
@@ -111,15 +111,15 @@ test('brand, browser history and unknown hashes resolve safely', async ({page}) 
   await expect(page.locator('main h1')).toHaveText('Papers');
   await page.goForward();
   await expect(page.locator('main h1')).toHaveText('Things I’ve built');
-  await page.getByRole('link', {name: 'Sahana Naganandh, home'}).click();
+  await page.getByRole('navigation', {name: 'Main'}).getByRole('link', {name: 'Home', exact: true}).click();
   await expect(page).toHaveTitle('Sahana Naganandh');
   for (const hash of ['unknown', '__proto__', 'constructor']) {
     await page.goto('/#' + hash);
-    await expect(page.locator('main h1')).toHaveText('SahanaNaganandh');
+    await expect(page.locator('main h1')).toHaveText('Hi, I’m Sahana.');
     await expect(page).toHaveTitle('Sahana Naganandh');
   }
   await page.reload();
-  await expect(page.locator('main h1')).toHaveText('SahanaNaganandh');
+  await expect(page.locator('main h1')).toHaveText('Hi, I’m Sahana.');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', {name: 'Skip to content'})).toBeFocused();
   await page.keyboard.press('Enter');
@@ -170,7 +170,7 @@ test('Experience navigation restores work and society contributions', async ({pa
   await expect(page).toHaveTitle('Experience · Sahana Naganandh');
   await expect(page.locator('.nav__links [aria-current="page"]')).toHaveText('Experience');
   await expect(page.locator('.experience-entry h2')).toHaveText([
-    'Dell Technologies', 'Legal Horizons', 'Manipal Institute of Higher Education',
+    'Dell Technologies', 'Nectar Building Technologies Inc.', 'Legal Horizons', 'Manipal Institute of Higher Education',
   ]);
   await expect(page.locator('.community-list')).toContainText('C++ game portal');
   await expect(page.locator('.community-list')).toContainText('MERN-stack website');

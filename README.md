@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal portfolio site for Sahana Naganandh: an intro page plus Research, Projects and Experience pages.
+Personal portfolio site for Sahana Naganandh: a mini-résumé homepage plus Research, Projects and Experience pages.
 
 Built with React and Vite. Deployed on Vercel from `main`.
 
@@ -27,8 +27,8 @@ Before running the tests for the first time, install the browser with `npx playw
 ## Project structure
 
 ```
-public/          Static assets (logo mark, paper screenshots, manuscript PDF)
-src/data.js      Content: papers, projects, achievements, experience and societies
+public/          Static assets (logo mark, paper screenshots, manuscript PDF and résumé)
+src/data.js      Content: papers, projects, achievements, experience, societies, education and skills
 src/main.jsx     Pages and components (hash routes: #home, #research, #projects, #experience)
 src/styles.css   All styling, including light and dark themes
 tests/           Playwright layout, navigation, theme and asset checks
@@ -58,3 +58,18 @@ the local paper screenshots and manuscript PDF. External requests are blocked.
 The OS paper PDF is a conversion of the author's supplied ICNDA-formatted manuscript,
 not a publisher-issued version. Paper summaries retain the study's limitations;
 paper previews are actual first-page renders of the supplied manuscript and linked publication. Project cards use text and code links without image previews.
+
+## Resume and home page
+
+The **View my resume** button opens `public/resume/sahana-naganandh-resume.pdf`
+in a new tab. This is the original uploaded PDF, copied without alterations.
+Replace that asset when publishing a new résumé and update the asset check's
+checksum to match the new file.
+
+The home page shows skill bubbles, education, work, society leadership and
+hackathon outcomes. Detailed research and project content stays in its own tab.
+The reference and original design choices are recorded in `DESIGN.md`.
+
+Section reveals use IntersectionObserver with visible content as the fallback.
+Keyboard-focused content stays visible immediately. Reduced-motion preferences
+turn off reveals, live-dot animation and skill hover movement.
