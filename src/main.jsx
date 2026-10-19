@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {github, papers, projects, achievements} from './data';
+import {github, papers, projects, achievements, roles, communities} from './data';
 import './styles.css';
 
 // Add your email / LinkedIn here and they'll appear in the nav and footer.
@@ -10,6 +10,7 @@ const linkedin = '';
 const tabs = [
   {id: 'research', label: 'Research'},
   {id: 'projects', label: 'Projects'},
+  {id: 'experience', label: 'Experience'},
 ];
 
 const External = ({href, className = '', children, ...rest}) =>
@@ -86,15 +87,10 @@ function Home() {
 }
 
 /* ---------------- Shared bits ---------------- */
-function PaperSheet({paper, big}) {
-  return <span className={'sheet' + (big ? ' sheet--big' : '')} aria-hidden="true">
-    <span className="sheet__page">
-      <span className="sheet__venue">{paper.status.split('·')[1]?.trim()}</span>
-      <span className="sheet__title">{paper.title}</span>
-      <span className="sheet__authors">{paper.authors}</span>
-      <span className="sheet__lines">{Array.from({length: big ? 9 : 5}, (_, i) => <i key={i}/>)}</span>
-    </span>
-  </span>;
+function PaperPreview({paper}) {
+  return <External className="paper-preview" href={paper.links[0][1]} aria-label={'Read ' + paper.title}>
+    <img src={paper.preview} alt={'First page of ' + paper.title} width="778" height="1100" loading="lazy"/>
+  </External>;
 }
 
 function PageHead({eyebrow, title, lede}) {
@@ -123,7 +119,7 @@ function Research() {
     <PageHead eyebrow="Research" title="Papers" lede="How operating-system settings change AI inference, and how to keep training data useful without exposing people."/>
 
     <article className="card feature">
-      <div className="feature__media"><PaperSheet paper={lead} big/></div>
+      <div className="feature__media"><PaperPreview paper={lead}/></div>
       <div className="feature__body">
         <span className="tag tag--win">{lead.status} · {lead.contribution}</span>
         <h2>{lead.shortTitle}</h2>
@@ -147,7 +143,7 @@ function Research() {
 
     {rest.map(p => <React.Fragment key={p.id}>
       <article className="card paperrow">
-        <div className="paperrow__media"><PaperSheet paper={p}/></div>
+        <div className="paperrow__media"><PaperPreview paper={p}/></div>
         <div className="paperrow__body">
           <span className="tag tag--dark">{p.status} · {p.contribution}</span>
           <h2>{p.title}</h2>
@@ -168,41 +164,63 @@ function Research() {
 }
 
 /* ---------------- Projects ---------------- */
-const thumbs = {trade: '/projects/trade-workflow.svg', arbitrage: '/projects/arbitrage-workflow.svg', screening: '/projects/screening-workflow.svg'};
-const sizes = ['wide', 'half', 'half'];
-
 function Projects() {
   return <section className="page">
-    <PageHead eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows. Each card opens the code."/>
-    <div className="grid">
-      {projects.map((p, i) => <React.Fragment key={p.id}><article className={'card proj proj--' + sizes[i]}>
-        <External className="proj__thumb" href={p.links[0][1]} aria-label={p.title + ' on GitHub'}>
-          <img src={thumbs[p.graphic]} alt="" loading="lazy"/>
-        </External>
+    <PageHead eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows, with links to the code."/>
+    <div className="project-list">
+      {projects.map(p => <article className="card proj" key={p.id}>
         <div className="proj__body">
           <div className="proj__top"><h2>{p.title}</h2><span className="muted">{p.tags.slice(0, 2).join(' · ')}</span></div>
           <p>{p.summary}</p>
           <div className="proj__links">{p.links.map(([l, h]) => <External key={l} href={h}>{l} ↗</External>)}</div>
           <Details label="How it works"><p>{p.detail}</p><p>{p.note}</p></Details>
         </div>
-      </article>
-      {i === 0 && <>
-        <aside className="card awards">
-          <span className="label label--light">Hackathons</span>
-          <ul>{achievements.map(a => <li key={a.title}><b>{a.result}</b><span>{a.title}</span></li>)}</ul>
-        </aside>
-      </>}</React.Fragment>)}
-      <External className="card more" href={github}>
-        <span className="label">More on GitHub</span>
-        <b>github.com/drunkprada ↗</b>
-        <span className="muted">Smaller experiments, coursework and society projects.</span>
-      </External>
+      </article>)}
     </div>
+    <aside className="card awards">
+      <span className="label label--light">Hackathons</span>
+      <ul>{achievements.map(a => <li key={a.title}><b>{a.result}</b><span>{a.title}</span></li>)}</ul>
+    </aside>
+    <External className="card more" href={github}>
+      <span className="label">More on GitHub</span>
+      <b>github.com/drunkprada ↗</b>
+      <span className="muted">Smaller experiments, coursework and society projects.</span>
+    </External>
+  </section>;
+}
+
+/* ---------------- Experience ---------------- */
+function Experience() {
+  return <section className="page">
+    <PageHead eyebrow="Experience" title="Where I’ve worked" lede="Internships, research work and student societies."/>
+    <div className="experience-list">
+      {roles.map(role => <article className="experience-entry" key={role.name}>
+        <div className="experience-entry__meta"><span>{role.date}</span><span>{role.location}</span></div>
+        <div className="experience-entry__body">
+          <p className="label">{role.role}</p>
+          <h2>{role.name}</h2>
+          <p>{role.intro}</p>
+          <ul>{role.body.map(line => <li key={line}>{line}</li>)}</ul>
+          <p className="muted">{role.tags.join(' · ')}</p>
+        </div>
+      </article>)}
+    </div>
+    <section className="communities" aria-labelledby="communities-title">
+      <h2 id="communities-title">Student societies</h2>
+      <div className="community-list">
+        {communities.map(community => <article className="card community" key={community.name}>
+          <span className="label">Senior Core Member</span>
+          <h3><External href={community.href}>{community.name} ↗</External></h3>
+          <p>{community.context}</p>
+          <ul>{community.points.map(point => <li key={point}>{point}</li>)}</ul>
+        </article>)}
+      </div>
+    </section>
   </section>;
 }
 
 /* ---------------- App ---------------- */
-const views = {home: Home, research: Research, projects: Projects};
+const views = {home: Home, research: Research, projects: Projects, experience: Experience};
 const currentPage = () => { const raw = location.hash.slice(1).split('/')[0]; return Object.hasOwn(views, raw) ? raw : 'home'; };
 
 function App() {

@@ -11,7 +11,7 @@ for (const viewport of [{width: 390, height: 844}, {width: 820, height: 1180}, {
     await page.setViewportSize(viewport);
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
-    for (const route of ['home', 'research', 'projects']) {
+    for (const route of ['home', 'research', 'projects', 'experience']) {
       await page.goto('/#' + route);
       await expect(page.locator('main h1')).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

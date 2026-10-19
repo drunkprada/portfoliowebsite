@@ -4,6 +4,7 @@ export const papers = [
     id: 'inference', category: 'Systems · Machine learning', year: '2026', status: 'Accepted · ICNDA 2026',
     title: 'Operating System Level Optimization for Energy Efficient AI Inference Performance',
     shortTitle: 'What happens around the model matters, too.',
+    preview: '/papers/os-tuning-preview.webp',
     authors: 'Sahana Naganandh & Vaibhav Viswanath', contribution: 'Lead author',
     summary: 'An experimental study of the system around an AI model. We ran ResNet-50 for image classification and YOLOv8 for object detection, then measured how Linux scheduling, GPU configuration and memory placement changed inference performance.',
     context: 'The aim was to understand where time is lost during deployment, and whether configuration changes can make better use of the same hardware.',
@@ -16,6 +17,7 @@ export const papers = [
   {
     id: 'privacy', category: 'AI · Data privacy', year: '2025', status: 'Published · Cureus Journal of Computer Science',
     title: 'Artificial Intelligence and Privacy Concerns: Balancing Innovation With Security',
+    preview: '/papers/privacy-preview.webp',
     authors: 'Vaibhav Viswanath, Thenmozhi M & Sahana Naganandh', contribution: 'Co-author',
     summary: 'A co-authored technical report on personally identifiable information in English, French, German and Italian AI datasets. It compares exposure of names, emails, financial identifiers and tracking data with the anonymisation approach used in PII43K.',
     context: 'Training data can contain private information even when it comes from public sources. The paper looks at how to retain useful language context while reducing that exposure.',
@@ -40,4 +42,25 @@ export const roles = [
   {name:'Dell Technologies',role:'AI Intern',date:'Jun – Aug 2026',location:'Dubai, UAE',intro:'Backend services and AI workflows for a 500-engineer service team.',body:['Built Python/FastAPI services and REST APIs for an AI calling and recruitment assistant.','Developed an ElevenLabs-based voice agent and connected it with backend services and n8n workflows.','Shipped a resume parser used by staff in the candidate-screening workflow, translating requirements into structured candidate data.'],tags:['Python','FastAPI','n8n','ElevenLabs']},
   {name:'Legal Horizons',role:'Frontend Developer',date:'Jul – Sep 2023',location:'Dubai, UAE',intro:'Responsive frontend work within an existing company website.',body:['Built frontend components for the company’s main page as part of an existing codebase.','Worked with designers and stakeholders using Figma and Webflow to deliver user-facing features.'],tags:['Frontend development','Figma','Webflow']},
   {name:'Manipal Institute of Higher Education',role:'Research Assistant Intern',date:'Jun – Aug 2023',location:'Dubai, UAE',intro:'An introduction to working with research datasets.',body:['Supported data preprocessing for AI/ML research using Python, NumPy and TensorFlow.','Worked with Power BI visualisations and contributed to literature reviews and academic writing.'],tags:['Python','NumPy','TensorFlow','Power BI']},
+];
+
+export const communities = [
+  {
+    name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
+    context:'A student chapter for computing projects, workshops and technical competitions.',
+    points:[
+      'Helped develop a C++ game portal with the technical team.',
+      'Contributed technical ideas for student events and worked with the team to turn them into plans.',
+      'Supported event organisation alongside the chapter’s development work.'
+    ]
+  },
+  {
+    name:'CodeChef, VIT', href:'https://www.codechefvit.com/',
+    context:'A student-run coding community behind development workshops and the DevSOC hackathon.',
+    points:[
+      'Contributed to MERN-stack portals and webpages for the chapter.',
+      'Worked with the team on platform features and coordinated competitive programming events.',
+      'Working towards hackathon judging across development and AI domains.'
+    ]
+  }
 ];

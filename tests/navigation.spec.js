@@ -34,10 +34,11 @@ async function expectFocusVisible(page) {
 
 for (const viewport of viewports) {
   test(`layout, themes and keyboard navigation at ${viewport.width}px`, async ({page}) => {
+    test.setTimeout(60_000);
     await page.setViewportSize(viewport);
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
-    for (const route of ['home', 'research', 'projects']) {
+    for (const route of ['home', 'research', 'projects', 'experience']) {
       await page.goto('/#' + route);
       for (const dark of [false, true]) {
         const theme = page.getByRole('button', {name: dark ? 'Switch to dark theme' : 'Switch to light theme'});
@@ -126,20 +127,24 @@ test('brand, browser history and unknown hashes resolve safely', async ({page}) 
   expect(errors).toEqual([]);
 });
 
-test('local manuscript and all project diagrams are served', async ({page, request}) => {
+test('paper screenshots and manuscript are served; projects have no previews', async ({page, request}) => {
   await page.goto('/#research');
   await expect(page.getByRole('link', {name: 'Read manuscript (PDF)'})).toHaveAttribute('href', '/papers/os-tuning-manuscript.pdf');
   const pdf = await request.get('/papers/os-tuning-manuscript.pdf');
   expect(pdf.ok()).toBe(true);
   expect(pdf.headers()['content-type']).toContain('application/pdf');
   expect((await pdf.body()).subarray(0, 5).toString()).toBe('%PDF-');
-  await page.goto('/#projects');
-  const images = page.locator('main img');
-  await expect(images).toHaveCount(3);
+  const images = page.locator('.paper-preview img');
+  await expect(images).toHaveCount(2);
   for (const image of await images.all()) {
     await image.scrollIntoViewIfNeeded();
     await expect.poll(() => image.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+    await expect(image).toHaveAttribute('alt', /^First page of /);
   }
+  await page.goto('/#projects');
+  await expect(page.locator('main img')).toHaveCount(0);
+  await expect(page.locator('.project-list .proj')).toHaveCount(3);
+  await expect(page.locator('.proj__links a[href^="https://github.com/"]')).toHaveCount(3);
 });
 
 test('theme switching still works when browser storage is unavailable', async ({page}) => {
@@ -155,4 +160,21 @@ test('theme switching still works when browser storage is unavailable', async ({
   await page.getByRole('button', {name: 'Switch to light theme'}).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   expect(errors).toEqual([]);
+});
+
+
+test('Experience navigation restores work and society contributions', async ({page}) => {
+  await page.goto('/#home');
+  await page.getByRole('navigation', {name: 'Main'}).getByRole('link', {name: 'Experience'}).click();
+  await expect(page.locator('main')).toBeFocused();
+  await expect(page).toHaveTitle('Experience · Sahana Naganandh');
+  await expect(page.locator('.nav__links [aria-current="page"]')).toHaveText('Experience');
+  await expect(page.locator('.experience-entry h2')).toHaveText([
+    'Dell Technologies', 'Legal Horizons', 'Manipal Institute of Higher Education',
+  ]);
+  await expect(page.locator('.community-list')).toContainText('C++ game portal');
+  await expect(page.locator('.community-list')).toContainText('MERN-stack portals');
+  await expect(page.locator('.community-list')).toContainText('Working towards hackathon judging');
+  await page.reload();
+  await expect(page.locator('main h1')).toHaveText('Where I’ve worked');
 });
