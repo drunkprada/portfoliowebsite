@@ -1,185 +1,235 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {AnimatePresence, MotionConfig, motion, useReducedMotion} from 'motion/react';
-import {ArrowUp, Plus, Minus, Moon, Sun, Home as HomeIcon, FlaskConical, Code2, BriefcaseBusiness, UserRound} from 'lucide-react';
-import {github, papers, projects, achievements, roles} from './data';
-import Piano from './Piano';
+import {github, papers, projects, achievements} from './data';
 import './styles.css';
 
-const sections = [{id:'home',label:'Home'},{id:'research',label:'Research'},{id:'projects',label:'Projects'},{id:'experience',label:'Experience'},{id:'about',label:'About'}];
-const ease = [0.22,1,0.36,1];
-function External({href,children,className=''}){return <a className={`external ${className}`} href={href} target="_blank" rel="noreferrer">{children}</a>}
-function Tags({items}){return <p className="tags">{items.join(', ')}</p>}
-function Reveal({children,className=''}){return <div className={className}>{children}</div>}
-function Heading({label,title,children}){return <div className="page-heading"><h1>{title}</h1>{children&&<p className="page-description">{children}</p>}</div>}
-function SectionHead({label,title,to}){return <div className="section-head"><div><h2>{title}</h2></div>{to&&<a className="inline-link" href={'#'+to}>Explore {to}</a>}</div>}
-function Expand({label='A closer look',children}){
-  const [open,setOpen]=useState(false);
-  const id=React.useId();
-  const reduce=useReducedMotion();
-  return <div className={'expand '+(open?'is-open':'')}>
-    <button aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}>{open?'Close details':label}{open?<Minus size={17}/>:<Plus size={17}/>}</button>
-    <AnimatePresence initial={false}>
-      {open&&<motion.div id={id} initial={reduce?false:{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}} transition={{duration:reduce?0:.3,ease}} className="expand-content"><div>{children}</div></motion.div>}
-    </AnimatePresence>
-  </div>
-}
-function Achievements(){return <div className="achievements-list">{achievements.map((a,i)=><Reveal key={a.title} delay={i*.06}><article><span className="award-result">{a.result}</span><div><h3>{a.title}</h3><p>{a.description}</p></div><span className="row-number">0{i+1}</span></article></Reveal>)}</div>}
-function Home(){return <section className="home-intro"><div className="intro-copy"><h1>Hi, I’m Sahana.</h1><p className="intro-lead">I build backend systems and work on AI research.</p><p>Previously at <a href="#experience">Dell in Dubai</a>, building backend services and AI tools. My <a href="#research">research</a> looks at data privacy and how Linux settings affect AI inference.</p><p className="intro-education">Electronics &amp; Computer Science · University of Edinburgh<br/>Year 3 · Previously Computer Science at VIT</p><div className="intro-links"><a className="intro-action" href="#research">View research</a><External className="intro-action" href={github}>GitHub</External></div></div></section>}
-function Research(){
-  return <>
-    <Heading title="Research">I study data privacy in AI and how system settings affect inference.</Heading>
-    <div className="papers-list">{papers.map((paper,i)=>
-      <article className="research-entry" key={paper.id}>
-        <aside className="research-side">
-          <span className="large-index">0{i+1}</span><span>{paper.category}</span><span>{paper.year}</span><span className="status">{paper.contribution}</span>
-        </aside>
-        <div className="research-main">
-          <p className="eyebrow">{paper.status}</p><h2>{paper.title}</h2>
-          <p className="authors">{paper.authors}</p>
-          <p className="research-summary">{paper.summary}</p>
-          <p className="research-context">{paper.context}</p>
-          <Tags items={paper.tags}/>
-          <div className="paper-links">{paper.links.map(([label,href])=><External key={label} href={href}>{label}</External>)}</div>
-          <Expand label="The question, method & findings">
-            <div className="research-details">
-              <section><h3>The question</h3><p>{paper.question}</p></section>
-              <section><h3>The approach</h3><p>{paper.approach}</p></section>
-              <section><h3>What we found</h3><p>{paper.finding}</p></section>
-            </div>
-          </Expand>
-        </div>
-      </article>
-    )}</div>
-  </>
-}
-const projectVisuals = {
-  trade: {src:'/projects/trade-workflow.svg', alt:'Buy and sell orders pass validation, execute, and update cash, holdings and profit and loss.', caption:'The Java domain flow. API and risk services are the next stage.'},
-  arbitrage: {src:'/projects/arbitrage-workflow.svg', alt:'Currency exchange rates become graph edges; Bellman–Ford finds negative cycles for the React dashboard.', caption:'Exchange rates become a graph problem. All trading is simulated.'},
-  screening: {src:'/projects/screening-workflow.svg', alt:'PDF and DOCX resumes are parsed, deduplicated, extracted into structured data, stored in SQLite and exported to Excel.', caption:'The implemented resume pipeline, from document to candidate record.'}
-};
-function Projects(){
-  return <>
-    <Heading title="Projects">My projects in finance, algorithms and AI, with links to the code.</Heading>
-    <div className="projects-list">{projects.map(project=>{
-      const visual=projectVisuals[project.graphic];
-      return <article className="project-entry" key={project.id}>
-        <div className="project-copy">
-          <p className="eyebrow">{project.number} / {project.category}</p><h2>{project.title}</h2><p>{project.summary}</p>
-          <Tags items={project.tags}/>
-          <div className="paper-links">{project.links.map(([label,href])=><External key={label} href={href}>{label}</External>)}</div>
-          <Expand label="Inside the project"><p>{project.detail}</p><p>{project.note}</p></Expand>
-        </div>
-        <figure className="project-visual">
-          <a href={visual.src} target="_blank" rel="noreferrer" aria-label={'Open workflow diagram for '+project.title}>
-            <img src={visual.src} alt={visual.alt} width="640" height="400" loading="lazy"/>
-          </a>
-          <figcaption>{visual.caption}</figcaption>
-        </figure>
-      </article>
-    })}</div>
-    <a className="github-end" href={github} target="_blank" rel="noreferrer"><span>More code and experiments<span>github.com/drunkprada</span></span></a>
-  </>
-}
-const communities = [
-  {
-    name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
-    context:'A student chapter for computing projects, workshops and technical competitions.',
-    points:[
-      'Helped develop a C++ game portal with the technical team.',
-      'Contributed technical ideas for student events and worked with the team to turn them into plans.',
-      'Supported event organisation alongside the chapter’s development work.'
-    ]
-  },
-  {
-    name:'CodeChef, VIT', href:'https://www.codechefvit.com/',
-    context:'A student-run coding community behind development workshops and the DevSOC hackathon.',
-    points:[
-      'Contributed to MERN-stack portals and webpages for the chapter.',
-      'Worked with the team on platform features and coordinated competitive programming events.',
-      'Working towards hackathon judging across development and AI domains.'
-    ]
-  }
+// Add your email / LinkedIn here and they'll appear in the nav and footer.
+const email = '';
+const linkedin = '';
+
+const tabs = [
+  {id: 'research', label: 'Research'},
+  {id: 'projects', label: 'Projects'},
 ];
-function Experience(){
-  return <>
-    <Heading title="Experience">Internships, research work and student societies.</Heading>
-    <div className="experience-list">{roles.map((role,i)=>
-      <article className="role-entry" key={role.name}>
-        <aside><span className="role-year">{role.date}</span><span>{role.location}</span><span className="row-number">0{i+1}</span></aside>
-        <div><p className="eyebrow">{role.role}</p><h2>{role.name}</h2><p className="role-intro">{role.intro}</p>
-          <ul>{role.body.map(line=><li key={line}>{line}</li>)}</ul><Tags items={role.tags}/>
-        </div>
-      </article>
-    )}</div>
-    <section className="community-section">
-      <SectionHead title="Student communities"/>
-      <div className="community-grid">{communities.map(community=>
-        <article key={community.name}>
-          <span className="eyebrow">Senior Core Member</span>
-          <h3><a href={community.href} target="_blank" rel="noreferrer">{community.name}</a></h3>
-          <p className="community-context">{community.context}</p>
-          <ul>{community.points.map(point=><li key={point}>{point}</li>)}</ul>
-        </article>
-      )}</div>
-    </section>
-    <section className="awards-section"><SectionHead title="Hackathons & achievements"/><Achievements/></section>
-  </>
-}
-function About(){return <><Heading label="ABOUT" title="About me">I’m studying in Edinburgh now, after two years at VIT. Here’s a bit about what I do outside my projects and research.</Heading><section className="about-story"><Reveal><h2>Education</h2><p>I spent two years studying Computer Science and Engineering, specialising in AI & ML, at VIT. I’m now in my third year of Electronics & Computer Science at the University of Edinburgh.</p><p>Most of my experience has been in software and research. I’m now learning about circuits and PCB design alongside my degree.</p></Reveal><Reveal className="education-panel" delay={.1}><article><span>2026 – 2028 · Expected</span><h3>University of Edinburgh</h3><p>BEng Electronics & Computer Science<br/>Year 3 transfer</p></article><article><span>Transferred in 2026</span><h3>Vellore Institute of Technology</h3><p>Computer Science & Engineering (AI & ML)<br/>Completed Year 2 · CGPA 8.75/10</p></article></Reveal></section><section className="music-section"><Reveal><h2>Music</h2><p>I’ve been singing all my life. I’ve performed at shows across different genres, and I also play piano.</p></Reveal><Reveal delay={.12}><Piano/></Reveal></section><section className="toolkit"><SectionHead label="PRACTICAL SIDE" title="Skills"/><div className="toolkit-grid"><div><h3>Languages</h3><Tags items={["Python","Java","C/C++","JavaScript","SQL"]}/></div><div><h3>Software & data</h3><Tags items={["FastAPI","React","PostgreSQL","NumPy","TensorFlow","n8n"]}/></div><div><h3>Systems & hardware</h3><Tags items={["Linux","Git","Verilog coursework","Altium Designer"]}/></div></div></section></>}
-function currentPage(){const raw=location.hash.slice(1).split('/')[0];if(raw==='work')return 'projects';return sections.some(s=>s.id===raw)?raw:'home'}
-const pageComponents={home:Home,research:Research,projects:Projects,experience:Experience,about:About};
-const sectionIcons={home:HomeIcon,research:FlaskConical,projects:Code2,experience:BriefcaseBusiness,about:UserRound};
-function Navigation({page}){
-  return <nav className="site-nav" aria-label="Main navigation">{sections.map(({id,label})=>{
-    const Icon=sectionIcons[id];
-    return <a key={id} href={'#'+id} aria-current={page===id?'page':undefined}><Icon size={22} aria-hidden="true"/><span>{label}</span></a>
-  })}</nav>
-}
-function returnToTop(content,behavior='instant'){
-  // Move the keyboard starting point too, without an extra focus-induced jump.
-  content?.focus({preventScroll:true});
-  window.scrollTo({top:0,behavior});
-}
-function App(){
-  const [page,setPage]=useState(currentPage);
-  const [dark,setDark]=useState(()=>{try{return localStorage.getItem('portfolio-theme-v2')!=='light'}catch{return true}});
-  const main=useRef(null);
-  const first=useRef(true);
-  const reduce=useReducedMotion();
-  useEffect(()=>{
-    const handler=()=>setPage(currentPage());
-    window.addEventListener('hashchange',handler);
-    return()=>window.removeEventListener('hashchange',handler);
-  },[]);
-  useEffect(()=>{
-    document.title=page==='home'?'Sahana Naganandh':`${sections.find(s=>s.id===page).label} · Sahana Naganandh`;
-    if(first.current){first.current=false;return}
-    returnToTop(main.current);
-  },[page]);
-  useEffect(()=>{
-    document.documentElement.dataset.theme=dark?'dark':'light';
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#0a0a0a':'#ffffff');
-    try{localStorage.setItem('portfolio-theme-v2',dark?'dark':'light')}catch{}
-  },[dark]);
-  const Page=pageComponents[page];
-  return <>
-    <a className="skip" href="#main" onClick={event=>{event.preventDefault();main.current?.focus()}}>Skip to content</a>
-    <header className="site-header">
-      <a className="wordmark" href="#home"><img src="/mark.svg" width="32" height="32" alt=""/><span>Sahana Naganandh</span></a>
-      <div className="header-right">
-        <span className="location-label">Edinburgh, UK</span>
-        <a href={github} className="header-github" aria-label="GitHub profile" target="_blank" rel="noreferrer">GitHub</a>
-        <button className="icon-button" aria-label={dark?'Use light theme':'Use dark theme'} onClick={()=>setDark(!dark)}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button>
+
+const External = ({href, className = '', children, ...rest}) =>
+  <a className={className} href={href} target="_blank" rel="noreferrer" {...rest}>{children}</a>;
+
+/* ---------------- Floating nav ---------------- */
+function Nav({page, dark, setDark}) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(scrollY > 8);
+    on(); addEventListener('scroll', on, {passive: true});
+    return () => removeEventListener('scroll', on);
+  }, []);
+  const contact = email ? 'mailto:' + email : github;
+  return <div className={'navwrap' + (scrolled ? ' is-floating' : '')}>
+    <header className="nav">
+      <a className="brand" href="#home" aria-label="Sahana Naganandh, home">
+        <span className="brand__mark" aria-hidden="true">SN</span>
+        <span className="brand__name">Sahana Naganandh</span>
+      </a>
+      <nav className="nav__links" aria-label="Main">
+        {tabs.map(t => <a key={t.id} href={'#' + t.id} className={page === t.id ? 'is-active' : undefined}
+          aria-current={page === t.id ? 'page' : undefined}>{t.label}</a>)}
+      </nav>
+      <div className="nav__right">
+        <button className="theme" onClick={() => setDark(!dark)} aria-pressed={dark}
+          aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}>
+          <span className="theme__dot" aria-hidden="true"/>
+        </button>
+        <External className="nav__cta" href={contact}>{email ? 'Get in touch' : 'GitHub'} ↗</External>
       </div>
     </header>
-    <main className={page==='home'?'home-page':undefined} id="main" tabIndex={-1} ref={main}><div key={page}><Page/></div></main>
-    <Navigation page={page}/>
-    {page!=='home'&&<footer>
-      <div><a href="#home">Sahana Naganandh</a></div>
-      <External href={github}>Find me on GitHub</External>
-      <button className="icon-button" aria-label="Back to top" onClick={()=>returnToTop(main.current,reduce?'instant':'smooth')}><ArrowUp size={18}/></button>
-    </footer>}
+  </div>;
+}
+
+function Footer() {
+  return <footer className="footer">
+    <span>© {new Date().getFullYear()} Sahana Naganandh · Edinburgh</span>
+    <div className="footer__links">
+      {email && <a href={'mailto:' + email}>Email</a>}
+      {linkedin && <External href={linkedin}>LinkedIn</External>}
+      <External href={github}>GitHub</External>
+    </div>
+  </footer>;
+}
+
+/* ---------------- Intro ---------------- */
+function useClock() {
+  const fmt = () => new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit'}).format(new Date());
+  const [t, setT] = useState(fmt);
+  useEffect(() => { const id = setInterval(() => setT(fmt()), 15000); return () => clearInterval(id); }, []);
+  return t;
+}
+
+function Home() {
+  const time = useClock();
+  return <section className="intro">
+    <p className="intro__eyebrow"><span className="live" aria-hidden="true"/>Edinburgh · {time}</p>
+    <h1 className="intro__name">Sahana<br/>Naganandh</h1>
+    <div className="intro__row">
+      <p className="intro__lede">I build backend systems and work on AI research. Electronics &amp; Computer Science at the University of Edinburgh, previously an AI Intern at Dell in Dubai.</p>
+      <div className="intro__cta">
+        <a className="btn" href="#research">Read my research</a>
+        <a className="btn btn--ghost" href="#projects">See projects</a>
+      </div>
+    </div>
+    <dl className="intro__facts">
+      <div><dt>Now</dt><dd>Year 3, Electronics &amp; CS</dd></div>
+      <div><dt>Before</dt><dd>AI Intern, Dell Technologies</dd></div>
+      <div><dt>Research</dt><dd>AI inference &amp; data privacy</dd></div>
+      <div><dt>Lately</dt><dd>Learning PCB design</dd></div>
+    </dl>
+  </section>;
+}
+
+/* ---------------- Shared bits ---------------- */
+function PaperSheet({paper, big}) {
+  return <span className={'sheet' + (big ? ' sheet--big' : '')} aria-hidden="true">
+    <span className="sheet__page">
+      <span className="sheet__venue">{paper.status.split('·')[1]?.trim()}</span>
+      <span className="sheet__title">{paper.title}</span>
+      <span className="sheet__authors">{paper.authors}</span>
+      <span className="sheet__lines">{Array.from({length: big ? 9 : 5}, (_, i) => <i key={i}/>)}</span>
+    </span>
+  </span>;
+}
+
+function PageHead({eyebrow, title, lede}) {
+  return <header className="pagehead">
+    <span className="label">{eyebrow}</span>
+    <h1>{title}</h1>
+    {lede && <p>{lede}</p>}
+  </header>;
+}
+
+function Details({children, label = 'Read more'}) {
+  const [open, setOpen] = useState(false);
+  const id = React.useId();
+  return <div className={'details' + (open ? ' is-open' : '')}>
+    <button aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
+      {open ? 'Show less' : label}<span aria-hidden="true">{open ? '−' : '+'}</span>
+    </button>
+    {open && <div id={id} className="details__body">{children}</div>}
+  </div>;
+}
+
+/* ---------------- Research ---------------- */
+function Research() {
+  const [lead, ...rest] = papers;
+  return <section className="page">
+    <PageHead eyebrow="Research" title="Papers" lede="How operating-system settings change AI inference, and how to keep training data useful without exposing people."/>
+
+    <article className="card feature">
+      <div className="feature__media"><PaperSheet paper={lead} big/></div>
+      <div className="feature__body">
+        <span className="tag tag--win">{lead.status} · {lead.contribution}</span>
+        <h2>{lead.shortTitle}</h2>
+        <p className="feature__title">{lead.title}</p>
+        <p>{lead.summary}</p>
+        <div className="feature__actions">{lead.links.map(([l, h]) => <External key={l} className="btn" href={h}>{l} ↗</External>)}</div>
+        <div className="stats">
+          <div><b>2</b><span>models tested</span></div>
+          <div><b>5×</b><span>runs per setup</span></div>
+          <div><b>4</b><span>tuning stages</span></div>
+        </div>
+      </div>
+    </article>
+    <Details label="The question, method & findings">
+      <div className="qa">
+        <div><h3>The question</h3><p>{lead.question}</p></div>
+        <div><h3>The approach</h3><p>{lead.approach}</p></div>
+        <div><h3>What we found</h3><p>{lead.finding}</p></div>
+      </div>
+    </Details>
+
+    {rest.map(p => <React.Fragment key={p.id}>
+      <article className="card paperrow">
+        <div className="paperrow__media"><PaperSheet paper={p}/></div>
+        <div className="paperrow__body">
+          <span className="tag tag--dark">{p.status} · {p.contribution}</span>
+          <h2>{p.title}</h2>
+          <p className="muted">{p.authors}</p>
+          <p>{p.summary}</p>
+          <div className="feature__actions">{p.links.map(([l, h], i) => <External key={l} className={'btn' + (i ? ' btn--ghost' : '')} href={h}>{l} ↗</External>)}</div>
+        </div>
+      </article>
+      <Details label="The question, method & findings">
+        <div className="qa">
+          <div><h3>The question</h3><p>{p.question}</p></div>
+          <div><h3>The approach</h3><p>{p.approach}</p></div>
+          <div><h3>What we found</h3><p>{p.finding}</p></div>
+        </div>
+      </Details>
+    </React.Fragment>)}
+  </section>;
+}
+
+/* ---------------- Projects ---------------- */
+const thumbs = {trade: '/projects/trade-workflow.svg', arbitrage: '/projects/arbitrage-workflow.svg', screening: '/projects/screening-workflow.svg'};
+const sizes = ['wide', 'half', 'half'];
+
+function Projects() {
+  return <section className="page">
+    <PageHead eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows. Each card opens the code."/>
+    <div className="grid">
+      {projects.map((p, i) => <React.Fragment key={p.id}><article className={'card proj proj--' + sizes[i]}>
+        <External className="proj__thumb" href={p.links[0][1]} aria-label={p.title + ' on GitHub'}>
+          <img src={thumbs[p.graphic]} alt="" loading="lazy"/>
+        </External>
+        <div className="proj__body">
+          <div className="proj__top"><h2>{p.title}</h2><span className="muted">{p.tags.slice(0, 2).join(' · ')}</span></div>
+          <p>{p.summary}</p>
+          <div className="proj__links">{p.links.map(([l, h]) => <External key={l} href={h}>{l} ↗</External>)}</div>
+          <Details label="How it works"><p>{p.detail}</p><p>{p.note}</p></Details>
+        </div>
+      </article>
+      {i === 0 && <>
+        <aside className="card awards">
+          <span className="label label--light">Hackathons</span>
+          <ul>{achievements.map(a => <li key={a.title}><b>{a.result}</b><span>{a.title}</span></li>)}</ul>
+        </aside>
+      </>}</React.Fragment>)}
+      <External className="card more" href={github}>
+        <span className="label">More on GitHub</span>
+        <b>github.com/drunkprada ↗</b>
+        <span className="muted">Smaller experiments, coursework and society projects.</span>
+      </External>
+    </div>
+  </section>;
+}
+
+/* ---------------- App ---------------- */
+const views = {home: Home, research: Research, projects: Projects};
+const currentPage = () => { const raw = location.hash.slice(1).split('/')[0]; return Object.hasOwn(views, raw) ? raw : 'home'; };
+
+function App() {
+  const [page, setPage] = useState(currentPage);
+  const [dark, setDark] = useState(() => document.documentElement.dataset.theme === 'dark');
+  const main = useRef(null);
+  const first = useRef(true);
+  useEffect(() => { const h = () => setPage(currentPage()); addEventListener('hashchange', h); return () => removeEventListener('hashchange', h); }, []);
+  useEffect(() => {
+    document.title = page === 'home' ? 'Sahana Naganandh' : `${tabs.find(t => t.id === page).label} · Sahana Naganandh`;
+    if (first.current) { first.current = false; return; }
+    main.current?.focus({preventScroll: true}); scrollTo({top: 0, behavior: 'instant'});
+  }, [page]);
+  useEffect(() => {
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0a0a0a' : '#f4f4f3');
+    try { localStorage.setItem('portfolio-theme-v3', dark ? 'dark' : 'light'); } catch {}
+  }, [dark]);
+  const Page = views[page];
+  return <>
+    <a className="skip" href="#main" onClick={e => { e.preventDefault(); main.current?.focus(); }}>Skip to content</a>
+    <Nav page={page} dark={dark} setDark={setDark}/>
+    <main id="main" tabIndex={-1} ref={main} className={page === 'home' ? 'is-home' : undefined}>
+      <div key={page} className="enter"><Page/></div>
+    </main>
+    <Footer/>
   </>;
 }
-createRoot(document.getElementById('root')).render(<MotionConfig reducedMotion="user"><App/></MotionConfig>);
+
+createRoot(document.getElementById('root')).render(<App/>);
