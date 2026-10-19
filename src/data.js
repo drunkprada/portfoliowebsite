@@ -102,3 +102,10 @@ export const skillGroups = [
   {label: 'Tools & foundations', tone: 'blue', items: ['Linux', 'Git', 'Postman', 'Claude Code', 'Data structures & algorithms', 'Object-oriented programming']},
   {label: 'Current learning', tone: 'lemon', items: ['Verilog coursework', 'Embedded C', 'Altium Designer']},
 ];
+
+export const skillJourney = [
+  {id:'foundations', title:'A foundation to build on.', description:'Languages, problem-solving and the tools I reach for while building.', groups:['Languages','Tools & foundations'], tone:'lilac'},
+  {id:'building', title:'From ideas to working things.', description:'Interfaces, APIs and the services that connect them.', groups:['Frontend & design','Backend & data'], tone:'mint'},
+  {id:'ai', title:'A little intelligence in the mix.', description:'Working with data, models and the workflows around them.', groups:['AI & analytics'], tone:'peach'},
+  {id:'learning', title:'Still curious. Still learning.', description:'Currently exploring Verilog, embedded C and PCB design alongside my degree.', groups:['Current learning'], tone:'lemon'},
+];

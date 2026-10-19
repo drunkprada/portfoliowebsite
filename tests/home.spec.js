@@ -20,7 +20,7 @@ test('resume button serves the exact uploaded PDF', async ({page, request}) => {
 
 test('home is a mini resume with skills and experience, without paper or project cards', async ({page}) => {
   await page.goto('/#home');
-  await expect(page.getByRole('heading', {name: 'Skills', exact: true})).toBeVisible();
+  await expect(page.getByRole('heading', {name: 'Skills, along the way.', exact: true})).toBeVisible();
   const skills = page.getByRole('list', {name: 'Skills and current learning'});
   for (const skill of ['Python', 'Java', 'C/C++', 'Spring Boot', 'TensorFlow', 'Postman', 'Claude Code', 'Altium Designer']) {
     await expect(skills.getByRole('listitem', {name: skill + ' ·', exact: false})).toBeVisible();
@@ -59,7 +59,7 @@ test('scroll reveals work with motion enabled and keyboard focus stays visible',
 
 test('content remains readable when IntersectionObserver is unavailable', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'no-preference'});
-  await page.addInitScript(() => { window.IntersectionObserver = undefined; });
+  await page.addInitScript(() => { window.IntersectionObserver = undefined; window.ResizeObserver = undefined; });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/#home');

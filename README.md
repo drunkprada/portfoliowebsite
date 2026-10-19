@@ -66,10 +66,16 @@ in a new tab. This is the original uploaded PDF, copied without alterations.
 Replace that asset when publishing a new résumé and update the asset check's
 checksum to match the new file.
 
-The home page shows skill bubbles, education, work, society leadership and
-hackathon outcomes. Detailed research and project content stays in its own tab.
+The home page shows education, work, society leadership, a winding skills
+timeline and hackathon outcomes. The timeline follows the owner's sketch and
+groups the existing skills into a learning path below the résumé overview.
+Detailed research and project content stays in its own tab.
 The reference and original design choices are recorded in `DESIGN.md`.
 
 Section reveals use IntersectionObserver with visible content as the fallback.
 Keyboard-focused content stays visible immediately. Reduced-motion preferences
-turn off reveals, live-dot animation and skill hover movement.
+turn off reveals, live-dot animation and skill hover movement. They also display
+the complete timeline without drawing or bubble animations. The timeline
+measures its marker positions on resize so wrapping labels stay connected on
+phones. The glass navigation has an opaque fallback for browsers without
+backdrop-filter support.

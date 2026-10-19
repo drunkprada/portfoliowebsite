@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {github, papers, projects, achievements, roles, communities, education, skillGroups, resume} from './data';
+import {github, papers, projects, achievements, roles, communities, education, skillGroups, skillJourney, resume} from './data';
+import {SkillTrail} from './SkillTrail';
 import './styles.css';
 
 const email = 'sahananaganandh@gmail.com';
@@ -81,18 +82,29 @@ function Reveal({as: Tag = 'div', className = '', children, ...rest}) {
 }
 
 function Skills() {
-  // Interleave categories so the colours form a mixed, readable bubble cloud.
-  const skills = Array.from({length: Math.max(...skillGroups.map(group => group.items.length))}, (_, index) =>
-    skillGroups.flatMap(group => group.items[index] ? [{name: group.items[index], tone: group.tone, group: group.label}] : [])
-  ).flat();
-  return <Reveal as="section" className="card skills-panel" aria-labelledby="skills-heading">
-    <div className="skills-panel__head"><span className="label">My toolbox</span><h2 id="skills-heading">Skills</h2></div>
-    <ul className="skill-cloud" aria-label="Skills and current learning">
-      {skills.map((skill, index) => <li key={skill.name} className={'skill-bubble tone-' + skill.tone}
-        style={{'--tilt': (index % 3 - 1) * 2 + 'deg'}} aria-label={skill.name + ' · ' + skill.group}>{skill.name}</li>)}
-    </ul>
-    <p className="skills-note">Currently learning Verilog, embedded C and PCB design alongside my degree.</p>
-  </Reveal>;
+  const journey = useRef(null);
+  return <section className="skills-section" aria-labelledby="skills-heading">
+    <Reveal className="home-sectionhead"><span className="label">An evolving toolkit</span><h2 id="skills-heading">Skills, along the way.</h2></Reveal>
+    <div className="skill-journey" ref={journey}>
+      <SkillTrail container={journey}/>
+      <ol className="skill-stops" aria-label="Skills and current learning">
+      {skillJourney.map((step, index) => <li className="skill-stop" key={step.id}>
+        <span className={'skill-stop__marker tone-' + step.tone + (step.id === 'learning' ? ' is-learning' : '')} aria-hidden="true">{step.id === 'learning' ? '✧' : String(index + 1).padStart(2,'0')}</span>
+        <Reveal className="skill-stop__body">
+          <span className="label">{step.id === 'learning' ? 'Exploring now' : ['The foundations','Making connections','AI & workflows'][index]}</span>
+          <h3>{step.title}</h3><p>{step.description}</p>
+          <ul className="skill-cloud" aria-label={step.title}>
+            {step.groups.flatMap(label => {
+              const group = skillGroups.find(group => group.label === label);
+              return group.items.map((name, skillIndex) => <li key={name} className={'skill-bubble tone-' + group.tone}
+                style={{'--tilt':(skillIndex % 3 - 1) * 2 + 'deg','--bubble-delay':skillIndex * 35 + 'ms'}} aria-label={name + ' · ' + group.label}>{name}</li>);
+            })}
+          </ul>
+        </Reveal>
+      </li>)}
+      </ol>
+    </div>
+  </section>;
 }
 
 function Hackathons() {
@@ -124,7 +136,6 @@ function Home() {
         </div>
         <div className="intro__links"><a href="#research">Read my research ↗</a><a href="#projects">See projects ↗</a></div>
       </Reveal>
-      <Skills/>
     </section>
 
     <section className="home-resume" aria-labelledby="overview-heading">
@@ -152,6 +163,7 @@ function Home() {
       </div>
     </section>
 
+    <Skills/>
     <Hackathons/>
     <Reveal as="section" className="contact-strip" aria-labelledby="contact-heading">
       <div><h2 id="contact-heading">Get in touch</h2><p>For opportunities, collaborations or a conversation.</p></div>
