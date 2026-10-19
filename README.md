@@ -27,6 +27,11 @@ Back-to-top checks cover keyboard and pointer activation, phone and desktop
 layouts, and normal/reduced motion. Returning to the top also restores focus
 to the content, so the next Tab continues there without resetting the current
 page, expanded details or theme.
+Piano checks cover real browser playback, the prefixed audio API fallback,
+pending/failed audio operations, note cleanup and navigation away. Audio starts
+only after a note is activated. Finished nodes are disconnected, leaving About
+stops active notes, and a late device-resume result cannot start audio work on
+an unmounted piano. Cleanup follows the [Web Audio lifecycle guidance](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/close).
 
 ## Content
 
