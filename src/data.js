@@ -47,20 +47,21 @@ export const roles = [
 export const communities = [
   {
     name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
+    role:'Senior Core Member · Frontend Developer', duration:'1 year',
     context:'A student chapter for computing projects, workshops and technical competitions.',
     points:[
-      'Helped develop a C++ game portal with the technical team.',
-      'Contributed technical ideas for student events and worked with the team to turn them into plans.',
-      'Supported event organisation alongside the chapter’s development work.'
+      'Helped organise HackBattle and Cicada, and supported the HackBattle sponsorship team.',
+      'Helped develop a C++ game portal for Cicada, featuring puzzles and ciphers.'
     ]
   },
   {
     name:'CodeChef, VIT', href:'https://www.codechefvit.com/',
+    role:'Senior Core Member · Frontend Developer', duration:'1 year',
     context:'A student-run coding community behind development workshops and the DevSOC hackathon.',
     points:[
-      'Contributed to MERN-stack portals and webpages for the chapter.',
-      'Worked with the team on platform features and coordinated competitive programming events.',
-      'Working towards hackathon judging across development and AI domains.'
+      'Helped organise Cook-Off and the DevSOC hackathon.',
+      'Served on DevSOC’s AI/ML and development judging panel.',
+      'Contributed to the chapter’s MERN-stack website as a frontend developer.'
     ]
   }
 ];

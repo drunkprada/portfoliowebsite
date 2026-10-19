@@ -209,7 +209,7 @@ function Experience() {
       <h2 id="communities-title">Student societies</h2>
       <div className="community-list">
         {communities.map(community => <article className="card community" key={community.name}>
-          <span className="label">Senior Core Member</span>
+          <div className="community__meta"><span className="label">{community.role}</span><span className="muted">{community.duration}</span></div>
           <h3><External href={community.href}>{community.name} ↗</External></h3>
           <p>{community.context}</p>
           <ul>{community.points.map(point => <li key={point}>{point}</li>)}</ul>

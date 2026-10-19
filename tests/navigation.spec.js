@@ -173,8 +173,15 @@ test('Experience navigation restores work and society contributions', async ({pa
     'Dell Technologies', 'Legal Horizons', 'Manipal Institute of Higher Education',
   ]);
   await expect(page.locator('.community-list')).toContainText('C++ game portal');
-  await expect(page.locator('.community-list')).toContainText('MERN-stack portals');
-  await expect(page.locator('.community-list')).toContainText('Working towards hackathon judging');
+  await expect(page.locator('.community-list')).toContainText('MERN-stack website');
+  await expect(page.locator('.community-list')).toContainText('AI/ML and development judging panel');
+  await expect(page.locator('.community-list')).toContainText('Cook-Off');
+  await expect(page.locator('.community-list')).toContainText('HackBattle sponsorship team');
+  await expect(page.locator('.community-list')).toContainText('puzzles and ciphers');
+  await expect(page.locator('.community__meta .label')).toHaveText([
+    'Senior Core Member · Frontend Developer', 'Senior Core Member · Frontend Developer',
+  ]);
+  await expect(page.locator('.community__meta .muted')).toHaveText(['1 year', '1 year']);
   await page.reload();
   await expect(page.locator('main h1')).toHaveText('Where I’ve worked');
 });
