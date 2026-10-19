@@ -79,7 +79,7 @@ for (const reducedMotion of ['reduce', 'no-preference']) {
     await page.setViewportSize({width: 390, height: 844});
     await page.goto('/#research');
     await page.locator('.footer a').first().focus();
-    expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
     await page.getByRole('navigation', {name: 'Main'}).getByRole('link', {name: 'Projects'}).focus();
     await page.keyboard.press('Enter');
     await expect(page.locator('main')).toBeFocused();
