@@ -101,6 +101,9 @@ main:focus { outline: none; }
 .skill-stop:nth-child(even) .skill-stop__body { grid-column: 1; }
 .skill-stop__body h3 { font-size: 1.4rem; line-height: 1.3; letter-spacing: -.025em; margin: .55rem 0 .7rem; }
 .skill-stop__body > p { color: var(--soft); font-size: .9rem; max-width: 42ch; }
+.skill-stop__body > .skill-stop__meta { font-size: .78rem; color: var(--muted); margin-bottom: .85rem; }
+.skill-stop__points { padding-left: 1.1rem; margin-top: .85rem; color: var(--soft); font-size: .88rem; line-height: 1.75; }
+.skill-stop__points li + li { margin-top: .45rem; }
 .skill-cloud { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: .75rem .6rem; padding: 1.4rem 0 .3rem; }
 .skill-bubble { max-width: 100%; padding: .45rem .85rem; border-radius: 999px; font-size: .88rem; font-weight: 600; line-height: 1.5; transform: rotate(var(--tilt)); transition: transform .3s var(--ease), box-shadow .3s var(--ease); box-shadow: 0 2px 0 rgba(0,0,0,.06); }
 .tone-lilac { background: #e8dcff; color: #4b2b77; }
@@ -123,7 +126,7 @@ main:focus { outline: none; }
 .home-sectionhead { margin-bottom: 1.8rem; }
 .home-sectionhead h2 { margin-top: .5rem; font-size: 2.1rem; line-height: 1.2; letter-spacing: -.035em; }
 .home-resume { padding-top: 1rem; }
-.resume-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; align-items: start; }
+.resume-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem; align-items: start; }
 .resume-panel { padding: 1.6rem; }
 .resume-panel > h3 { font-size: 1rem; margin-bottom: .6rem; }
 .resume-entry { padding: 1.1rem 0; border-bottom: 1px solid var(--line); }

@@ -1,5 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {createHash} from 'node:crypto';
+import {roles, communities, achievements, skillGroups} from '../src/data.js';
 
 test.beforeEach(async ({page}) => {
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1'
@@ -20,17 +21,24 @@ test('resume button serves the exact uploaded PDF', async ({page, request}) => {
 
 test('home is a mini resume with skills and experience, without paper or project cards', async ({page}) => {
   await page.goto('/#home');
-  await expect(page.getByRole('heading', {name: 'Skills, along the way.', exact: true})).toBeVisible();
-  const skills = page.getByRole('list', {name: 'Skills and current learning'});
+  await expect(page.getByRole('heading', {name: 'Experience, along the way.', exact: true})).toBeVisible();
+  const skills = page.getByRole('list', {name: 'Experience and skills'});
   for (const skill of ['Python', 'Java', 'C/C++', 'Spring Boot', 'TensorFlow', 'Postman', 'Claude Code', 'Altium Designer']) {
-    await expect(skills.getByRole('listitem', {name: skill + ' ·', exact: false})).toBeVisible();
+    await expect(skills.getByRole('listitem', {name: skill + ' ·', exact: false}).first()).toBeVisible();
   }
   await expect(page.locator('.resume-grid')).toContainText('University of Edinburgh');
-  await expect(page.locator('.resume-grid')).toContainText('Nectar Building Technologies');
-  await expect(page.locator('.resume-grid')).toContainText('Senior Core Member · 1 year');
+  await expect(page.locator('.home .hackathon-grid, .home .community-list')).toHaveCount(0);
   await expect(page.locator('.paper-preview, .project-list')).toHaveCount(0);
-  await expect(page.locator('.hackathon-grid')).toContainText('five-person team');
-  await expect(page.locator('.hackathon-grid')).toContainText('2,000 entrants');
+  for (const item of [...roles, ...communities, ...achievements]) {
+    const stop = page.locator('.skill-stop').filter({has:page.getByRole('heading', {name:item.name || item.title, exact:true})});
+    await expect(stop).toHaveCount(1);
+    await expect(stop.locator('.skill-cloud')).toBeVisible();
+    for (const text of item.body || item.points || [item.description]) await expect(stop).toContainText(text);
+    expect(await stop.evaluate(node => node.querySelector('.skill-cloud').getBoundingClientRect().top >= node.querySelector('h3').getBoundingClientRect().bottom)).toBe(true);
+  }
+  for (const group of skillGroups) for (const skill of group.items) {
+    await expect(skills.getByRole('listitem',{name:skill + ' · ' + group.label, exact:true}).first()).toBeVisible();
+  }
 });
 
 test('reduced motion keeps all content visible and skill bubbles still', async ({page}) => {
@@ -51,10 +59,10 @@ test('scroll reveals work with motion enabled and keyboard focus stays visible',
   await panel.scrollIntoViewIfNeeded();
   await expect(panel).toHaveClass(/is-revealed/);
   await expect(panel).toHaveCSS('opacity', '1');
-  const experience = page.getByRole('link', {name: 'More about my experience'});
-  await experience.focus();
-  await expect(experience).toBeInViewport();
-  await expect(experience.locator('xpath=ancestor::article')).toHaveCSS('opacity', '1');
+  const research = page.getByRole('link', {name: 'Read my research'});
+  await research.focus();
+  await expect(research).toBeInViewport();
+  await expect(research.locator('xpath=ancestor::div[contains(@class,"reveal")]')).toHaveCSS('opacity', '1');
 });
 
 test('content remains readable when IntersectionObserver is unavailable', async ({page}) => {

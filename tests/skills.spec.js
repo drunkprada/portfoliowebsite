@@ -1,4 +1,5 @@
 import {test, expect} from '@playwright/test';
+import {experienceJourney} from '../src/data.js';
 
 test.beforeEach(async ({page}) => {
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1'
@@ -9,8 +10,8 @@ for (const width of [320,1440]) {
   test(`skills follow the winding trail after text reflows at ${width}px`, async ({page}) => {
     await page.setViewportSize({width,height:900});
     await page.goto('/#home');
-    await expect(page.locator('.skill-bubble')).toHaveCount(28);
-    await expect(page.locator('.skill-trail__branch')).toHaveCount(4);
+    await expect(page.locator('.skill-bubble')).toHaveCount(experienceJourney.reduce((count,step)=>count+step.skills.length,0));
+    await expect(page.locator('.skill-trail__branch')).toHaveCount(experienceJourney.length);
     expect(await page.locator('.intro .skill-bubble').count()).toBe(0);
     expect(await page.evaluate(() => document.querySelector('.skills-section').offsetTop > document.querySelector('.home-resume').offsetTop)).toBe(true);
     const anchors = await page.locator('.skill-journey').evaluate(root => {
@@ -25,7 +26,7 @@ for (const width of [320,1440]) {
       });
     });
     anchors.forEach(anchor => expect(anchor.error).toBeLessThan(1));
-    expect(anchors.map(anchor=>anchor.right)).toEqual(width===320 ? [true,true,true,true] : [true,false,true,false]);
+    expect(anchors.map(anchor=>anchor.right)).toEqual(experienceJourney.map((_,index)=>width===320 || index%2===0));
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.setViewportSize({width:width===320?1440:320,height:900});
     await expect.poll(() => page.locator('.skill-trail').evaluate(svg=>Math.abs(svg.viewBox.baseVal.width-svg.parentElement.clientWidth))).toBeLessThan(1);

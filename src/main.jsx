@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {github, papers, projects, achievements, roles, communities, education, skillGroups, skillJourney, resume} from './data';
+import {github, papers, projects, achievements, roles, communities, education, skillGroups, experienceJourney, resume} from './data';
 import {SkillTrail} from './SkillTrail';
 import './styles.css';
 
@@ -81,23 +81,27 @@ function Reveal({as: Tag = 'div', className = '', children, ...rest}) {
   return <Tag ref={ref} className={'reveal ' + className} {...rest}>{children}</Tag>;
 }
 
-function Skills() {
+function ExperienceTimeline() {
   const journey = useRef(null);
   return <section className="skills-section" aria-labelledby="skills-heading">
-    <Reveal className="home-sectionhead"><span className="label">An evolving toolkit</span><h2 id="skills-heading">Skills, along the way.</h2></Reveal>
+    <Reveal className="home-sectionhead"><span className="label">Work, communities &amp; a little curiosity</span><h2 id="skills-heading">Experience, along the way.</h2></Reveal>
     <div className="skill-journey" ref={journey}>
       <SkillTrail container={journey}/>
-      <ol className="skill-stops" aria-label="Skills and current learning">
-      {skillJourney.map((step, index) => <li className="skill-stop" key={step.id}>
+      <ol className="skill-stops" aria-label="Experience and skills">
+      {experienceJourney.map((step, index) => <li className="skill-stop" key={step.id}>
         <span className={'skill-stop__marker tone-' + step.tone + (step.id === 'learning' ? ' is-learning' : '')} aria-hidden="true">{step.id === 'learning' ? '✧' : String(index + 1).padStart(2,'0')}</span>
         <Reveal className="skill-stop__body">
-          <span className="label">{step.id === 'learning' ? 'Exploring now' : ['The foundations','Making connections','AI & workflows'][index]}</span>
-          <h3>{step.title}</h3><p>{step.description}</p>
-          <ul className="skill-cloud" aria-label={step.title}>
-            {step.groups.flatMap(label => {
-              const group = skillGroups.find(group => group.label === label);
-              return group.items.map((name, skillIndex) => <li key={name} className={'skill-bubble tone-' + group.tone}
-                style={{'--tilt':(skillIndex % 3 - 1) * 2 + 'deg','--bubble-delay':skillIndex * 35 + 'ms'}} aria-label={name + ' · ' + group.label}>{name}</li>);
+          <span className="label">{step.label}</span>
+          <h3>{step.title}</h3>
+          {step.meta && <p className="skill-stop__meta">{step.meta}</p>}
+          <p>{step.description}</p>
+          {step.points && <ul className="skill-stop__points">{step.points.map(point => <li key={point}>{point}</li>)}</ul>}
+          <ul className="skill-cloud" aria-label={'Skills · ' + step.title}>
+            {step.skills.map((name, skillIndex) => {
+              const group = skillGroups.find(group => group.items.includes(name));
+              return <li key={name} className={'skill-bubble tone-' + (group?.tone || step.tone)}
+                style={{'--tilt':(skillIndex % 3 - 1) * 2 + 'deg','--bubble-delay':skillIndex * 35 + 'ms'}}
+                aria-label={name + ' · ' + (group?.label || 'Experience')}>{name}</li>;
             })}
           </ul>
         </Reveal>
@@ -139,32 +143,15 @@ function Home() {
     </section>
 
     <section className="home-resume" aria-labelledby="overview-heading">
-      <Reveal className="home-sectionhead"><span className="label">A little about me</span><h2 id="overview-heading">At a glance</h2></Reveal>
+      <Reveal className="home-sectionhead"><span className="label">Where I’m learning</span><h2 id="overview-heading">Education</h2></Reveal>
       <div className="resume-grid">
-        <Reveal as="article" className="card resume-panel">
-          <h3>Education</h3>
-          {education.map(item => <div className="resume-entry" key={item.name}>
-            <h4>{item.name}</h4><p>{item.qualification}</p><p className="muted">{item.detail}</p><span className="resume-date">{item.date}</span>
-          </div>)}
-        </Reveal>
-        <Reveal as="article" className="card resume-panel">
-          <h3>Experience</h3>
-          {roles.map(role => <div className="resume-entry" key={role.name}>
-            <h4>{role.role}</h4><p>{role.name}</p><span className="resume-date">{role.date}</span>
-          </div>)}
-          <a className="text-link" href="#experience">More about my experience ↗</a>
-        </Reveal>
-        <Reveal as="article" className="card resume-panel">
-          <h3>Societies</h3>
-          {communities.map(community => <div className="resume-entry" key={community.name}>
-            <h4>{community.name}</h4><p>Senior Core Member · {community.duration}</p><p className="muted">Frontend development, organising events{community.name.startsWith('CodeChef') ? ' and hackathon judging.' : ' and sponsorship support.'}</p>
-          </div>)}
-        </Reveal>
+        {education.map(item => <Reveal as="article" className="card resume-panel" key={item.name}>
+          <h3>{item.name}</h3><p>{item.qualification}</p><p className="muted">{item.detail}</p><span className="resume-date">{item.date}</span>
+        </Reveal>)}
       </div>
     </section>
 
-    <Skills/>
-    <Hackathons/>
+    <ExperienceTimeline/>
     <Reveal as="section" className="contact-strip" aria-labelledby="contact-heading">
       <div><h2 id="contact-heading">Get in touch</h2><p>For opportunities, collaborations or a conversation.</p></div>
       <a className="text-link" href={'mailto:' + email}>{email} ↗</a>

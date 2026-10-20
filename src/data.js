@@ -103,9 +103,34 @@ export const skillGroups = [
   {label: 'Current learning', tone: 'lemon', items: ['Verilog coursework', 'Embedded C', 'Altium Designer']},
 ];
 
-export const skillJourney = [
-  {id:'foundations', title:'A foundation to build on.', description:'Languages, problem-solving and the tools I reach for while building.', groups:['Languages','Tools & foundations'], tone:'lilac'},
-  {id:'building', title:'From ideas to working things.', description:'Interfaces, APIs and the services that connect them.', groups:['Frontend & design','Backend & data'], tone:'mint'},
-  {id:'ai', title:'A little intelligence in the mix.', description:'Working with data, models and the workflows around them.', groups:['AI & analytics'], tone:'peach'},
-  {id:'learning', title:'Still curious. Still learning.', description:'Currently exploring Verilog, embedded C and PCB design alongside my degree.', groups:['Current learning'], tone:'lemon'},
+// Reuse the full experience content so the homepage and detail tab stay in sync.
+const experienceStops = [
+  ...roles.map((role, index) => ({
+    id: 'work-' + index, title: role.name, label: role.role,
+    meta: role.date + ' · ' + role.location, description: role.intro,
+    points: role.body, skills: role.tags, tone: ['mint','rose','lilac','peach'][index],
+  })),
+  ...communities.map((community, index) => ({
+    id: 'society-' + index, title: community.name, label: community.role,
+    meta: community.duration, description: community.context, points: community.points,
+    skills: index === 0 ? ['C/C++','Frontend development','Event organising','Sponsorship support']
+      : ['React','JavaScript','Frontend development','Hackathon judging','Event organising'],
+    tone: index === 0 ? 'blue' : 'rose',
+  })),
+  ...achievements.map((achievement, index) => ({
+    id: 'hackathon-' + index, title: achievement.title, label: 'Hackathon · ' + achievement.result,
+    description: achievement.description,
+    skills: [['Prototyping','Teamwork'],['AI','Teamwork'],['API integration','Content filtering','Question generation']][index],
+    tone: ['lemon','peach','lilac'][index],
+  })),
+];
+const experienceSkills = new Set(experienceStops.flatMap(step => step.skills));
+export const experienceJourney = [
+  ...experienceStops,
+  {id:'toolkit', title:'Also in my toolkit.', label:'Beyond these experiences',
+    description:'More languages, tools and foundations I bring to my projects and coursework.',
+    skills:skillGroups.filter(group => group.label !== 'Current learning').flatMap(group => group.items).filter(skill => !experienceSkills.has(skill)), tone:'mint'},
+  {id:'learning', title:'Still curious. Still learning.', label:'Exploring now',
+    description:'Currently exploring Verilog, embedded C and PCB design alongside my degree.',
+    skills:skillGroups.find(group => group.label === 'Current learning').items, tone:'lemon'},
 ];

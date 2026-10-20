@@ -66,9 +66,11 @@ in a new tab. This is the original uploaded PDF, copied without alterations.
 Replace that asset when publishing a new résumé and update the asset check's
 checksum to match the new file.
 
-The home page shows education, work, society leadership, a winding skills
-timeline and hackathon outcomes. The timeline follows the owner's sketch and
-groups the existing skills into a learning path below the résumé overview.
+The home page shows education followed by a winding experience timeline.
+Work roles, society leadership and hackathon outcomes each have their relevant
+skill bubbles underneath. The timeline follows the owner's sketch and reuses
+the role and society content from the Experience tab, with no duplicate summary
+cards on the homepage. General tools and current learning close the trail.
 Detailed research and project content stays in its own tab.
 The reference and original design choices are recorded in `DESIGN.md`.
 

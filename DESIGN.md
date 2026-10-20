@@ -3,13 +3,15 @@
 ## Direction
 
 The visual reference is the owner's sketch supplied on 19 October 2026: a
-winding vertical stroke with alternating branches. Skills follow that shape
-below the introduction and resume overview. Keep the established Google Sans
+winding vertical stroke with alternating branches. Experience follows that shape
+below the introduction and education overview. Keep the established Google Sans
 typography, neutral surfaces, pastel skill colours and light/dark themes.
 
-The four chapters group existing skills into foundations, building interfaces
-and services, AI workflows, and current learning. Their order is a thematic
-learning path; it does not assign dates or proficiency scores.
+The stops contain work roles, society contributions and hackathon outcomes,
+with relevant skill bubbles underneath each experience. Work dates and society
+durations come from existing content; undated events do not receive invented
+dates. A broader toolkit and current learning close the trail. Shared role and
+society data keep the homepage aligned with the Experience tab.
 
 ## Layout and motion
 
