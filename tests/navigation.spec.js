@@ -181,7 +181,7 @@ test('Experience navigation restores work and society contributions', async ({pa
   await expect(page.locator('.community__meta .label')).toHaveText([
     'Senior Core Member · Frontend Developer', 'Senior Core Member · Frontend Developer',
   ]);
-  await expect(page.locator('.community__meta .muted')).toHaveText(['1 year', '1 year']);
+  await expect(page.locator('.community__meta .muted')).toHaveText(['2024 – 2025 · 1 year', '2024 – 2025 · 1 year']);
   await page.reload();
   await expect(page.locator('main h1')).toHaveText('Where I’ve worked');
 });

@@ -41,6 +41,25 @@ test('home is a mini resume with skills and experience, without paper or project
   }
 });
 
+test('experience follows the confirmed years and skill bubbles stay with their context', async ({page}) => {
+  await page.goto('/#home');
+  await expect(page.locator('.skill-stop h3')).toHaveText([
+    'GITEX Teens in AI', 'Murdoch University Hackathon', 'Manipal Institute of Higher Education',
+    'Legal Horizons', 'GDSC DevJams',
+    'IEEE Computer Society, VIT', 'CodeChef, VIT', 'Nectar Building Technologies Inc.',
+    'Dell Technologies', 'Also in my toolkit.', 'Still curious. Still learning.',
+  ]);
+  const stop = title => page.locator('.skill-stop').filter({has:page.getByRole('heading',{name:title,exact:true})});
+  for (const [title,date] of [['GITEX Teens in AI','2022'],['Murdoch University Hackathon','2023'],['GDSC DevJams','2024'],['CodeChef, VIT','2024 – 2025 · 1 year'],['IEEE Computer Society, VIT','2024 – 2025 · 1 year']]) {
+    await expect(stop(title).locator('.skill-stop__meta')).toHaveText(date);
+  }
+  await expect(stop('Dell Technologies').getByRole('list',{name:'Skills · Dell Technologies'})).toContainText('REST APIs');
+  await expect(stop('CodeChef, VIT').getByRole('list',{name:'Skills · CodeChef, VIT'})).toContainText('React');
+  await expect(page.locator('.education-card__chapter')).toHaveText(['Current chapter','Where it began']);
+  await expect(page.locator('.education-card').first()).toContainText('Expected 2028');
+  await expect(page.locator('.education-card').last()).toContainText('8.75/10');
+});
+
 test('reduced motion keeps all content visible and skill bubbles still', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'reduce'});
   await page.goto('/#home');

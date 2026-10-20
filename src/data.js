@@ -56,21 +56,22 @@ export const projects = [
   },
 ];
 export const achievements = [
-  {result: '1st place', title: 'Murdoch University Hackathon', description: 'First place at a team hackathon in Dubai. Our five-person team built a volunteering-services app in three days, taking an idea through a working prototype within the competition deadline.'},
-  {result: 'Winner', title: 'GITEX Teens in AI', description: 'A team hackathon focused on artificial intelligence at GITEX. We worked together on the challenge and won the Teens in AI competition.'},
-  {result: 'Top 10', title: 'GDSC DevJams', description: 'Reached the top 10 among more than 2,000 entrants with an AI-assisted learning app. It generated quizzes, summaries and flashcards, integrated Wikipedia and YouTube APIs, and included backend logic for content filtering and question generation.'},
+  {year: 2023, skills: ['Prototyping','Teamwork'], result: '1st place', title: 'Murdoch University Hackathon', description: 'First place at a team hackathon in Dubai. Our five-person team built a volunteering-services app in three days, taking an idea through a working prototype within the competition deadline.'},
+  {year: 2022, skills: ['AI','Teamwork'], result: 'Winner', title: 'GITEX Teens in AI', description: 'A team hackathon focused on artificial intelligence at GITEX. We worked together on the challenge and won the Teens in AI competition.'},
+  {year: 2024, skills: ['API integration','Content filtering','Question generation'], result: 'Top 10', title: 'GDSC DevJams', description: 'Reached the top 10 among more than 2,000 entrants with an AI-assisted learning app. It generated quizzes, summaries and flashcards, integrated Wikipedia and YouTube APIs, and included backend logic for content filtering and question generation.'},
 ];
 export const roles = [
-  {name:'Dell Technologies',role:'AI Intern',date:'Jun – Aug 2026',location:'Dubai, UAE',intro:'Backend services and AI workflows for a 500-engineer service team.',body:['Built Python/FastAPI services and REST APIs for an AI calling and recruitment assistant.','Developed an ElevenLabs-based voice agent and connected it with backend services and n8n workflows.','Shipped a resume parser used by staff in the candidate-screening workflow, translating requirements into structured candidate data.'],tags:['Python','FastAPI','n8n','ElevenLabs']},
-  {name:'Nectar Building Technologies Inc.',role:'UI Intern',date:'May – Jun 2025',location:'Coimbatore, India',intro:'Frontend work on Nectar Connect, the company’s building-operations platform.',body:['Contributed to the Front-End Development team working on Nectar Connect.','Worked on the interface of a platform used to connect, optimise and operate buildings.'],tags:['Frontend development','UI development']},
-  {name:'Legal Horizons',role:'Frontend Developer',date:'Jul – Sep 2023',location:'Dubai, UAE',intro:'Responsive frontend work within an existing company website.',body:['Built frontend components for the company’s main page as part of an existing codebase.','Worked with designers and stakeholders using Figma and Webflow to deliver user-facing features.'],tags:['Frontend development','Figma','Webflow']},
-  {name:'Manipal Institute of Higher Education',role:'Research Assistant Intern',date:'Jun – Aug 2023',location:'Dubai, UAE',intro:'An introduction to working with research datasets.',body:['Supported data preprocessing for AI/ML research using Python, NumPy and TensorFlow.','Worked with Power BI visualisations and contributed to literature reviews and academic writing.'],tags:['Python','NumPy','TensorFlow','Power BI']},
+  {year:2026,month:6,name:'Dell Technologies',role:'AI Intern',date:'Jun – Aug 2026',location:'Dubai, UAE',intro:'Backend services and AI workflows for a 500-engineer service team.',body:['Built Python/FastAPI services and REST APIs for an AI calling and recruitment assistant.','Developed an ElevenLabs-based voice agent and connected it with backend services and n8n workflows.','Shipped a resume parser used by staff in the candidate-screening workflow, translating requirements into structured candidate data.'],tags:['Python','FastAPI','REST APIs','SQL','n8n','ElevenLabs']},
+  {year:2025,month:5,name:'Nectar Building Technologies Inc.',role:'UI Intern',date:'May – Jun 2025',location:'Coimbatore, India',intro:'Frontend work on Nectar Connect, the company’s building-operations platform.',body:['Contributed to the Front-End Development team working on Nectar Connect.','Worked on the interface of a platform used to connect, optimise and operate buildings.'],tags:['Frontend development','UI development']},
+  {year:2023,month:7,name:'Legal Horizons',role:'Frontend Developer',date:'Jul – Sep 2023',location:'Dubai, UAE',intro:'Responsive frontend work within an existing company website.',body:['Built frontend components for the company’s main page as part of an existing codebase.','Worked with designers and stakeholders using Figma and Webflow to deliver user-facing features.'],tags:['Frontend development','Figma','Webflow']},
+  {year:2023,month:6,name:'Manipal Institute of Higher Education',role:'Research Assistant Intern',date:'Jun – Aug 2023',location:'Dubai, UAE',intro:'An introduction to working with research datasets.',body:['Supported data preprocessing for AI/ML research using Python, NumPy and TensorFlow.','Worked with Power BI visualisations and contributed to literature reviews and academic writing.'],tags:['Python','NumPy','TensorFlow','Power BI']},
 ];
 
 export const communities = [
   {
     name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
-    role:'Senior Core Member · Frontend Developer', duration:'1 year',
+    skills:['C/C++','Frontend development','Event organising','Sponsorship support'],
+    role:'Senior Core Member · Frontend Developer', date:'2024 – 2025', year:2024, duration:'1 year',
     context:'A student chapter for computing projects, workshops and technical competitions.',
     points:[
       'Helped organise HackBattle and Cicada, and supported the HackBattle sponsorship team.',
@@ -79,7 +80,8 @@ export const communities = [
   },
   {
     name:'CodeChef, VIT', href:'https://www.codechefvit.com/',
-    role:'Senior Core Member · Frontend Developer', duration:'1 year',
+    skills:['React','JavaScript','Frontend development','Hackathon judging','Event organising'],
+    role:'Senior Core Member · Frontend Developer', date:'2024 – 2025', year:2024, duration:'1 year',
     context:'A student-run coding community behind development workshops and the DevSOC hackathon.',
     points:[
       'Helped organise Cook-Off and the DevSOC hackathon.',
@@ -90,8 +92,8 @@ export const communities = [
 ];
 
 export const education = [
-  {name: 'University of Edinburgh', qualification: 'BEng Electronics & Computer Science', detail: 'Year 3 transfer · Expected 2028', date: '2026 – 2028'},
-  {name: 'Vellore Institute of Technology', qualification: 'Computer Science & Engineering (AI & ML)', detail: 'Completed Year 2 · CGPA 8.75/10', date: 'Transferred in 2026'},
+  {mark:'Ed', chapter:'Current chapter', tone:'mint', focus:['Electronics','Computer science'], name: 'University of Edinburgh', qualification: 'BEng Electronics & Computer Science', detail: 'Year 3 transfer · Expected 2028', date: '2026 – 2028'},
+  {mark:'VIT', chapter:'Where it began', tone:'lilac', focus:['Computer science','AI & ML'], name: 'Vellore Institute of Technology', qualification: 'Computer Science & Engineering (AI & ML)', detail: 'Completed Year 2 · CGPA 8.75/10', date: 'Transferred in 2026'},
 ];
 
 export const skillGroups = [
@@ -106,27 +108,27 @@ export const skillGroups = [
 // Reuse the full experience content so the homepage and detail tab stay in sync.
 const experienceStops = [
   ...roles.map((role, index) => ({
-    id: 'work-' + index, title: role.name, label: role.role,
+    id: 'work-' + index, year:role.year, month:role.month, title: role.name, label: role.role,
     meta: role.date + ' · ' + role.location, description: role.intro,
     points: role.body, skills: role.tags, tone: ['mint','rose','lilac','peach'][index],
   })),
   ...communities.map((community, index) => ({
-    id: 'society-' + index, title: community.name, label: community.role,
-    meta: community.duration, description: community.context, points: community.points,
-    skills: index === 0 ? ['C/C++','Frontend development','Event organising','Sponsorship support']
-      : ['React','JavaScript','Frontend development','Hackathon judging','Event organising'],
+    id: 'society-' + index, year:community.year, title: community.name, label: community.role,
+    meta: community.date + ' · ' + community.duration, description: community.context, points: community.points,
+    skills: community.skills,
     tone: index === 0 ? 'blue' : 'rose',
   })),
   ...achievements.map((achievement, index) => ({
-    id: 'hackathon-' + index, title: achievement.title, label: 'Hackathon · ' + achievement.result,
-    description: achievement.description,
-    skills: [['Prototyping','Teamwork'],['AI','Teamwork'],['API integration','Content filtering','Question generation']][index],
+    id: 'hackathon-' + index, year:achievement.year, title: achievement.title, label: 'Hackathon · ' + achievement.result,
+    meta:String(achievement.year), description: achievement.description,
+    skills: achievement.skills,
     tone: ['lemon','peach','lilac'][index],
   })),
 ];
 const experienceSkills = new Set(experienceStops.flatMap(step => step.skills));
 export const experienceJourney = [
-  ...experienceStops,
+  // Oldest first. DevJams precedes the society year; no months are invented.
+  ...experienceStops.sort((a,b) => a.year - b.year || (a.month || 0) - (b.month || 0) || Number(b.id.startsWith('hackathon')) - Number(a.id.startsWith('hackathon'))),
   {id:'toolkit', title:'Also in my toolkit.', label:'Beyond these experiences',
     description:'More languages, tools and foundations I bring to my projects and coursework.',
     skills:skillGroups.filter(group => group.label !== 'Current learning').flatMap(group => group.items).filter(skill => !experienceSkills.has(skill)), tone:'mint'},

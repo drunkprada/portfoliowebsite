@@ -8,9 +8,11 @@ below the introduction and education overview. Keep the established Google Sans
 typography, neutral surfaces, pastel skill colours and light/dark themes.
 
 The stops contain work roles, society contributions and hackathon outcomes,
-with relevant skill bubbles underneath each experience. Work dates and society
-durations come from existing content; undated events do not receive invented
-dates. A broader toolkit and current learning close the trail. Shared role and
+with relevant skill bubbles underneath each experience. The trail runs oldest to newest: GITEX (2022), Murdoch and early work
+(2023), DevJams (2024), societies (2024–2025), Nectar (2025), then Dell (2026).
+The owner confirmed the event years and society dates; no event months are
+invented. Skill bubbles follow the relevant work, with other tools kept in
+the broader toolkit rather than assigned to an unsupported role. A broader toolkit and current learning close the trail. Shared role and
 society data keep the homepage aligned with the Experience tab.
 
 ## Layout and motion
@@ -55,3 +57,6 @@ The uploaded resume, education, work, society contributions, project context
 and paper assets stay available in their respective sections and routes.
 The resume button opens the owner's original PDF. The sketch guides the curve
 and is not published as a page image.
+
+Education uses mint and lilac chapter cards, original initial marks (not university logos),
+small line drawings, degree details and focus labels. Hover motion respects reduced motion.

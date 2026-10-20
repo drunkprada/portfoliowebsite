@@ -119,7 +119,7 @@ function Hackathons() {
       {achievements.map((achievement, index) => <Reveal as="article" className="card hackathon" key={achievement.title}>
         <span className={'award-result tone-' + ['lemon', 'rose', 'lilac'][index]}>{achievement.result}</span>
         <h3>{achievement.title}</h3>
-        <p>{achievement.description}</p>
+        <p className="resume-date">{achievement.year}</p><p>{achievement.description}</p>
       </Reveal>)}
     </div>
   </section>;
@@ -143,10 +143,14 @@ function Home() {
     </section>
 
     <section className="home-resume" aria-labelledby="overview-heading">
-      <Reveal className="home-sectionhead"><span className="label">Where I’m learning</span><h2 id="overview-heading">Education</h2></Reveal>
+      <Reveal className="home-sectionhead"><span className="label">Two chapters, one journey</span><h2 id="overview-heading">Education</h2></Reveal>
       <div className="resume-grid">
-        {education.map(item => <Reveal as="article" className="card resume-panel" key={item.name}>
-          <h3>{item.name}</h3><p>{item.qualification}</p><p className="muted">{item.detail}</p><span className="resume-date">{item.date}</span>
+        {education.map(item => <Reveal as="article" className={'card resume-panel education-card education-card--' + item.tone} key={item.name}>
+          <div className="education-card__top"><span className="education-card__mark" aria-hidden="true">{item.mark}</span><span className="education-card__chapter">{item.chapter}</span></div>
+          <svg className="education-card__sketch" viewBox="0 0 160 120" aria-hidden="true"><path d="M20 90 Q35 15 80 45 T145 25 M30 105 Q80 110 115 60 T150 65"/><circle cx="80" cy="45" r="7"/><circle cx="115" cy="60" r="4"/></svg>
+          <h3>{item.name}</h3><p className="education-card__degree">{item.qualification}</p>
+          <p className="education-card__detail">{item.detail}</p>
+          <div className="education-card__footer"><span className="resume-date">{item.date}</span><div className="education-card__focus">{item.focus.map(focus => <span key={focus}>{focus}</span>)}</div></div>
         </Reveal>)}
       </div>
     </section>
@@ -280,7 +284,7 @@ function Experience() {
       <h2 id="communities-title">Student societies</h2>
       <div className="community-list">
         {communities.map(community => <Reveal as="article" className="card community" key={community.name}>
-          <div className="community__meta"><span className="label">{community.role}</span><span className="muted">{community.duration}</span></div>
+          <div className="community__meta"><span className="label">{community.role}</span><span className="muted">{community.date} · {community.duration}</span></div>
           <h3><External href={community.href}>{community.name} ↗</External></h3>
           <p>{community.context}</p>
           <ul>{community.points.map(point => <li key={point}>{point}</li>)}</ul>
