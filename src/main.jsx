@@ -18,7 +18,7 @@ const External = ({href, className = '', children, ...rest}) =>
   <a className={className} href={href} target="_blank" rel="noreferrer" {...rest}>{children}</a>;
 
 /* ---------------- Floating nav ---------------- */
-function Nav({page, dark, setDark}) {
+function Nav({page, dark, setDark, onReselect}) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(scrollY > 8);
@@ -30,7 +30,8 @@ function Nav({page, dark, setDark}) {
     <header className="nav">
       <nav className="nav__links" aria-label="Main">
         {tabs.map(t => <a key={t.id} href={'#' + t.id} className={page === t.id ? 'is-active' : undefined}
-          aria-current={page === t.id ? 'page' : undefined}>{t.label}</a>)}
+          aria-current={page === t.id ? 'page' : undefined}
+          onClick={page === t.id ? onReselect : undefined}>{t.label}</a>)}
       </nav>
       <div className="nav__right">
         <button className="theme" onClick={() => setDark(!dark)} aria-pressed={dark}
@@ -131,7 +132,7 @@ function Home() {
     <section className="intro">
       <Reveal className="intro__copy">
         <p className="intro__eyebrow"><span className="live" aria-hidden="true"/>Edinburgh · {time}</p>
-        <h1 className="intro__name">Hi, I’m Sahana.</h1>
+        <h1 id="home-heading" className="intro__name">Hi, I’m Sahana.</h1>
         <p className="intro__lede">I’m a third-year Electronics &amp; Computer Science student at the University of Edinburgh, with a background in backend development and AI research.</p>
         <p className="intro__bio">Previously at Dell in Dubai, building backend services and AI recruitment tools. Before Edinburgh, I studied Computer Science at VIT.</p>
         <div className="intro__cta">
@@ -170,10 +171,10 @@ function PaperPreview({paper}) {
   </External>;
 }
 
-function PageHead({eyebrow, title, lede}) {
+function PageHead({id, eyebrow, title, lede}) {
   return <header className="pagehead">
     <span className="label">{eyebrow}</span>
-    <h1>{title}</h1>
+    <h1 id={id}>{title}</h1>
     {lede && <p>{lede}</p>}
   </header>;
 }
@@ -193,7 +194,7 @@ function Details({children, label = 'Read more'}) {
 function Research() {
   const [lead, ...rest] = papers;
   return <section className="page">
-    <PageHead eyebrow="Research" title="Papers" lede="How operating-system settings change AI inference, and how to keep training data useful without exposing people."/>
+    <PageHead id="research-heading" eyebrow="Research" title="Papers" lede="How operating-system settings change AI inference, and how to keep training data useful without exposing people."/>
 
     <article className="card feature">
       <div className="feature__media"><PaperPreview paper={lead}/></div>
@@ -243,7 +244,7 @@ function Research() {
 /* ---------------- Projects ---------------- */
 function Projects() {
   return <section className="page">
-    <PageHead eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows, with links to the code."/>
+    <PageHead id="projects-heading" eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows, with links to the code."/>
     <div className="project-list">
       {projects.map(p => <Reveal as="article" className="card proj" key={p.id}>
         <div className="proj__body">
@@ -267,7 +268,7 @@ function Projects() {
 /* ---------------- Experience ---------------- */
 function Experience() {
   return <section className="page">
-    <PageHead eyebrow="Experience" title="Where I’ve worked" lede="Internships, research work and student societies."/>
+    <PageHead id="experience-heading" eyebrow="Experience" title="Where I’ve worked" lede="Internships, research work and student societies."/>
     <div className="experience-list">
       {roles.map(role => <Reveal as="article" className="experience-entry" key={role.name}>
         <div className="experience-entry__meta"><span>{role.date}</span><span>{role.location}</span></div>
@@ -303,11 +304,15 @@ function App() {
   const [dark, setDark] = useState(() => document.documentElement.dataset.theme === 'dark');
   const main = useRef(null);
   const first = useRef(true);
+  const focusPageStart = () => {
+    main.current?.focus({preventScroll: true});
+    scrollTo({top: 0, behavior: 'instant'});
+  };
   useEffect(() => { const h = () => setPage(currentPage()); addEventListener('hashchange', h); return () => removeEventListener('hashchange', h); }, []);
   useEffect(() => {
     document.title = page === 'home' ? 'Sahana Naganandh' : `${tabs.find(t => t.id === page).label} · Sahana Naganandh`;
     if (first.current) { first.current = false; return; }
-    main.current?.focus({preventScroll: true}); scrollTo({top: 0, behavior: 'instant'});
+    focusPageStart();
   }, [page]);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? 'dark' : 'light';
@@ -317,8 +322,8 @@ function App() {
   const Page = views[page];
   return <>
     <a className="skip" href="#main" onClick={e => { e.preventDefault(); main.current?.focus(); }}>Skip to content</a>
-    <Nav page={page} dark={dark} setDark={setDark}/>
-    <main id="main" tabIndex={-1} ref={main} className={page === 'home' ? 'is-home' : undefined}>
+    <Nav page={page} dark={dark} setDark={setDark} onReselect={e => { e.preventDefault(); focusPageStart(); }}/>
+    <main id="main" tabIndex={-1} ref={main} aria-labelledby={page + '-heading'} className={page === 'home' ? 'is-home' : undefined}>
       <div key={page} className="enter"><Page/></div>
     </main>
     <Footer/>

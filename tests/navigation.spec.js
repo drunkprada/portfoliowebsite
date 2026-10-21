@@ -185,3 +185,28 @@ test('Experience navigation restores work and society contributions', async ({pa
   await page.reload();
   await expect(page.locator('main h1')).toHaveText('Where I’ve worked');
 });
+
+test('page landmarks are named and the active tab returns to the page start', async ({page}) => {
+  await page.setViewportSize({width: 390, height: 844});
+  const headings = {
+    home: 'Hi, I’m Sahana.',
+    research: 'Papers',
+    projects: 'Things I’ve built',
+    experience: 'Where I’ve worked',
+  };
+  for (const [route, heading] of Object.entries(headings)) {
+    await page.goto('/#' + route);
+    const main = page.locator('main');
+    await expect(main).toHaveAttribute('aria-labelledby', route + '-heading');
+    await expect(page.locator('#' + route + '-heading')).toHaveText(heading);
+    await page.locator('.footer').scrollIntoViewIfNeeded();
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
+    const active = page.locator('.nav__links [aria-current="page"]');
+    await active.focus();
+    await page.keyboard.press('Enter');
+    await expect(main).toBeFocused();
+    await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+    await expect(page).toHaveURL(new RegExp('#' + route + '$'));
+  }
+});
+
