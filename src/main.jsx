@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {github, papers, projects, achievements, roles, communities, education, skillGroups, experienceJourney, resume} from './data';
-import {SkillTrail} from './SkillTrail';
 import './styles.css';
 
 const email = 'sahananaganandh@gmail.com';
@@ -46,7 +45,6 @@ function Nav({page, dark, setDark, onReselect}) {
 
 function Footer() {
   return <footer className="footer">
-    <span>© {new Date().getFullYear()} Sahana Naganandh · Edinburgh</span>
     <div className="footer__links">
       {email && <a href={'mailto:' + email}>Email</a>}
       {linkedin && <External href={linkedin}>LinkedIn</External>}
@@ -83,31 +81,35 @@ function Reveal({as: Tag = 'div', className = '', children, ...rest}) {
 }
 
 function ExperienceTimeline() {
-  const journey = useRef(null);
-  return <section className="skills-section" aria-labelledby="skills-heading">
-    <Reveal className="home-sectionhead"><span className="label">Work, communities &amp; a little curiosity</span><h2 id="skills-heading">Experience, along the way.</h2></Reveal>
-    <div className="skill-journey" ref={journey}>
-      <SkillTrail container={journey}/>
-      <ol className="skill-stops" aria-label="Experience and skills">
-      {experienceJourney.map((step, index) => <li className="skill-stop" key={step.id}>
-        <span className={'skill-stop__marker tone-' + step.tone + (step.id === 'learning' ? ' is-learning' : '')} aria-hidden="true">{step.id === 'learning' ? '✧' : String(index + 1).padStart(2,'0')}</span>
-        <Reveal className="skill-stop__body">
-          <span className="label">{step.label}</span>
+  return <section className="experience-strip" aria-labelledby="journey-heading">
+    <div className="home-sectionhead section-heading">
+      <h2 id="journey-heading">Experience</h2>
+      <a className="text-link" href="#experience">View experience ↗</a>
+    </div>
+    <div className="journey-scroll" tabIndex={0} role="region" aria-label="Experience timeline, scroll horizontally">
+      <ol className="journey-stops">
+        {experienceJourney.filter(step => step.year).map(step => <li className="journey-stop" key={step.id}>
+          <span className={'journey-dot tone-' + step.tone} aria-hidden="true"/>
+          <p className="journey-date">{step.meta}</p>
           <h3>{step.title}</h3>
-          {step.meta && <p className="skill-stop__meta">{step.meta}</p>}
-          <p>{step.description}</p>
-          {step.points && <ul className="skill-stop__points">{step.points.map(point => <li key={point}>{point}</li>)}</ul>}
-          <ul className="skill-cloud" aria-label={'Skills · ' + step.title}>
-            {step.skills.map((name, skillIndex) => {
-              const group = skillGroups.find(group => group.items.includes(name));
-              return <li key={name} className={'skill-bubble tone-' + (group?.tone || step.tone)}
-                style={{'--tilt':(skillIndex % 3 - 1) * 2 + 'deg','--bubble-delay':skillIndex * 35 + 'ms'}}
-                aria-label={name + ' · ' + (group?.label || 'Experience')}>{name}</li>;
-            })}
-          </ul>
-        </Reveal>
-      </li>)}
+          <p className="journey-role">{step.label}</p>
+        </li>)}
       </ol>
+    </div>
+  </section>;
+}
+
+function Skills() {
+  return <section className="skills-section" aria-labelledby="skills-heading">
+    <Reveal className="home-sectionhead"><h2 id="skills-heading">Skills</h2></Reveal>
+    <div className="skills-groups">
+      {skillGroups.map(group => <Reveal className="skills-group" key={group.label}>
+        <h3>{group.label}</h3>
+        <ul className="skill-cloud" aria-label={group.label}>
+          {group.items.map((name, index) => <li key={name} className={'skill-bubble tone-' + group.tone}
+            style={{'--tilt':(index % 3 - 1) + 'deg'}}>{name}</li>)}
+        </ul>
+      </Reveal>)}
     </div>
   </section>;
 }
@@ -115,7 +117,7 @@ function ExperienceTimeline() {
 function Hackathons() {
   const heading = React.useId();
   return <section className="hackathons" aria-labelledby={heading}>
-    <Reveal className="home-sectionhead"><span className="label">Building with a team</span><h2 id={heading}>Hackathons</h2></Reveal>
+    <Reveal className="home-sectionhead"><h2 id={heading}>Hackathons</h2></Reveal>
     <div className="hackathon-grid">
       {achievements.map((achievement, index) => <Reveal as="article" className="card hackathon" key={achievement.title}>
         <span className={'award-result tone-' + ['lemon', 'rose', 'lilac'][index]}>{achievement.result}</span>
@@ -144,19 +146,22 @@ function Home() {
     </section>
 
     <section className="home-resume" aria-labelledby="overview-heading">
-      <Reveal className="home-sectionhead"><span className="label">Two chapters, one journey</span><h2 id="overview-heading">Education</h2></Reveal>
-      <div className="resume-grid">
-        {education.map(item => <Reveal as="article" className={'card resume-panel education-card education-card--' + item.tone} key={item.name}>
-          <div className="education-card__top"><span className="education-card__mark" aria-hidden="true">{item.mark}</span><span className="education-card__chapter">{item.chapter}</span></div>
-          <svg className="education-card__sketch" viewBox="0 0 160 120" aria-hidden="true"><path d="M20 90 Q35 15 80 45 T145 25 M30 105 Q80 110 115 60 T150 65"/><circle cx="80" cy="45" r="7"/><circle cx="115" cy="60" r="4"/></svg>
-          <h3>{item.name}</h3><p className="education-card__degree">{item.qualification}</p>
-          <p className="education-card__detail">{item.detail}</p>
-          <div className="education-card__footer"><span className="resume-date">{item.date}</span><div className="education-card__focus">{item.focus.map(focus => <span key={focus}>{focus}</span>)}</div></div>
+      <Reveal className="home-sectionhead"><h2 id="overview-heading">Education</h2></Reveal>
+      <div className="education-list">
+        {education.map(item => <Reveal as="article" className="education-row" key={item.name}>
+          <div className="education-row__date">{item.date}</div>
+          <div className="education-row__body">
+            <h3>{item.name}</h3>
+            <p>{item.qualification}</p>
+            <p className="education-row__detail">{item.detail}</p>
+          </div>
+          <span className={'education-row__mark tone-' + item.tone} aria-hidden="true">{item.mark}</span>
         </Reveal>)}
       </div>
     </section>
 
     <ExperienceTimeline/>
+    <Skills/>
     <Reveal as="section" className="contact-strip" aria-labelledby="contact-heading">
       <div><h2 id="contact-heading">Get in touch</h2><p>For opportunities, collaborations or a conversation.</p></div>
       <a className="text-link" href={'mailto:' + email}>{email} ↗</a>
@@ -173,7 +178,6 @@ function PaperPreview({paper}) {
 
 function PageHead({id, eyebrow, title, lede}) {
   return <header className="pagehead">
-    <span className="label">{eyebrow}</span>
     <h1 id={id}>{title}</h1>
     {lede && <p>{lede}</p>}
   </header>;
@@ -200,8 +204,8 @@ function Research() {
       <div className="feature__media"><PaperPreview paper={lead}/></div>
       <div className="feature__body">
         <span className="tag tag--win">{lead.status} · {lead.contribution}</span>
-        <h2>{lead.shortTitle}</h2>
-        <p className="feature__title">{lead.title}</p>
+        <h2>{lead.title}</h2>
+        <p className="muted">{lead.authors}</p>
         <p>{lead.summary}</p>
         <div className="feature__actions">{lead.links.map(([l, h]) => <External key={l} className="btn" href={h}>{l} ↗</External>)}</div>
         <div className="stats">

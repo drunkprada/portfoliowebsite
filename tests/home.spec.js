@@ -19,45 +19,27 @@ test('resume button serves the exact uploaded PDF', async ({page, request}) => {
     .toBe('daff2692c15fe4d124e65d93cf3a2120c720140fad7514a91d75d886b81b49df');
 });
 
-test('home is a mini resume with skills and experience, without paper or project cards', async ({page}) => {
+test('home separates compact experience, education and skills', async ({page}) => {
   await page.goto('/#home');
-  await expect(page.getByRole('heading', {name: 'Experience, along the way.', exact: true})).toBeVisible();
-  const skills = page.getByRole('list', {name: 'Experience and skills'});
-  for (const skill of ['Python', 'Java', 'C/C++', 'Spring Boot', 'TensorFlow', 'Postman', 'Claude Code', 'Altium Designer']) {
-    await expect(skills.getByRole('listitem', {name: skill + ' ·', exact: false}).first()).toBeVisible();
-  }
-  await expect(page.locator('.resume-grid')).toContainText('University of Edinburgh');
-  await expect(page.locator('.home .hackathon-grid, .home .community-list')).toHaveCount(0);
-  await expect(page.locator('.paper-preview, .project-list')).toHaveCount(0);
-  for (const item of [...roles, ...communities, ...achievements]) {
-    const stop = page.locator('.skill-stop').filter({has:page.getByRole('heading', {name:item.name || item.title, exact:true})});
-    await expect(stop).toHaveCount(1);
-    await expect(stop.locator('.skill-cloud')).toBeVisible();
-    for (const text of item.body || item.points || [item.description]) await expect(stop).toContainText(text);
-    expect(await stop.evaluate(node => node.querySelector('.skill-cloud').getBoundingClientRect().top >= node.querySelector('h3').getBoundingClientRect().bottom)).toBe(true);
-  }
-  for (const group of skillGroups) for (const skill of group.items) {
-    await expect(skills.getByRole('listitem',{name:skill + ' · ' + group.label, exact:true}).first()).toBeVisible();
-  }
-});
-
-test('experience follows the confirmed years and skill bubbles stay with their context', async ({page}) => {
-  await page.goto('/#home');
-  await expect(page.locator('.skill-stop h3')).toHaveText([
+  await expect(page.locator('.journey-stop')).toHaveCount(roles.length + communities.length + achievements.length);
+  await expect(page.locator('.journey-stop h3')).toHaveText([
     'GITEX Teens in AI', 'Murdoch University Hackathon', 'Manipal Institute of Higher Education',
-    'Legal Horizons', 'GDSC DevJams',
-    'IEEE Computer Society, VIT', 'CodeChef, VIT', 'Nectar Building Technologies Inc.',
-    'Dell Technologies', 'Also in my toolkit.', 'Still curious. Still learning.',
+    'Legal Horizons', 'GDSC DevJams', 'IEEE Computer Society, VIT', 'CodeChef, VIT',
+    'Nectar Building Technologies Inc.', 'Dell Technologies',
   ]);
-  const stop = title => page.locator('.skill-stop').filter({has:page.getByRole('heading',{name:title,exact:true})});
-  for (const [title,date] of [['GITEX Teens in AI','2022'],['Murdoch University Hackathon','2023'],['GDSC DevJams','2024'],['CodeChef, VIT','2024 – 2025 · 1 year'],['IEEE Computer Society, VIT','2024 – 2025 · 1 year']]) {
-    await expect(stop(title).locator('.skill-stop__meta')).toHaveText(date);
+  await expect(page.locator('.experience-strip .skill-bubble')).toHaveCount(0);
+  for (const group of skillGroups) {
+    await expect(page.getByRole('list', {name:group.label, exact:true}).getByRole('listitem')).toHaveText(group.items);
   }
-  await expect(stop('Dell Technologies').getByRole('list',{name:'Skills · Dell Technologies'})).toContainText('REST APIs');
-  await expect(stop('CodeChef, VIT').getByRole('list',{name:'Skills · CodeChef, VIT'})).toContainText('React');
-  await expect(page.locator('.education-card__chapter')).toHaveText(['Current chapter','Where it began']);
-  await expect(page.locator('.education-card').first()).toContainText('Expected 2028');
-  await expect(page.locator('.education-card').last()).toContainText('8.75/10');
+  await expect(page.locator('.education-row h3')).toHaveText(['University of Edinburgh','Vellore Institute of Technology']);
+  await expect(page.locator('.education-row').first()).toContainText('Expected 2028');
+  await expect(page.locator('.education-row').last()).toContainText('8.75/10');
+  await expect(page.locator('.home .card, .paper-preview, .project-list')).toHaveCount(0);
+  await expect(page.locator('body')).not.toContainText('Two chapters, one journey');
+  await expect(page.locator('body')).not.toContainText('Work, communities & a little curiosity');
+  await expect(page.locator('.footer')).not.toContainText('©');
+  await page.goto('/#research');
+  await expect(page.locator('.feature h2')).toHaveText('Operating System Level Optimization for Energy Efficient AI Inference Performance');
 });
 
 test('reduced motion keeps all content visible and skill bubbles still', async ({page}) => {
@@ -74,7 +56,7 @@ test('reduced motion keeps all content visible and skill bubbles still', async (
 test('scroll reveals work with motion enabled and keyboard focus stays visible', async ({page}) => {
   await page.emulateMedia({reducedMotion: 'no-preference'});
   await page.goto('/#home');
-  const panel = page.locator('.resume-panel').first();
+  const panel = page.locator('.education-row').first();
   await panel.scrollIntoViewIfNeeded();
   await expect(panel).toHaveClass(/is-revealed/);
   await expect(panel).toHaveCSS('opacity', '1');

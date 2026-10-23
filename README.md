@@ -66,18 +66,13 @@ in a new tab. This is the original uploaded PDF, copied without alterations.
 Replace that asset when publishing a new résumé and update the asset check's
 checksum to match the new file.
 
-The home page shows education followed by a winding experience timeline.
-Work roles, society leadership and hackathon outcomes each have their relevant
-skill bubbles underneath. The timeline follows the owner's sketch and reuses
-the role and society content from the Experience tab, with no duplicate summary
-cards on the homepage. General tools and current learning close the trail.
-Detailed research and project content stays in its own tab.
-The reference and original design choices are recorded in `DESIGN.md`.
+The home page shows education as open rows, a compact horizontal experience
+timeline, and a separate skills section. The timeline scrolls within its own
+region on phones and is keyboard focusable. Full work and society descriptions
+remain in the Experience tab, and hackathon details remain in Projects.
+Research features use the full paper titles and actual first-page previews.
 
 Section reveals use IntersectionObserver with visible content as the fallback.
 Keyboard-focused content stays visible immediately. Reduced-motion preferences
-turn off reveals, live-dot animation and skill hover movement. They also display
-the complete timeline without drawing or bubble animations. The timeline
-measures its marker positions on resize so wrapping labels stay connected on
-phones. The glass navigation has an opaque fallback for browsers without
+turn off reveals, live-dot animation and skill hover movement. The glass navigation has an opaque fallback for browsers without
 backdrop-filter support.

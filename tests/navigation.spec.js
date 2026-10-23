@@ -53,7 +53,7 @@ for (const viewport of viewports) {
         const panel = page.locator('#' + await button.getAttribute('aria-controls'));
         await expect(panel).toBeVisible();
       }
-      const controls = page.locator('main a, main button');
+      const controls = page.locator('main a, main button, main [tabindex="0"]');
       const count = await controls.count();
       expect(count).toBeGreaterThan(0);
       await page.locator('main').focus();
