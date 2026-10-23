@@ -272,3 +272,11 @@ main:focus { outline: none; }
 }
 
 @media print { .reveal.will-reveal { opacity: 1; transform: none; } }
+
+/* Original employer marks sit on white so their colours work in both themes. */
+.employer-logo { display: inline-flex; align-items: center; justify-content: center; width: 126px; height: 48px; padding: 7px 8px; border-radius: 6px; background: #fff; margin-bottom: .65rem; }
+.employer-logo img { display: block; width: 110px; height: 34px; object-fit: contain; }
+.employer-logo--square { width: 48px; padding: 0; overflow: hidden; }
+.employer-logo--square img { width: 48px; height: 48px; }
+.journey-stop:not(:has(.employer-logo)) { padding-top: 5.85rem; }
+.experience-entry__body > .employer-logo { margin-bottom: 0; }

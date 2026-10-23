@@ -6,6 +6,20 @@ import './styles.css';
 const email = 'sahananaganandh@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/sahana-naganandh';
 
+const employerLogos = {
+  'Dell Technologies': {src:'/logos/dell.svg'},
+  'Nectar Building Technologies Inc.': {src:'/logos/nectar.svg'},
+  'Legal Horizons': {src:'/logos/legal-horizons.jpeg', square:true},
+  'Manipal Institute of Higher Education': {src:'/logos/manipal.svg'},
+};
+
+function EmployerLogo({name}) {
+  const logo = employerLogos[name];
+  return logo ? <span className={'employer-logo' + (logo.square ? ' employer-logo--square' : '')}>
+    <img src={logo.src} alt={name + ' logo'} width={logo.square ? 44 : 110} height="40" loading="lazy"/>
+  </span> : null;
+}
+
 const tabs = [
   {id: 'home', label: 'Home'},
   {id: 'research', label: 'Research'},
@@ -90,6 +104,7 @@ function ExperienceTimeline() {
       <ol className="journey-stops">
         {experienceJourney.filter(step => step.year).map(step => <li className="journey-stop" key={step.id}>
           <span className={'journey-dot tone-' + step.tone} aria-hidden="true"/>
+          <EmployerLogo name={step.title}/>
           <p className="journey-date">{step.meta}</p>
           <h3>{step.title}</h3>
           <p className="journey-role">{step.label}</p>
@@ -277,6 +292,7 @@ function Experience() {
       {roles.map(role => <Reveal as="article" className="experience-entry" key={role.name}>
         <div className="experience-entry__meta"><span>{role.date}</span><span>{role.location}</span></div>
         <div className="experience-entry__body">
+          <EmployerLogo name={role.name}/>
           <p className="label">{role.role}</p>
           <h2>{role.name}</h2>
           <p>{role.intro}</p>
