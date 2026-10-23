@@ -124,7 +124,7 @@ main:focus { outline: none; }
 .skill-cloud { list-style: none; display: flex; flex-wrap: wrap; gap: .55rem; padding-top: .8rem; }
 .skill-bubble { max-width: 100%; padding: .3rem .75rem; border-radius: 999px; font-size: .8rem; line-height: 1.6; font-weight: 500; transform: rotate(var(--tilt)); transition: transform .25s var(--ease); }
 .text-link { font-size: .88rem; font-weight: 600; }
-.resume-panel > .text-link { display: inline-block; margin-top: 1.2rem; }
+.resume-date { display: block; font-size: .78rem; color: var(--muted); margin-top: .35rem; }
 .hackathons { margin-top: 4.5rem; }
 .hackathon-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
 .hackathon { padding: 1.6rem; }
