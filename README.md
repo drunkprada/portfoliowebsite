@@ -76,3 +76,8 @@ Section reveals use IntersectionObserver with visible content as the fallback.
 Keyboard-focused content stays visible immediately. Reduced-motion preferences
 turn off reveals, live-dot animation and skill hover movement. The glass navigation has an opaque fallback for browsers without
 backdrop-filter support.
+
+Printing or saving a page as PDF uses dark text on white paper, reflows every
+experience milestone onto the page, and includes the research/project details
+even when their on-screen controls are collapsed. Returning from print keeps
+the selected theme and expanded/collapsed state unchanged.

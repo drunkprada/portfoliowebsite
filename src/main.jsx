@@ -205,7 +205,7 @@ function Details({children, label = 'Read more'}) {
     <button aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
       {open ? 'Show less' : label}<span aria-hidden="true">{open ? '−' : '+'}</span>
     </button>
-    {open && <div id={id} className="details__body">{children}</div>}
+    <div id={id} className="details__body" hidden={!open}>{children}</div>
   </div>;
 }
 

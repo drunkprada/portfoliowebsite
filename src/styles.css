@@ -280,3 +280,31 @@ main:focus { outline: none; }
 .employer-logo--square img { width: 48px; height: 48px; }
 .journey-stop:not(:has(.employer-logo)) { padding-top: 5.85rem; }
 .experience-entry__body > .employer-logo { margin-bottom: 0; }
+
+/* Printed pages must include content that is scrollable or collapsed on screen. */
+@media print {
+  :root {
+    --bg: #fff;
+    --surface: #fff;
+    --fg: #111;
+    --soft: #444;
+    --muted: #555;
+    --line: #ddd;
+    --line-2: #bbb;
+  }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-padding: 0; }
+  .navwrap, .skip, .details > button, .intro__eyebrow { display: none; }
+  main { min-height: 0; }
+  .enter, .reveal.will-reveal { opacity: 1; transform: none; }
+  .details__body[hidden] { display: block; }
+  .journey-scroll { overflow: visible; padding: 0; }
+  .journey-stops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: auto; gap: 1rem; }
+  .journey-stop, .journey-stop:not(:has(.employer-logo)) { width: auto; padding: 1rem 0 0; break-inside: avoid; }
+  .journey-dot { display: none; }
+  .education-row, .skills-group, .experience-entry, .community { break-inside: avoid; }
+  .home, .page { padding-left: 0; padding-right: 0; }
+  .intro { padding-top: 0; padding-bottom: 2rem; }
+  .skills-section, .experience-strip, .communities, .hackathons { margin-top: 2rem; }
+  .footer { padding: 1rem 0; }
+}
