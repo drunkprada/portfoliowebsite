@@ -244,7 +244,11 @@ test('Ctrl-click opens the active page in a new tab without resetting the origin
   const details = page.locator('.details > button').first();
   await details.click();
   await page.locator('.footer').scrollIntoViewIfNeeded();
-  const scrollBefore = await page.evaluate(() => scrollY);
+  await page.evaluate(() => {
+    // Real pointer activation can first scroll the sticky link into view.
+    // Compare from the click's capture phase, before React handles the link.
+    document.addEventListener('click', () => { window.activationScroll = scrollY; }, {capture: true, once: true});
+  });
   const popupPromise = context.waitForEvent('page');
   await page.locator('.nav__links [aria-current="page"]').click({modifiers: ['Control']});
   const popup = await popupPromise;
@@ -252,7 +256,7 @@ test('Ctrl-click opens the active page in a new tab without resetting the origin
   await expect(popup.locator('main h1')).toHaveText('Papers');
   await expect(page).toHaveURL(/#research$/);
   await expect(details).toHaveAttribute('aria-expanded', 'true');
-  await expect.poll(() => page.evaluate(() => scrollY)).toBe(scrollBefore);
+  await expect.poll(() => page.evaluate(() => scrollY === window.activationScroll && scrollY > 0)).toBe(true);
   await popup.close();
 });
 
