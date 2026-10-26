@@ -210,3 +210,49 @@ test('page landmarks are named and the active tab returns to the page start', as
   }
 });
 
+test('active tabs preserve modified and non-primary link activation', async ({page}) => {
+  for (const route of ['home', 'research', 'projects', 'experience']) {
+    await page.goto('/#' + route);
+    await page.locator('.footer a').first().focus();
+    const scrollBefore = await page.evaluate(() => scrollY);
+    expect(scrollBefore).toBeGreaterThan(0);
+
+    for (const options of [{ctrlKey: true}, {metaKey: true}, {shiftKey: true}, {altKey: true}, {button: 1}]) {
+      const activation = await page.locator('.nav__links [aria-current="page"]').evaluate((link, options) => {
+        const event = new MouseEvent('click', {bubbles: true, cancelable: true, ...options});
+        let prevented;
+        // Observe React's decision, then suppress the browser default so this
+        // cross-platform modifier matrix cannot open OS windows or downloads.
+        document.addEventListener('click', e => {
+          prevented = e.defaultPrevented;
+          e.preventDefault();
+        }, {once: true});
+        link.dispatchEvent(event);
+        return {prevented, hash: location.hash, scroll: scrollY, focus: document.activeElement.tagName};
+      }, options);
+      expect(activation, `${route}: ${JSON.stringify(options)}`).toEqual({
+        prevented: false, hash: '#' + route, scroll: scrollBefore, focus: 'A',
+      });
+    }
+  }
+});
+
+test('Ctrl-click opens the active page in a new tab without resetting the original', async ({page, context}) => {
+  await context.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1'
+    ? route.continue() : route.abort());
+  await page.goto('/#research');
+  const details = page.locator('.details > button').first();
+  await details.click();
+  await page.locator('.footer').scrollIntoViewIfNeeded();
+  const scrollBefore = await page.evaluate(() => scrollY);
+  const popupPromise = context.waitForEvent('page');
+  await page.locator('.nav__links [aria-current="page"]').click({modifiers: ['Control']});
+  const popup = await popupPromise;
+  await expect(popup).toHaveURL(/#research$/);
+  await expect(popup.locator('main h1')).toHaveText('Papers');
+  await expect(page).toHaveURL(/#research$/);
+  await expect(details).toHaveAttribute('aria-expanded', 'true');
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(scrollBefore);
+  await popup.close();
+});
+

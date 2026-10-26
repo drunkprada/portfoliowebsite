@@ -328,6 +328,12 @@ function App() {
     main.current?.focus({preventScroll: true});
     scrollTo({top: 0, behavior: 'instant'});
   };
+  const reselectPage = e => {
+    // Only plain activation returns to the top; browser link shortcuts stay native.
+    if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    focusPageStart();
+  };
   useEffect(() => { const h = () => setPage(currentPage()); addEventListener('hashchange', h); return () => removeEventListener('hashchange', h); }, []);
   useEffect(() => {
     document.title = page === 'home' ? 'Sahana Naganandh' : `${tabs.find(t => t.id === page).label} · Sahana Naganandh`;
@@ -342,7 +348,7 @@ function App() {
   const Page = views[page];
   return <>
     <a className="skip" href="#main" onClick={e => { e.preventDefault(); main.current?.focus(); }}>Skip to content</a>
-    <Nav page={page} dark={dark} setDark={setDark} onReselect={e => { e.preventDefault(); focusPageStart(); }}/>
+    <Nav page={page} dark={dark} setDark={setDark} onReselect={reselectPage}/>
     <main id="main" tabIndex={-1} ref={main} aria-labelledby={page + '-heading'} className={page === 'home' ? 'is-home' : undefined}>
       <div key={page} className="enter"><Page/></div>
     </main>
