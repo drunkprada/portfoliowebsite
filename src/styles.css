@@ -4,7 +4,8 @@
   --surface: #ffffff;
   --fg: #111111;
   --soft: #444444;
-  --muted: #8a8a8a;
+  /* Small secondary text must stay readable on both the page and white cards. */
+  --muted: #6b6b6b;
   --faint: #f0f0ee;
   --line: #e6e6e4;
   --line-2: #d6d6d4;

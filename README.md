@@ -54,6 +54,8 @@ To add your email or LinkedIn, set the `email` and `linkedin` constants at the t
 The browser checks cover phone, landscape, tablet and desktop layouts, both themes,
 keyboard focus around the sticky navigation, hash history, expandable details and
 the local paper screenshots and manuscript PDF. External requests are blocked.
+Text contrast checks cover page content, expanded details, skill bubbles and
+footer links in both themes against their actual solid background colours.
 
 The OS paper PDF is a conversion of the author's supplied ICNDA-formatted manuscript,
 not a publisher-issued version. Paper summaries retain the study's limitations;
