@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {createHash} from 'node:crypto';
-import {roles, communities, achievements, skillGroups} from '../src/data.js';
+import {experienceJourney, skillGroups} from '../src/data.js';
 
 test.beforeEach(async ({page}) => {
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1'
@@ -21,7 +21,7 @@ test('resume button serves the exact uploaded PDF', async ({page, request}) => {
 
 test('home separates compact experience, education and skills', async ({page}) => {
   await page.goto('/#home');
-  await expect(page.locator('.journey-stop')).toHaveCount(roles.length + communities.length + achievements.length);
+  await expect(page.locator('.journey-stop')).toHaveCount(experienceJourney.filter(step => step.year).length);
   await expect(page.locator('.journey-stop h3')).toHaveText([
     'GITEX Teens in AI', 'Murdoch University Hackathon', 'Manipal Institute of Higher Education',
     'Legal Horizons', 'GDSC DevJams', 'IEEE Computer Society, VIT', 'CodeChef, VIT',
@@ -51,6 +51,8 @@ test('reduced motion keeps all content visible and skill bubbles still', async (
   await expect(bubble).toHaveCSS('transform', 'none');
   await expect(page.locator('.live')).toHaveCSS('animation-name', 'none');
   await expect(page.locator('.enter')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.intro__doodle .sketch-orbit')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.ink-name path')).toHaveCSS('animation-name', 'none');
 });
 
 test('scroll reveals work with motion enabled and keyboard focus stays visible', async ({page}) => {

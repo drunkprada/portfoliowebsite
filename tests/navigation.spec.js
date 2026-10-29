@@ -178,10 +178,16 @@ test('Experience navigation restores work and society contributions', async ({pa
   await expect(page.locator('.community-list')).toContainText('Cook-Off');
   await expect(page.locator('.community-list')).toContainText('HackBattle sponsorship team');
   await expect(page.locator('.community-list')).toContainText('puzzles and ciphers');
-  await expect(page.locator('.community__meta .label')).toHaveText([
+  await expect(page.locator('.community__meta .role-title')).toHaveText([
     'Senior Core Member · Frontend Developer', 'Senior Core Member · Frontend Developer',
   ]);
-  await expect(page.locator('.community__meta .muted')).toHaveText(['2024 – 2025 · 1 year', '2024 – 2025 · 1 year']);
+  await expect(page.locator('.community__meta .muted')).toHaveText(['Oct 2026 – present', '2024 – 2025 · 1 year', '2024 – 2025 · 1 year']);
+  const clubs = page.getByRole('region', {name:'Student clubs'});
+  await expect(clubs.getByRole('heading', {name:'Telemetry and Diagnostics', exact:true})).toBeVisible();
+  await expect(clubs.getByRole('heading', {name:'Sponsorship Specialist', exact:true})).toBeVisible();
+  await expect(clubs).toContainText('power processing unit');
+  await expect(clubs).toContainText('Team Xenith');
+  await expect(page.locator('.experience-list')).not.toContainText('Endeavour');
   await page.reload();
   await expect(page.locator('main h1')).toHaveText('Where I’ve worked');
 });

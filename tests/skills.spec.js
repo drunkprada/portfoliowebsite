@@ -17,9 +17,12 @@ for (const width of [320,1440]) {
       return {height:node.clientHeight, overflow:node.scrollWidth > node.clientWidth,
         sameRow:stops.every(stop => Math.abs(stop.top - stops[0].top) < 1)};
     });
-    expect(layout.height).toBeLessThan(260);
+    expect(layout.height).toBeLessThan(300);
     expect(layout.overflow).toBe(true);
     expect(layout.sameRow).toBe(true);
+    await expect(strip.locator('.journey-path path')).toHaveAttribute('d', / C /);
+    await expect(strip.locator('.journey-path')).toHaveAttribute('aria-hidden','true');
+    await expect(strip).not.toContainText('Endeavour');
     await strip.focus();
     await page.keyboard.press('End');
     await page.locator('.journey-stop').last().scrollIntoViewIfNeeded();

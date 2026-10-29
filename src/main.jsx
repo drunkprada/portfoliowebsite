@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {github, papers, projects, achievements, roles, communities, education, skillGroups, experienceJourney, resume} from './data';
 import './styles.css';
+import Sketch from './Sketch';
 
 const email = 'sahananaganandh@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/sahana-naganandh';
@@ -95,21 +96,33 @@ function Reveal({as: Tag = 'div', className = '', children, ...rest}) {
 }
 
 function ExperienceTimeline() {
+  const stops = experienceJourney.filter(step => step.year);
+  // The SVG and CSS columns share a 220-unit grid. Scaling the SVG with the
+  // track keeps every bend attached to its milestone on phones and desktops.
+  const points = stops.map((_, index) => ({x: 20 + index * 220, y: index % 2 ? 54 : 22}));
+  const curve = points.reduce((path, point, index) => index === 0
+    ? `M ${point.x} ${point.y}`
+    : path + ` C ${points[index - 1].x + 90} ${points[index - 1].y}, ${point.x - 90} ${point.y}, ${point.x} ${point.y}`, '');
   return <section className="experience-strip" aria-labelledby="journey-heading">
     <div className="home-sectionhead section-heading">
       <h2 id="journey-heading">Experience</h2>
       <a className="text-link" href="#experience">View experience ↗</a>
     </div>
     <div className="journey-scroll" tabIndex={0} role="region" aria-label="Experience timeline, scroll horizontally">
+      <Reveal className="journey-track">
+      <svg className="journey-path" viewBox={`0 0 ${stops.length * 220} 76`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d={curve} pathLength="1"/>
+      </svg>
       <ol className="journey-stops">
-        {experienceJourney.filter(step => step.year).map(step => <li className="journey-stop" key={step.id}>
+        {stops.map((step, index) => <li className="journey-stop" key={step.id} style={{'--dot-y': points[index].y + 'px'}}>
           <span className={'journey-dot tone-' + step.tone} aria-hidden="true"/>
-          <EmployerLogo name={step.title}/>
+          <div className="journey-logo"><EmployerLogo name={step.title}/>{!employerLogos[step.title] && <Sketch kind={step.id.startsWith('hackathon') ? 'star' : 'chip'}/>}</div>
           <p className="journey-date">{step.meta}</p>
           <h3>{step.title}</h3>
           <p className="journey-role">{step.label}</p>
         </li>)}
       </ol>
+      </Reveal>
     </div>
   </section>;
 }
@@ -149,7 +162,8 @@ function Home() {
     <section className="intro">
       <Reveal className="intro__copy">
         <p className="intro__eyebrow"><span className="live" aria-hidden="true"/>Edinburgh · {time}</p>
-        <h1 id="home-heading" className="intro__name">Hi, I’m Sahana.</h1>
+        <h1 id="home-heading" className="intro__name">Hi, I’m <span className="ink-name">Sahana.<svg viewBox="0 0 260 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12Q61 1 125 10T256 7M12 17Q110 9 244 15" pathLength="1"/></svg></span></h1>
+        <Sketch className="intro__doodle"/>
         <p className="intro__lede">I’m a third-year Electronics &amp; Computer Science student at the University of Edinburgh, with a background in backend development and AI research.</p>
         <p className="intro__bio">Previously at Dell in Dubai, building backend services and AI recruitment tools. Before Edinburgh, I studied Computer Science at VIT.</p>
         <div className="intro__cta">
@@ -178,7 +192,7 @@ function Home() {
     <ExperienceTimeline/>
     <Skills/>
     <Reveal as="section" className="contact-strip" aria-labelledby="contact-heading">
-      <div><h2 id="contact-heading">Get in touch</h2><p>For opportunities, collaborations or a conversation.</p></div>
+      <div><h2 id="contact-heading">Get in touch</h2></div>
       <a className="text-link" href={'mailto:' + email}>{email} ↗</a>
     </Reveal>
   </div>;
@@ -191,10 +205,10 @@ function PaperPreview({paper}) {
   </External>;
 }
 
-function PageHead({id, eyebrow, title, lede}) {
+function PageHead({id, title, sketch}) {
   return <header className="pagehead">
     <h1 id={id}>{title}</h1>
-    {lede && <p>{lede}</p>}
+    <Sketch kind={sketch}/>
   </header>;
 }
 
@@ -213,7 +227,7 @@ function Details({children, label = 'Read more'}) {
 function Research() {
   const [lead, ...rest] = papers;
   return <section className="page">
-    <PageHead id="research-heading" eyebrow="Research" title="Papers" lede="How operating-system settings change AI inference, and how to keep training data useful without exposing people."/>
+    <PageHead id="research-heading" title="Papers" sketch="star"/>
 
     <article className="card feature">
       <div className="feature__media"><PaperPreview paper={lead}/></div>
@@ -263,7 +277,7 @@ function Research() {
 /* ---------------- Projects ---------------- */
 function Projects() {
   return <section className="page">
-    <PageHead id="projects-heading" eyebrow="Projects" title="Things I’ve built" lede="Finance, algorithms and AI workflows, with links to the code."/>
+    <PageHead id="projects-heading" title="Things I’ve built" sketch="chip"/>
     <div className="project-list">
       {projects.map(p => <Reveal as="article" className="card proj" key={p.id}>
         <div className="proj__body">
@@ -277,9 +291,7 @@ function Projects() {
     </div>
     <Hackathons/>
     <External className="card more" href={github}>
-      <span className="label">More on GitHub</span>
       <b>github.com/drunkprada ↗</b>
-      <span className="muted">Smaller experiments, coursework and society projects.</span>
     </External>
   </section>;
 }
@@ -287,28 +299,27 @@ function Projects() {
 /* ---------------- Experience ---------------- */
 function Experience() {
   return <section className="page">
-    <PageHead id="experience-heading" eyebrow="Experience" title="Where I’ve worked" lede="Internships, research work and student societies."/>
+    <PageHead id="experience-heading" title="Where I’ve worked" sketch="rocket"/>
     <div className="experience-list">
       {roles.map(role => <Reveal as="article" className="experience-entry" key={role.name}>
         <div className="experience-entry__meta"><span>{role.date}</span><span>{role.location}</span></div>
         <div className="experience-entry__body">
           <EmployerLogo name={role.name}/>
-          <p className="label">{role.role}</p>
+          <p className="role-title">{role.role}</p>
           <h2>{role.name}</h2>
-          <p>{role.intro}</p>
           <ul>{role.body.map(line => <li key={line}>{line}</li>)}</ul>
           <p className="muted">{role.tags.join(' · ')}</p>
         </div>
       </Reveal>)}
     </div>
     <section className="communities" aria-labelledby="communities-title">
-      <h2 id="communities-title">Student societies</h2>
+      <h2 id="communities-title">Student clubs</h2>
       <div className="community-list">
-        {communities.map(community => <Reveal as="article" className="card community" key={community.name}>
-          <div className="community__meta"><span className="label">{community.role}</span><span className="muted">{community.date} · {community.duration}</span></div>
+        {communities.map(community => <Reveal as="article" className={'card community' + (community.current ? ' community--current' : '')} key={community.name}>
+          <div className="community__meta">{!community.positions && <span className="role-title">{community.role}</span>}<span className="muted">{[community.date, community.duration].filter(Boolean).join(' · ')}</span></div>
           <h3><External href={community.href}>{community.name} ↗</External></h3>
-          <p>{community.context}</p>
-          <ul>{community.points.map(point => <li key={point}>{point}</li>)}</ul>
+          {community.positions ? <div className="community-positions">{community.positions.map(position => <div className="community-position" key={position.title}><h4>{position.title}</h4><p>{position.description}</p></div>)}</div>
+            : <ul>{community.points.map(point => <li key={point}>{point}</li>)}</ul>}
         </Reveal>)}
       </div>
     </section>

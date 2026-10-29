@@ -69,10 +69,17 @@ Replace that asset when publishing a new résumé and update the asset check's
 checksum to match the new file.
 
 The home page shows education as open rows, a compact horizontal experience
-timeline, and a separate skills section. The timeline scrolls within its own
+timeline with a drawn SVG curve, and a separate skills section. The timeline scrolls within its own
 region on phones and is keyboard focusable. Full work and society descriptions
 remain in the Experience tab, and hackathon details remain in Projects.
 Research features use the full paper titles and actual first-page previews.
+Endeavour's October 2026 roles are grouped in Student clubs, separate from
+professional work and the homepage trail. Small original SVG sketches add
+electronics and rocketry details without introducing image dependencies.
+Their orbit and path-drawing animations stop for reduced-motion preferences;
+print layouts omit decorative drawings. The path-animation reference was
+[Codrops](https://tympanus.net/codrops/2022/01/19/animate-anything-along-an-svg-path/);
+the drawings and layout remain specific to this portfolio.
 
 Section reveals use IntersectionObserver with visible content as the fallback.
 Keyboard-focused content stays visible immediately. Reduced-motion preferences

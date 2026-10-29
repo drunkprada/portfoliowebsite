@@ -15,6 +15,7 @@ for (const dark of [false, true]) {
     const strip = page.locator('.journey-scroll');
     await page.emulateMedia({media: 'print'});
     await expect(page.locator('.navwrap')).toBeHidden();
+    await expect(page.locator('.journey-path')).toBeHidden();
     await expect(page.locator('body')).toHaveCSS('color', 'rgb(17, 17, 17)');
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
     await expect(page.locator('.journey-stop')).toHaveCount(experienceJourney.filter(step => step.year).length);

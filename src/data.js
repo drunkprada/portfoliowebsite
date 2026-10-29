@@ -69,6 +69,18 @@ export const roles = [
 
 export const communities = [
   {
+    name:'Endeavour, University of Edinburgh', href:'https://endeavourockets.com/',
+    skills:['Telemetry','Diagnostics','Sponsorship','Technical communication'],
+    role:'Telemetry and Diagnostics · Sponsorship Specialist',
+    date:'Oct 2026 – present', year:2026, month:10, current:true, showInJourney:false,
+    context:'The University of Edinburgh’s student rocketry and aerospace team.',
+    positions:[
+      {title:'Telemetry and Diagnostics', description:'Building telemetry and diagnostics software for the power processing unit of a student-built Hall thruster with Team Xenith.'},
+      {title:'Sponsorship Specialist', description:'Developing sponsorship proposals and coordinating company outreach to secure industry support for Endeavour’s rocket, satellite and propulsion projects.'},
+    ],
+    points:[],
+  },
+  {
     name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
     skills:['C/C++','Frontend development','Event organising','Sponsorship support'],
     role:'Senior Core Member · Frontend Developer', date:'2024 – 2025', year:2024, duration:'1 year',
@@ -112,11 +124,11 @@ const experienceStops = [
     meta: role.date + ' · ' + role.location, description: role.intro,
     points: role.body, skills: role.tags, tone: ['mint','rose','lilac','peach'][index],
   })),
-  ...communities.map((community, index) => ({
-    id: 'society-' + index, year:community.year, title: community.name, label: community.role,
-    meta: community.date + ' · ' + community.duration, description: community.context, points: community.points,
+  ...communities.filter(community => community.showInJourney !== false).map((community, index) => ({
+    id: 'society-' + index, year:community.year, month:community.month, title: community.name, label: community.role,
+    meta: [community.date, community.duration].filter(Boolean).join(' · '), description: community.context, points: community.points,
     skills: community.skills,
-    tone: index === 0 ? 'blue' : 'rose',
+    tone: community.current ? 'mint' : index % 2 ? 'blue' : 'rose',
   })),
   ...achievements.map((achievement, index) => ({
     id: 'hackathon-' + index, year:achievement.year, title: achievement.title, label: 'Hackathon · ' + achievement.result,
