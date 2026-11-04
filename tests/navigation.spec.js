@@ -1,4 +1,5 @@
 import {test, expect} from '@playwright/test';
+import {expectFocusVisible} from './helpers';
 
 // Keep verification local: no publication, profile or project service requests.
 test.beforeEach(async ({page}) => {
@@ -13,24 +14,6 @@ const viewports = [
   {width: 820, height: 1180},
   {width: 1440, height: 900},
 ];
-
-async function expectFocusVisible(page) {
-  await expect.poll(() => page.evaluate(() => {
-    const focused = document.activeElement;
-    const rect = focused.getBoundingClientRect();
-    const nav = document.querySelector('.navwrap').getBoundingClientRect();
-    const top = Math.max(rect.top, nav.bottom + 4);
-    const bottom = Math.min(rect.bottom, innerHeight - 4);
-    const available = innerHeight - nav.bottom - 8;
-    // A linked project image can be taller than a landscape phone's viewport.
-    // In that case its visible portion should fill the available content area.
-    const visible = rect.height > available
-      ? bottom - top >= available - 4
-      : rect.top >= nav.bottom + 4 && rect.bottom <= innerHeight;
-    const hit = document.elementFromPoint(rect.x + rect.width / 2, (top + bottom) / 2);
-    return visible && focused.contains(hit);
-  }), {message: 'The focused content control must remain visible below the sticky nav'}).toBe(true);
-}
 
 for (const viewport of viewports) {
   test(`layout, themes and keyboard navigation at ${viewport.width}px`, async ({page}) => {
