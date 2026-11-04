@@ -34,13 +34,27 @@ const External = ({href, className = '', children, ...rest}) =>
 /* ---------------- Floating nav ---------------- */
 function Nav({page, dark, setDark, onReselect}) {
   const [scrolled, setScrolled] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    // Text zoom, font loading and wrapping can all change the sticky header.
+    const measure = () => document.documentElement.style.setProperty('--nav-height', `${Math.ceil(ref.current.getBoundingClientRect().height)}px`);
+    measure();
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
+    observer?.observe(ref.current);
+    addEventListener('resize', measure);
+    return () => {
+      observer?.disconnect();
+      removeEventListener('resize', measure);
+      document.documentElement.style.removeProperty('--nav-height');
+    };
+  }, []);
   useEffect(() => {
     const on = () => setScrolled(scrollY > 8);
     on(); addEventListener('scroll', on, {passive: true});
     return () => removeEventListener('scroll', on);
   }, []);
   const contact = email ? 'mailto:' + email : github;
-  return <div className={'navwrap' + (scrolled ? ' is-floating' : '')}>
+  return <div ref={ref} className={'navwrap' + (scrolled ? ' is-floating' : '')}>
     <header className="nav">
       <nav className="nav__links" aria-label="Main">
         {tabs.map(t => <a key={t.id} href={'#' + t.id} className={page === t.id ? 'is-active' : undefined}
