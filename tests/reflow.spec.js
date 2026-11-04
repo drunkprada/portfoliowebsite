@@ -79,6 +79,7 @@ test('header spacing survives orientation changes without ResizeObserver', async
     await expect.poll(() => page.locator('html').evaluate(html =>
       parseFloat(getComputedStyle(html).scrollPaddingTop) - document.querySelector('.navwrap').getBoundingClientRect().height
     )).toBeGreaterThanOrEqual(8);
+    await page.locator('main').focus();
     await page.locator('main a').last().focus();
     await expectFocusVisible(page);
   }
