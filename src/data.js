@@ -1,11 +1,12 @@
+import {publicAsset} from './assets.js';
 export const github = 'https://github.com/drunkprada';
-export const resume = '/resume/sahana-naganandh-resume.pdf';
+export const resume = publicAsset('resume/sahana-naganandh-resume.pdf');
 export const papers = [
   {
     id: 'inference', category: 'Systems · Machine learning', year: '2026', status: 'Accepted · ICNDA 2026',
     title: 'Operating System Level Optimization for Energy Efficient AI Inference Performance',
     shortTitle: 'What happens around the model matters, too.',
-    preview: '/papers/os-tuning-preview.webp',
+    preview: publicAsset('papers/os-tuning-preview.webp'),
     authors: 'Sahana Naganandh & Vaibhav Viswanath', contribution: 'Lead author',
     summary: 'An experimental study of the system around an AI model. We ran ResNet-50 for image classification and YOLOv8 for object detection, then measured how Linux scheduling, GPU configuration and memory placement changed inference performance.',
     context: 'The aim was to understand where time is lost during deployment, and whether configuration changes can make better use of the same hardware.',
@@ -13,12 +14,12 @@ export const papers = [
     approach: 'We built Python benchmarking scripts and compared a default setup with successive CPU, GPU, memory and batch-size tuning stages. Each configuration ran five times. The scripts logged frame timings and CPU/GPU utilisation to CSV, with Matplotlib used to compare the results.',
     finding: 'CPU performance governors, stable GPU clocks and thread placement all affected the workloads. Batch-size tuning also exposed the trade-off between throughput and per-frame latency. The results come from a single workstation, so the useful settings depend on the model and deployment environment.',
     tags: ['Linux', 'PyTorch', 'CUDA', 'Python', 'Benchmarking'],
-    links: [['Read manuscript (PDF)', '/papers/os-tuning-manuscript.pdf']],
+    links: [['Read manuscript (PDF)', publicAsset('papers/os-tuning-manuscript.pdf')]],
   },
   {
     id: 'privacy', category: 'AI · Data privacy', year: '2025', status: 'Published · Cureus Journal of Computer Science',
     title: 'Artificial Intelligence and Privacy Concerns: Balancing Innovation With Security',
-    preview: '/papers/privacy-preview.webp',
+    preview: publicAsset('papers/privacy-preview.webp'),
     authors: 'Vaibhav Viswanath, Thenmozhi M & Sahana Naganandh', contribution: 'Co-author',
     summary: 'A co-authored technical report on personally identifiable information in English, French, German and Italian AI datasets. It compares exposure of names, emails, financial identifiers and tracking data with the anonymisation approach used in PII43K.',
     context: 'Training data can contain private information even when it comes from public sources. The paper looks at how to retain useful language context while reducing that exposure.',

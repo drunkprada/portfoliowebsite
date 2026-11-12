@@ -10,9 +10,9 @@ test.beforeEach(async ({page}) => {
 test('resume button serves the exact uploaded PDF', async ({page, request}) => {
   await page.goto('/#home');
   const resume = page.getByRole('link', {name: 'View my resume'});
-  await expect(resume).toHaveAttribute('href', '/resume/sahana-naganandh-resume.pdf');
+  await expect(resume).toHaveJSProperty('href', new URL('/resume/sahana-naganandh-resume.pdf', page.url()).href);
   await expect(resume).toHaveAttribute('target', '_blank');
-  const response = await request.get(await resume.getAttribute('href'));
+  const response = await request.get(await resume.evaluate(link => link.href));
   expect(response.ok()).toBe(true);
   expect(response.headers()['content-type']).toContain('application/pdf');
   expect(createHash('sha256').update(await response.body()).digest('hex'))

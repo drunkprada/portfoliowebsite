@@ -112,8 +112,9 @@ test('Home, browser history and unknown hashes resolve safely', async ({page}) =
 
 test('paper screenshots and manuscript are served; projects have no previews', async ({page, request}) => {
   await page.goto('/#research');
-  await expect(page.getByRole('link', {name: 'Read manuscript (PDF)'})).toHaveAttribute('href', '/papers/os-tuning-manuscript.pdf');
-  const pdf = await request.get('/papers/os-tuning-manuscript.pdf');
+  const manuscript = page.getByRole('link', {name: 'Read manuscript (PDF)'});
+  await expect(manuscript).toHaveJSProperty('href', new URL('/papers/os-tuning-manuscript.pdf', page.url()).href);
+  const pdf = await request.get(await manuscript.evaluate(link => link.href));
   expect(pdf.ok()).toBe(true);
   expect(pdf.headers()['content-type']).toContain('application/pdf');
   expect((await pdf.body()).subarray(0, 5).toString()).toBe('%PDF-');

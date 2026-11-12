@@ -1,3 +1,4 @@
+import {publicAsset} from './assets.js';
 import React, {useEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {github, papers, projects, achievements, roles, communities, education, skillGroups, experienceJourney, resume} from './data';
@@ -8,10 +9,10 @@ const email = 'sahananaganandh@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/sahana-naganandh';
 
 const employerLogos = {
-  'Dell Technologies': {src:'/logos/dell.svg'},
-  'Nectar Building Technologies Inc.': {src:'/logos/nectar.svg'},
-  'Legal Horizons': {src:'/logos/legal-horizons.jpeg', square:true},
-  'Manipal Institute of Higher Education': {src:'/logos/manipal.svg'},
+  'Dell Technologies': {src:publicAsset('logos/dell.svg')},
+  'Nectar Building Technologies Inc.': {src:publicAsset('logos/nectar.svg')},
+  'Legal Horizons': {src:publicAsset('logos/legal-horizons.jpeg'), square:true},
+  'Manipal Institute of Higher Education': {src:publicAsset('logos/manipal.svg')},
 };
 
 function EmployerLogo({name}) {
