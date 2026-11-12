@@ -32,12 +32,12 @@ const tabs = [
 const External = ({href, className = '', children, ...rest}) =>
   <a className={className} href={href} target="_blank" rel="noreferrer" {...rest}>{children}</a>;
 
-/* ---------------- Floating nav ---------------- */
+
 function Nav({page, dark, setDark, onReselect}) {
   const [scrolled, setScrolled] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
-    // Text zoom, font loading and wrapping can all change the sticky header.
+
     const measure = () => document.documentElement.style.setProperty('--nav-height', `${Math.ceil(ref.current.getBoundingClientRect().height)}px`);
     measure();
     const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
@@ -84,7 +84,7 @@ function Footer() {
   </footer>;
 }
 
-/* ---------------- Intro ---------------- */
+
 function useClock() {
   const fmt = () => new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit'}).format(new Date());
   const [t, setT] = useState(fmt);
@@ -112,8 +112,8 @@ function Reveal({as: Tag = 'div', className = '', children, ...rest}) {
 
 function ExperienceTimeline() {
   const stops = experienceJourney.filter(step => step.year);
-  // The SVG and CSS columns share a 220-unit grid. Scaling the SVG with the
-  // track keeps every bend attached to its milestone on phones and desktops.
+
+
   const points = stops.map((_, index) => ({x: 20 + index * 220, y: index % 2 ? 54 : 22}));
   const curve = points.reduce((path, point, index) => index === 0
     ? `M ${point.x} ${point.y}`
@@ -172,12 +172,10 @@ function Hackathons() {
 }
 
 function Home() {
-  const time = useClock();
   return <div className="home">
     <section className="intro">
-      <Reveal className="intro__copy">
-        <p className="intro__eyebrow"><span className="live" aria-hidden="true"/>Edinburgh · {time}</p>
-        <h1 id="home-heading" className="intro__name">Hi, I’m <span className="ink-name">Sahana.<svg viewBox="0 0 260 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12Q61 1 125 10T256 7M12 17Q110 9 244 15" pathLength="1"/></svg></span></h1>
+      <div className="intro__copy">
+        <h1 id="home-heading" className="intro__name">Hi, I’m <span className="ink-name">Sahana.</span></h1>
         <Sketch className="intro__doodle"/>
         <p className="intro__lede">I’m a third-year Electronics &amp; Computer Science student at the University of Edinburgh, with a background in backend development and AI research.</p>
         <p className="intro__bio">Previously at Dell in Dubai, building backend services and AI recruitment tools. Before Edinburgh, I studied Computer Science at VIT.</p>
@@ -186,7 +184,7 @@ function Home() {
           <a className="btn btn--ghost" href={'mailto:' + email}>Contact me</a>
         </div>
         <div className="intro__links"><a href="#research">Read my research ↗</a><a href="#projects">See projects ↗</a></div>
-      </Reveal>
+      </div>
     </section>
 
     <section className="home-resume" aria-labelledby="overview-heading">
@@ -204,7 +202,6 @@ function Home() {
       </div>
     </section>
 
-    <ExperienceTimeline/>
     <Skills/>
     <Reveal as="section" className="contact-strip" aria-labelledby="contact-heading">
       <div><h2 id="contact-heading">Get in touch</h2></div>
@@ -213,7 +210,7 @@ function Home() {
   </div>;
 }
 
-/* ---------------- Shared bits ---------------- */
+
 function PaperPreview({paper}) {
   return <External className="paper-preview" href={paper.links[0][1]} aria-label={'Read ' + paper.title}>
     <img src={paper.preview} alt={'First page of ' + paper.title} width="778" height="1100" loading="lazy"/>
@@ -223,7 +220,7 @@ function PaperPreview({paper}) {
 function PageHead({id, title, sketch}) {
   return <header className="pagehead">
     <h1 id={id}>{title}</h1>
-    <Sketch kind={sketch}/>
+    {sketch && <Sketch kind={sketch}/>}
   </header>;
 }
 
@@ -238,7 +235,7 @@ function Details({children, label = 'Read more'}) {
   </div>;
 }
 
-/* ---------------- Research ---------------- */
+
 function Research() {
   const [lead, ...rest] = papers;
   return <section className="page">
@@ -259,13 +256,6 @@ function Research() {
         </div>
       </div>
     </article>
-    <Details label="The question, method & findings">
-      <div className="qa">
-        <div><h3>The question</h3><p>{lead.question}</p></div>
-        <div><h3>The approach</h3><p>{lead.approach}</p></div>
-        <div><h3>What we found</h3><p>{lead.finding}</p></div>
-      </div>
-    </Details>
 
     {rest.map(p => <React.Fragment key={p.id}>
       <article className="card paperrow">
@@ -278,29 +268,24 @@ function Research() {
           <div className="feature__actions">{p.links.map(([l, h], i) => <External key={l} className={'btn' + (i ? ' btn--ghost' : '')} href={h}>{l} ↗</External>)}</div>
         </div>
       </article>
-      <Details label="The question, method & findings">
-        <div className="qa">
-          <div><h3>The question</h3><p>{p.question}</p></div>
-          <div><h3>The approach</h3><p>{p.approach}</p></div>
-          <div><h3>What we found</h3><p>{p.finding}</p></div>
-        </div>
-      </Details>
     </React.Fragment>)}
   </section>;
 }
 
-/* ---------------- Projects ---------------- */
+
 function Projects() {
   return <section className="page">
-    <PageHead id="projects-heading" title="Things I’ve built" sketch="chip"/>
+    <PageHead id="projects-heading" title="Things I’ve built"/>
     <div className="project-list">
       {projects.map(p => <Reveal as="article" className="card proj" key={p.id}>
         <div className="proj__body">
-          <div className="proj__top"><h2>{p.title}</h2><span className="muted">{p.tags.slice(0, 2).join(' · ')}</span></div>
+          <div className="proj__top"><h2>{p.title}</h2></div>
           <p>{p.summary}</p>
           <p className="proj__context">{p.context}</p>
+          <p className="proj__stack">{p.tags.join(' · ')}</p>
+          {p.screenshot && <img className="proj__screenshot" src={p.screenshot} alt={p.title + ' dashboard screenshot'} loading="lazy"/>}
           <div className="proj__links">{p.links.map(([l, h]) => <External key={l} href={h}>{l} ↗</External>)}</div>
-          <Details label="How it works"><p>{p.detail}</p><p>{p.note}</p></Details>
+          <Details label="Read more"><p>{p.detail}</p><p>{p.note}</p></Details>
         </div>
       </Reveal>)}
     </div>
@@ -311,10 +296,10 @@ function Projects() {
   </section>;
 }
 
-/* ---------------- Experience ---------------- */
+
 function Experience() {
   return <section className="page">
-    <PageHead id="experience-heading" title="Where I’ve worked" sketch="rocket"/>
+    <PageHead id="experience-heading" title="Where I’ve worked"/>
     <div className="experience-list">
       {roles.map(role => <Reveal as="article" className="experience-entry" key={role.name}>
         <div className="experience-entry__meta"><span>{role.date}</span><span>{role.location}</span></div>
@@ -341,7 +326,7 @@ function Experience() {
   </section>;
 }
 
-/* ---------------- App ---------------- */
+
 const views = {home: Home, research: Research, projects: Projects, experience: Experience};
 const currentPage = () => { const raw = location.hash.slice(1).split('/')[0]; return Object.hasOwn(views, raw) ? raw : 'home'; };
 
@@ -355,7 +340,7 @@ function App() {
     scrollTo({top: 0, behavior: 'instant'});
   };
   const reselectPage = e => {
-    // Only plain activation returns to the top; browser link shortcuts stay native.
+
     if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     focusPageStart();
