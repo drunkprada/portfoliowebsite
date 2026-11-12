@@ -48,7 +48,15 @@ export const projects = [
     tags: ['Python', 'FastAPI', 'React', 'Bellman–Ford'], links: [['GitHub', github + '/Real-Time-Crypto-Arbitrage-Detection'], ['Live demo', 'https://real-time-crypto-arbitrage-detectio-two.vercel.app']], graphic: 'arbitrage',
   },
   {
-    id: 'screening', number: '03', title: 'AI resume screening', category: 'AI workflows · Automation',
+    id: 'well-logs', number: '03', title: 'Geological well-log digitisation', category: 'Computer vision · Data engineering',
+    summary: 'A team-built processing pipeline that turns scanned geological well logs into structured depth and rock-layer data for further analysis.',
+    context: 'The system processes large TIFF scans in smaller image regions, reading depth-scale labels with OCR and analysing lithology separately. It is designed to handle long scans without loading entire images into memory.',
+    detail: 'Python workers use Tesseract for depth-label recognition and Redis streams to coordinate processing. The pipeline extracts depth observations, checks their consistency and stages results for merging into a digitised log.',
+    note: 'The depth-extraction component includes validation and retry handling. Some labels and difficult scan layouts remain challenging; digitised results still require accuracy checks.',
+    tags: ['Python', 'Tesseract OCR', 'Redis', 'Docker', 'TIFF processing'], links: [['Team GitHub', 'https://github.com/K-Zawis/TeamOvercooked-HTB13']], graphic: 'screening',
+  },
+  {
+    id: 'screening', number: '04', title: 'AI resume screening', category: 'AI workflows · Automation',
     summary: 'A draft prototype of an AI resume-screening workflow, developed during my internship at Dell and presented to stakeholders. The Python pipeline turns PDF and DOCX resumes into structured candidate records for a screening team to review.',
     context: 'The draft run demonstrated how document ingestion could fit into a recruitment workflow: extracting useful information, keeping a record of what had already been processed and making the result available in a consistent format. It gave stakeholders a working version of the idea to review.',
     detail: 'Incoming documents are parsed and checked with content-based deduplication to avoid repeated ingestion. Candidate information is extracted into a structured format, saved in SQLite and exported to Excel. This keeps the document-processing workflow separate from the human review that follows it.',
