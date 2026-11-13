@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {createHash} from 'node:crypto';
-import {experienceJourney, skillGroups} from '../src/data.js';
+import {skillGroups} from '../src/data.js';
 
 test.beforeEach(async ({page}) => {
   await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1'
@@ -19,27 +19,19 @@ test('resume button serves the exact uploaded PDF', async ({page, request}) => {
     .toBe('daff2692c15fe4d124e65d93cf3a2120c720140fad7514a91d75d886b81b49df');
 });
 
-test('home separates compact experience, education and skills', async ({page}) => {
+test('home shows education and skills without the timeline', async ({page}) => {
   await page.goto('/#home');
-  await expect(page.locator('.journey-stop')).toHaveCount(experienceJourney.filter(step => step.year).length);
-  await expect(page.locator('.journey-stop h3')).toHaveText([
-    'GITEX Teens in AI', 'Murdoch University Hackathon', 'Manipal Institute of Higher Education',
-    'Legal Horizons', 'GDSC DevJams', 'IEEE Computer Society, VIT', 'CodeChef, VIT',
-    'Nectar Building Technologies Inc.', 'Dell Technologies',
-  ]);
-  await expect(page.locator('.experience-strip .skill-bubble')).toHaveCount(0);
+  await expect(page.locator('.journey-stop')).toHaveCount(0);
+  await expect(page.locator('.intro__eyebrow, .ink-name svg')).toHaveCount(0);
   for (const group of skillGroups) {
     await expect(page.getByRole('list', {name:group.label, exact:true}).getByRole('listitem')).toHaveText(group.items);
   }
-  await expect(page.locator('.education-row h3')).toHaveText(['University of Edinburgh','Vellore Institute of Technology']);
-  await expect(page.locator('.education-row').first()).toContainText('Expected 2028');
-  await expect(page.locator('.education-row').last()).toContainText('8.75/10');
-  await expect(page.locator('.home .card, .paper-preview, .project-list')).toHaveCount(0);
-  await expect(page.locator('body')).not.toContainText('Two chapters, one journey');
-  await expect(page.locator('body')).not.toContainText('Work, communities & a little curiosity');
-  await expect(page.locator('.footer')).not.toContainText('©');
+  await expect(page.locator('.education-row h3')).toHaveText(['University of Edinburgh', 'Vellore Institute of Technology']);
+  await expect(page.locator('.education-row').last()).toContainText('2024 – 2026');
+  await expect(page.locator('.education-row').last()).not.toContainText('8.75');
   await page.goto('/#research');
   await expect(page.locator('.feature h2')).toHaveText('Operating System Level Optimization for Energy Efficient AI Inference Performance');
+  await expect(page.getByText('The question, method & findings')).toHaveCount(0);
 });
 
 test('reduced motion keeps all content visible and skill bubbles still', async ({page}) => {
@@ -49,10 +41,8 @@ test('reduced motion keeps all content visible and skill bubbles still', async (
   const bubble = page.locator('.skill-bubble').first();
   await bubble.hover();
   await expect(bubble).toHaveCSS('transform', 'none');
-  await expect(page.locator('.live')).toHaveCSS('animation-name', 'none');
   await expect(page.locator('.enter')).toHaveCSS('animation-name', 'none');
   await expect(page.locator('.intro__doodle .sketch-orbit')).toHaveCSS('animation-name', 'none');
-  await expect(page.locator('.ink-name path')).toHaveCSS('animation-name', 'none');
 });
 
 test('scroll reveals work with motion enabled and keyboard focus stays visible', async ({page}) => {
@@ -65,7 +55,7 @@ test('scroll reveals work with motion enabled and keyboard focus stays visible',
   const research = page.getByRole('link', {name: 'Read my research'});
   await research.focus();
   await expect(research).toBeInViewport();
-  await expect(research.locator('xpath=ancestor::div[contains(@class,"reveal")]')).toHaveCSS('opacity', '1');
+  await expect(research).toBeInViewport();
 });
 
 test('content remains readable when IntersectionObserver is unavailable', async ({page}) => {

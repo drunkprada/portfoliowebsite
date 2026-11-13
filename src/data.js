@@ -34,18 +34,18 @@ export const projects = [
   {
     id: 'trading', number: '01', title: 'Portfolio & trade management', category: 'Backend engineering · Finance',
     summary: 'A portfolio and order-management project built around what happens when a trade is placed: checking the order, updating cash and holdings, and keeping track of profit and loss.',
-    context: 'I started with the Java domain model to understand the rules before adding more infrastructure. Buying a security changes both its average purchase price and the available cash; selling needs to account for the shares held and the profit or loss realised on that sale.',
+    context: 'Manages portfolios, holdings, buy and sell orders, available cash, average purchase prices and realised profit or loss after trades.',
     detail: 'The model separates portfolios, holdings and orders. Order execution checks that the portfolio matches, the order is still pending and the execution price is positive before calling the buy or sell logic. The aim is to keep those rules in one place so each operation leaves the portfolio in a consistent state.',
     note: 'Next, I’m extending the domain model into Spring Boot APIs with PostgreSQL persistence, alongside a Python/FastAPI service for historical prices and risk analysis. That extension explores volatility, covariance-based diversification, historical Value at Risk and Expected Shortfall.',
-    tags: ['Java', 'Python', 'Portfolio modelling'], links: [['GitHub', github + '/investmentanalyst']], graphic: 'trade',
+    tags: ['Java', 'Spring Boot', 'Python', 'FastAPI', 'PostgreSQL', 'Portfolio modelling'], links: [['GitHub', github + '/investmentanalyst']], graphic: 'trade',
   },
   {
     id: 'arbitrage', number: '02', title: 'Crypto arbitrage detection', category: 'Algorithms · Full-stack development',
     summary: 'An academic simulator that looks for currency-exchange cycles where a sequence of trades could return more than the starting amount. It connects a graph algorithm to a live-updating web interface.',
-    context: 'Exchange rates become directed edges in a graph. Applying a negative logarithm to each rate turns a potentially profitable trading cycle into a negative-weight cycle, which can be detected with Bellman–Ford. It was a way to take an algorithm beyond a standalone exercise and show what it is doing.',
+    context: 'Streams simulated exchange rates, detects profitable cycles using Bellman–Ford and displays opportunities alongside a simulated portfolio.',
     detail: 'A FastAPI backend streams simulated exchange rates over WebSockets to a React dashboard. The interface shows detected opportunities, the algorithm’s steps and simulated portfolio activity, making it possible to follow how a change in the graph affects the result.',
     note: 'The rates and trading activity are simulated. This is a tool for exploring the algorithm and the full-stack workflow; it does not place real orders or account for the execution constraints of a live exchange.',
-    tags: ['Python', 'FastAPI', 'React', 'Bellman–Ford'], links: [['GitHub', github + '/Real-Time-Crypto-Arbitrage-Detection'], ['Live demo', 'https://real-time-crypto-arbitrage-detectio-two.vercel.app']], graphic: 'arbitrage',
+    tags: ['Python', 'FastAPI', 'React', 'WebSockets', 'Bellman–Ford', 'JavaScript'], links: [['GitHub', github + '/Real-Time-Crypto-Arbitrage-Detection'], ['Live demo', 'https://real-time-crypto-arbitrage-detectio-two.vercel.app']], graphic: 'arbitrage',
   },
   {
     id: 'well-logs', number: '03', title: 'Geological well-log digitisation', category: 'Computer vision · Data engineering',
@@ -58,10 +58,10 @@ export const projects = [
   {
     id: 'screening', number: '04', title: 'AI resume screening', category: 'AI workflows · Automation',
     summary: 'A draft prototype of an AI resume-screening workflow, developed during my internship at Dell and presented to stakeholders. The Python pipeline turns PDF and DOCX resumes into structured candidate records for a screening team to review.',
-    context: 'The draft run demonstrated how document ingestion could fit into a recruitment workflow: extracting useful information, keeping a record of what had already been processed and making the result available in a consistent format. It gave stakeholders a working version of the idea to review.',
+    context: 'Parses PDF and DOCX resumes into candidate records, checks duplicates and exports structured results for recruitment teams to review.',
     detail: 'Incoming documents are parsed and checked with content-based deduplication to avoid repeated ingestion. Candidate information is extracted into a structured format, saved in SQLite and exported to Excel. This keeps the document-processing workflow separate from the human review that follows it.',
     note: 'The public repository also includes an ElevenLabs text-to-speech component. Live outbound dialling and speech-to-text are planned integrations in this version. The implemented document pipeline can be explored without contacting candidates or running a live calling workflow.',
-    tags: ['Python', 'OpenAI API', 'SQLite', 'ElevenLabs'], links: [['GitHub', github + '/aicallingagent_test']], graphic: 'screening',
+    tags: ['Python', 'FastAPI', 'OpenAI API', 'SQLite', 'n8n', 'ElevenLabs'], links: [['GitHub', github + '/aicallingagent_test']], graphic: 'screening',
   },
 ];
 export const achievements = [
@@ -84,15 +84,15 @@ export const communities = [
     date:'Oct 2026 – present', year:2026, month:10, current:true, showInJourney:false,
     context:'The University of Edinburgh’s student rocketry and aerospace team.',
     positions:[
-      {title:'Telemetry and Diagnostics', description:'Building telemetry and diagnostics software for the power processing unit of a student-built Hall thruster with Team Xenith.'},
+      {title:'Telemetry and Diagnostics', description:'Developing telemetry and diagnostic software for Team Xenith’s Hall-thruster power processing unit. The system is designed to ingest microcontroller sensor readings, monitor temperature and electrical measurements, log data and show real-time system status and trends to support testing and fault diagnosis.'},
       {title:'Sponsorship Specialist', description:'Developing sponsorship proposals and coordinating company outreach to secure industry support for Endeavour’s rocket, satellite and propulsion projects.'},
     ],
     points:[],
   },
   {
-    name:'IEEE Computer Society, VIT', href:'https://ieeecsvit.com/',
+    name:'IEEE CS Society, VIT', href:'https://ieeecsvit.com/',
     skills:['C/C++','Frontend development','Event organising','Sponsorship support'],
-    role:'Senior Core Member · Frontend Developer', date:'2024 – 2025', year:2024, duration:'1 year',
+    role:'', date:'2024 – 2025', year:2024, duration:'1 year',
     context:'A student chapter for computing projects, workshops and technical competitions.',
     points:[
       'Helped organise HackBattle and Cicada, and supported the HackBattle sponsorship team.',
@@ -102,7 +102,7 @@ export const communities = [
   {
     name:'CodeChef, VIT', href:'https://www.codechefvit.com/',
     skills:['React','JavaScript','Frontend development','Hackathon judging','Event organising'],
-    role:'Senior Core Member · Frontend Developer', date:'2024 – 2025', year:2024, duration:'1 year',
+    role:'', date:'2024 – 2025', year:2024, duration:'1 year',
     context:'A student-run coding community behind development workshops and the DevSOC hackathon.',
     points:[
       'Helped organise Cook-Off and the DevSOC hackathon.',
@@ -114,7 +114,7 @@ export const communities = [
 
 export const education = [
   {mark:'Ed', chapter:'Current chapter', tone:'mint', focus:['Electronics','Computer science'], name: 'University of Edinburgh', qualification: 'BEng Electronics & Computer Science', detail: 'Year 3 transfer · Expected 2028', date: '2026 – 2028'},
-  {mark:'VIT', chapter:'Where it began', tone:'lilac', focus:['Computer science','AI & ML'], name: 'Vellore Institute of Technology', qualification: 'Computer Science & Engineering (AI & ML)', detail: 'Completed Year 2 · CGPA 8.75/10', date: 'Transferred in 2026'},
+  {mark:'VIT', chapter:'Where it began', tone:'lilac', focus:['Computer science','AI & ML'], name: 'Vellore Institute of Technology', qualification: 'Computer Science & Engineering (AI & ML)', detail: 'Transferred to the University of Edinburgh', date: '2024 – 2026'},
 ];
 
 export const skillGroups = [
@@ -126,7 +126,6 @@ export const skillGroups = [
   {label: 'Current learning', tone: 'lemon', items: ['Verilog coursework', 'Embedded C', 'Altium Designer']},
 ];
 
-// Reuse the full experience content so the homepage and detail tab stay in sync.
 const experienceStops = [
   ...roles.map((role, index) => ({
     id: 'work-' + index, year:role.year, month:role.month, title: role.name, label: role.role,
@@ -148,7 +147,7 @@ const experienceStops = [
 ];
 const experienceSkills = new Set(experienceStops.flatMap(step => step.skills));
 export const experienceJourney = [
-  // Oldest first. DevJams precedes the society year; no months are invented.
+
   ...experienceStops.sort((a,b) => a.year - b.year || (a.month || 0) - (b.month || 0) || Number(b.id.startsWith('hackathon')) - Number(a.id.startsWith('hackathon'))),
   {id:'toolkit', title:'Also in my toolkit.', label:'Beyond these experiences',
     description:'More languages, tools and foundations I bring to my projects and coursework.',
