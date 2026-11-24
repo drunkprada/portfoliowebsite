@@ -29,3 +29,8 @@ test('a control covered by another layer is rejected', async ({page}) => {
   await page.addStyleTag({content:'body::after {content:"";position:fixed;inset:64px 0 0;z-index:200;background:white}'});
   await expect(expectFocusVisible(page)).rejects.toThrow('focused content control');
 });
+
+test('bottom-aligned tall previews respect the bottom scroll padding', async ({page}) => {
+  await page.addStyleTag({content:'html {scroll-padding-bottom:8px} a {top:-200px;height:581.5px}'});
+  await expectFocusVisible(page);
+});
