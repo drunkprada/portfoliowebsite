@@ -26,7 +26,7 @@ for (const dark of [false, true]) {
     for (const section of await page.locator('.reveal').all()) {
       await expect(section).toHaveCSS('opacity', '1');
     }
-    // Returning from print restores the user's screen theme and scrollable trail.
+    // Returning from print restores the user's screen theme.
     await page.emulateMedia({media: 'screen'});
     await expect(page.locator('html')).toHaveAttribute('data-theme', dark ? 'dark' : 'light');
     await expect(page.locator('.navwrap')).toBeVisible();
