@@ -9,10 +9,8 @@ test('decorative drawings animate without adding labels or hiding content', asyn
   await page.emulateMedia({reducedMotion:'no-preference'});
   await page.goto('/#home');
   await expect(page.locator('.intro__doodle .sketch-orbit')).toHaveCSS('animation-name','orbit');
-  const strip = page.locator('.journey-scroll');
-  await strip.scrollIntoViewIfNeeded();
-  await expect(page.locator('.journey-track')).toHaveClass(/is-revealed/);
-  await expect(page.locator('.journey-path path')).toHaveCSS('animation-name','pen-in');
+  await expect(page.locator('.intro__copy')).toHaveCSS('opacity', '1');
+  await expect(page.locator('.ink-name svg, .journey-scroll')).toHaveCount(0);
   for (const sketch of await page.locator('svg.sketch').all()) {
     await expect(sketch).toHaveAttribute('aria-hidden','true');
     await expect(sketch).toHaveAttribute('focusable','false');
@@ -24,7 +22,7 @@ test('page headings keep useful titles without generic section blurbs', async ({
     await page.goto('/#' + route);
     await expect(page.locator('.pagehead h1')).toBeVisible();
     await expect(page.locator('.pagehead p, .pagehead .label')).toHaveCount(0);
-    await expect(page.locator('.pagehead .sketch')).toHaveCount(1);
+    await expect(page.locator('.pagehead .sketch')).toHaveCount(route === 'research' ? 1 : 0);
   }
 });
 
