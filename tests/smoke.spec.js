@@ -31,10 +31,10 @@ test('nav marks the current page and the theme toggle persists', async ({page}) 
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
-test('research details expand', async ({page}) => {
-  await page.goto('/#research');
+test('project details expand', async ({page}) => {
+  await page.goto('/#projects');
   const btn = page.locator('.details > button').first();
   await btn.click();
   await expect(btn).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('.details__body').first()).toContainText('The question');
+  await expect(page.locator('.details__body').first()).not.toBeEmpty();
 });

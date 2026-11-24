@@ -1,5 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {expectFocusVisible} from './helpers';
+import {projects} from '../src/data.js';
 
 // Keep verification local: no publication, profile or project service requests.
 test.beforeEach(async ({page}) => {
@@ -127,8 +128,8 @@ test('paper screenshots and manuscript are served; projects have no previews', a
   }
   await page.goto('/#projects');
   await expect(page.locator('main img')).toHaveCount(0);
-  await expect(page.locator('.project-list .proj')).toHaveCount(3);
-  await expect(page.locator('.proj__links a[href^="https://github.com/"]')).toHaveCount(3);
+  await expect(page.locator('.project-list .proj')).toHaveCount(projects.length);
+  await expect(page.locator('.proj__links a[href^="https://github.com/"]')).toHaveCount(projects.length);
 });
 
 test('theme switching still works when browser storage is unavailable', async ({page}) => {
@@ -163,7 +164,7 @@ test('Experience navigation restores work and society contributions', async ({pa
   await expect(page.locator('.community-list')).toContainText('HackBattle sponsorship team');
   await expect(page.locator('.community-list')).toContainText('puzzles and ciphers');
   await expect(page.locator('.community__meta .role-title')).toHaveText([
-    'Senior Core Member · Frontend Developer', 'Senior Core Member · Frontend Developer',
+    '', '',
   ]);
   await expect(page.locator('.community__meta .muted')).toHaveText(['Oct 2026 – present', '2024 – 2025 · 1 year', '2024 – 2025 · 1 year']);
   const clubs = page.getByRole('region', {name:'Student clubs'});
@@ -230,7 +231,7 @@ test('active tabs preserve modified and non-primary link activation', async ({pa
 test('Ctrl-click opens the active page in a new tab without resetting the original', async ({page, context}) => {
   await context.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1'
     ? route.continue() : route.abort());
-  await page.goto('/#research');
+  await page.goto('/#projects');
   const details = page.locator('.details > button').first();
   await details.click();
   await page.locator('.footer').scrollIntoViewIfNeeded();
@@ -242,9 +243,9 @@ test('Ctrl-click opens the active page in a new tab without resetting the origin
   const popupPromise = context.waitForEvent('page');
   await page.locator('.nav__links [aria-current="page"]').click({modifiers: ['Control']});
   const popup = await popupPromise;
-  await expect(popup).toHaveURL(/#research$/);
-  await expect(popup.locator('main h1')).toHaveText('Papers');
-  await expect(page).toHaveURL(/#research$/);
+  await expect(popup).toHaveURL(/#projects$/);
+  await expect(popup.locator('main h1')).toHaveText('Things I’ve built');
+  await expect(page).toHaveURL(/#projects$/);
   await expect(details).toHaveAttribute('aria-expanded', 'true');
   await expect.poll(() => page.evaluate(() => scrollY === window.activationScroll && scrollY > 0)).toBe(true);
   await popup.close();

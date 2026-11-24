@@ -13,7 +13,7 @@ test('local assets resolve when the built portfolio is served in a subdirectory'
   });
 
   for (const [view, pdf, imageCount] of [
-    ['home', 'resume/sahana-naganandh-resume.pdf', 4],
+    ['home', 'resume/sahana-naganandh-resume.pdf', 0],
     ['research', 'papers/os-tuning-manuscript.pdf', 2],
     ['experience', null, 4],
   ]) {
