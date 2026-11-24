@@ -2,7 +2,7 @@ import {expect} from '@playwright/test';
 
 export async function expectFocusVisible(page) {
   let diagnostic;
-  try { await expect.poll(() => page.evaluate(() => {
+  try { await expect.poll(async () => diagnostic = await page.evaluate(() => {
     const focused = document.activeElement;
     const rect = focused.getBoundingClientRect();
     const nav = document.querySelector('.navwrap').getBoundingClientRect();
@@ -17,7 +17,7 @@ export async function expectFocusVisible(page) {
       ? bottom - top >= available - 5
       : rect.top >= nav.bottom + 4 && rect.bottom <= innerHeight;
     const hit = document.elementFromPoint(rect.x + rect.width / 2, (top + bottom) / 2);
-    return diagnostic = {visible, hittable: focused.contains(hit), control: focused.outerHTML.slice(0, 200),
+    return {visible, hittable: focused.contains(hit), control: focused.outerHTML.slice(0, 200),
       top: rect.top, bottom: rect.bottom, navBottom: nav.bottom, available};
   }), {message: 'The focused content control must remain visible below the sticky nav'}).toMatchObject({visible: true, hittable: true});
   } catch (error) { throw new Error(JSON.stringify(diagnostic) + '\n' + error.message); }
